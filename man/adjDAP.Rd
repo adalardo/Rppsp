@@ -1,36 +1,33 @@
 \name{adjDAP}
 \alias{adjDAP}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-%%  ~~function to do ... ~~
+\title{Stem as lines
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Create a dataframe with each stem as lines for multiple stem tres - stem long format
 }
 \usage{
 adjDAP(dados, dap = "dbh", censos = c("01", "02"), sufixo = ".mm")
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dados}{
-%%     ~~Describe \code{dados} here~~
+duckewiki database format dataframe
 }
   \item{dap}{
-%%     ~~Describe \code{dap} here~~
+how dbh is call in the dataframe format, for instance if dbh is in column dbh2012, dbh = "dbh"
 }
   \item{censos}{
-%%     ~~Describe \code{censos} here~~
+How census are describe in dataframe  
 }
-  \item{sufixo}{
-%%     ~~Describe \code{sufixo} here~~
+  \item{sufixo}{ 
+  Any other pattern in dbh column name
 }
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
+Return a dataframe longer or with the same size as original data; each new line is a stem from multiple stem tree   
 %%  \item{comp1 }{Description of 'comp1'}
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
@@ -39,7 +36,7 @@ adjDAP(dados, dap = "dbh", censos = c("01", "02"), sufixo = ".mm")
 %% ~put references to the literature/web site here ~
 }
 \author{
-%%  ~~who you are~~
+Alexandre Adalardo de Oliveira <aleadalardo@gmail.com>
 }
 \note{
 %%  ~~further notes~~
@@ -51,79 +48,8 @@ adjDAP(dados, dap = "dbh", censos = c("01", "02"), sufixo = ".mm")
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+dados<- data.frame(sp= rep(c("sp1", "sp2", "sp3"), 4), dbh01.mm= rep(c("110;12;130;14", "140;13;12", "14;13", "14"), 3), dbh02.mm= rep(c("150;16;17;18", "NA", "18", "18"), 3) , alt=seq(10, 50, len=12), date01="10-10-2002", date02="10-10-2005", status01= "A", status02 =sample(c(rep("A", 10), "D","D")), stringsAsFactors = FALSE, tag=paste(0, 1:12, sep="") )
+adjDAP(dados, dap = "dbh", censos = c("01", "02"), sufixo = ".mm")
 
-## The function is currently defined as
-function (dados, dap = "dbh", censos = c("01", "02"), sufixo = ".mm") 
-{
-    vrep <- Vectorize(rep.int, "times")
-    namedbh = paste(dap, censos, sufixo, sep = "")
-    namedados <- names(dados)
-    dbhano <- names(dados)[grep("dbh", names(dados))]
-    nc <- substr(dbhano[!dbhano \%in\% namedbh], start = 4, stop = 5)
-    for (k in nc) {
-        npos <- grep(k, names(dados))
-        dados <- dados[, -npos]
-    }
-    dbh = dados[, namedbh]
-    dbh[dbh == "" | dbh == " " | is.null(dbh)] <- NA
-    ncensos = length(censos)
-    ntree = dim(dados)[1]
-    nfuste <- matrix(NA, ncol = ncensos, nrow = ntree)
-    if (ncensos > 1) {
-        ldbh0 <- apply(dbh, 2, strsplit, split = ";")
-        for (i in 1:ncensos) {
-            nfuste[, i] <- sapply(ldbh0[[i]], length)
-        }
-        maxfuste <- apply(nfuste, 1, max)
-        diffuste <- maxfuste - nfuste
-        difvf <- diffuste > 0
-        tdif <- apply(difvf > 0, 1, sum)
-    }
-    else {
-        ldbh0 <- strsplit(dbh, split = ";")
-        nfuste[, 1] <- sapply(ldbh0, length)
-        maxfuste <- apply(nfuste, 1, max)
-        tdif <- rep(0, ntree)
-    }
-    datanew = NULL
-    for (j in 1:ntree) {
-        dtree <- dados[j, ]
-        dtree$fuste <- 1
-        nf = maxfuste[j]
-        if (nf > 1) {
-            if (tdif[j] > 0) {
-                dfuste <- diffuste[j, ]
-                indf <- dfuste > 0
-                fusteNA <- vrep(times = dfuste, ";NA")
-                fusteNA <- sapply(fusteNA, paste, collapse = "")
-                dbh[j, ] <- paste(dbh[j, ], fusteNA, sep = "")
-            }
-            ndtree <- paste(rep("dtree", nf), collapse = ", ")
-            strtree <- paste("dtree <- rbind(", ndtree, ")", 
-                sep = "")
-            eval(parse(text = strtree))
-            dtree$fuste = 1:nrow(dtree)
-        }
-        dtree[, namedbh] <- NA
-        if (ncensos > 1) {
-            newdbh <- unlist(sapply(dbh[j, ], strsplit, split = ";"))
-        }
-        else {
-            newdbh <- unlist(sapply(dbh[j], strsplit, split = ";"))
-        }
-        newdbh[newdbh == "NA"] <- NA
-        dtree[, namedbh] <- as.numeric(newdbh)
-        datanew = rbind(datanew, dtree)
-        cat("Aguarde! Processando arvore ", j, "  de um total de ", 
-            ntree, "\n")
-    }
-    return(datanew)
-  }
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{dataframe}
+\keyword{data}% __ONLY ONE__ keyword per line
