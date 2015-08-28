@@ -1,0 +1,9 @@
+Package: ../Rppsp
+Type: Package
+Title: R functions to manage duckewiki data (short line)
+Version: 1.0
+Date: 2015-08-28
+Author: Alexandre Adalardo de Oliveira
+Maintainer: Alexandre Adalardo <aleadalardo@gmail.com>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
