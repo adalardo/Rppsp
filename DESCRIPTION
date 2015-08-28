@@ -1,4 +1,4 @@
-Package: ../Rppsp
+Package:Rppsp
 Type: Package
 Title: R functions to manage duckewiki data (short line)
 Version: 1.0
