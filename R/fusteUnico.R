@@ -1,12 +1,19 @@
 fusteUnico <-
-function(dados.fuste, tag= "tag", dap= "dbh", censos= c("01","02"), sufixo= ".mm")
+function(dados, fuste = "stemtag", tag= "tag", dap= "dbh", censos= c("01","02"), sufixo= ".mm")
 {
     namedbh=paste(dap, censos,sufixo, sep="")
-    abasal.cm <- aggregate(dados.fuste[, namedbh], list(tag=dados.fuste[,tag]), FUN= function(x){sum(pi*(x/20)^2, na.rm=TRUE)})
-    abasal.cm[abasal.cm==0]<-NA
-    abasal.cm[,namedbh] <-  round((4* abasal.cm[,namedbh]/pi)^(1/2), 2)
-    namedbh.new= paste(dap, censos,".cm", sep="")
-    dados.cm<-dados.fuste[dados.fuste$fuste==1, !(names(dados.fuste) %in% c(namedbh, "fuste")) ]
-    dados.cm[, namedbh.new]<- abasal.cm[, -1]
+    new_namedbh= paste(dap, censos,".cm", sep="")
+    dap.cm <- aggregate(dados[,namedbh], list(tag=dados[,tag]), FUN= dap2cm)
+    dap.cm[dap.cm==0]<-NA
+    dados.cm<-dados[dados[,fuste] ==1, ]
+    mtag<-match(dados.cm[,tag], dap.cm[,tag])
+    dados.cm[,new_namedbh] <- dap.cm[mtag, namedbh]
+    dados.cm <- dados.cm[, !(names(dados.cm) %in% c(namedbh, "fuste")) ]
     return(dados.cm)
 }
+####### calculate dap.cm from multistem dap.mm
+dap2cm <- function(x)
+    {
+        ab <- sum(pi*(x/20)^2, na.rm=TRUE)
+        round((4* ab/pi)^(1/2), 2)
+    }

@@ -1,9 +1,12 @@
-Package:Rppsp
+Package: Rppsp
 Type: Package
 Title: R functions to manage duckewiki data (short line)
 Version: 1.0
-Date: 2015-08-28
+Date: 2016-06-16
 Author: Alexandre Adalardo de Oliveira
 Maintainer: Alexandre Adalardo <aleadalardo@gmail.com>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Description: Package for access and manager duckewiki databases
+Imports:
+    RMySQL
+License: GPL-2
+RoxygenNote: 5.0.1

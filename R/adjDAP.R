@@ -1,7 +1,9 @@
-adjDAP <-
-function(dados, dap= "dbh", censos= c("01","02"), sufixo= ".mm")
+#dados<- data.frame(sp= rep(c("sp1", "sp2", "sp3"), 4), dbh01.mm= rep(c("110;12;130;14", "140;13;12", "14;13", "14"), 3), dbh02.mm= rep(c("150;16;17;18", "NA", "18", "18"), 3) , alt=seq(10, 50, len=12), date01="10-10-2002", date02="10-10-2005", status01= "A", status02 =sample(c(rep("A", 10), "D","D")), stringsAsFactors = FALSE, tag=paste(0, 1:12, sep="") )
+#adjDAP(dados, dap = "dbh", censos = c("01", "02"), sufixo = ".mm")
+adjDAP <- function(dados, dap= "dbh", censos= c("01","02"), sufixo= ".mm")
     {
-        vrep <- Vectorize(rep.int, "times")
+    library(tcltk)
+	vrep <- Vectorize(rep.int, "times")
         namedbh=paste(dap, censos,sufixo, sep="")
         namedados <- names(dados)
         dbhano <- names(dados)[grep("dbh", names(dados))]
@@ -15,6 +17,7 @@ function(dados, dap= "dbh", censos= c("01","02"), sufixo= ".mm")
         dbh[dbh=="" | dbh==" " | is.null(dbh)]<-NA
         ncensos = length(censos)
         ntree = dim(dados)[1]
+        pb = tkProgressBar(title = "Separando dap por fuste", max = ntree)
         nfuste <- matrix(NA, ncol=ncensos,nrow=ntree)
         if(ncensos>1)
             {
@@ -37,6 +40,7 @@ function(dados, dap= "dbh", censos= c("01","02"), sufixo= ".mm")
         datanew=NULL
         for(j in 1:ntree)
             {
+                setTkProgressBar(pb, value = j, label = paste("árvore: ", j, " de um total de ", ntree , sep="")) 
                 dtree<-dados[j, ]
                 dtree$fuste <- 1
                 nf = maxfuste[j]
@@ -68,7 +72,7 @@ function(dados, dap= "dbh", censos= c("01","02"), sufixo= ".mm")
                 newdbh[newdbh=="NA"]<-NA
                 dtree[,namedbh]<-as.numeric(newdbh)
                 datanew=rbind(datanew,dtree)
-                cat("Aguarde! Processando arvore ", j, "  de um total de ", ntree, "\n")   
+                #cat("Aguarde! Processando arvore ", j, "  de um total de ", ntree, "\n")   
             } 
         return(datanew)
     }
