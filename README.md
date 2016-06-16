@@ -9,6 +9,7 @@ install_github(repo = 'adalardo/Rppsp')
 ## Example 
 ```r
 library(Rppsp)
+library(MySQL)
 #follow instructions to connect, using:
-connMysql()
+datacenso <- connMysql()
 ```
