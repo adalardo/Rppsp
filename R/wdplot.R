@@ -1,7 +1,7 @@
 WSGvalues <- function(PlotData=peic, Region=c("South America"), Region2= c("tropical", "extratropical"))
 {
 #peic<-read.csv("/home/ale/Ale2013/AleProjetos/Restinga/PP_Restinga/dadosUso/peic04_09FusteLinha.txt", sep="\t", header = TRUE, as.is=TRUE)
-str(peic)
+#str(peic)
 require(doBy)
     ## #urlxls<-"https://datadryad.org/bitstream/handle/10255/dryad.235/GlobalWoodDensityDatabase.xls"
     ## wdglobal<-read.table("../data/wdglobal.csv", header=TRUE, as.is=TRUE, sep="\t")

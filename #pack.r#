@@ -1,2 +1,23 @@
-package.skeleton() 
-package.skeleton("../Rppsp", ls(),force=TRUE)
+#package.skeleton() 
+#package.skeleton("../Rppsp", ls(),force=TRUE)
+library(devtools)
+library(roxygen2)
+#roxygen2::roxygenise()
+## ?document()
+## browseVignettes("roxygen2")
+roxygenise()
+install("../Rppsp")
+library(Rppsp)
+dados <- connMysql()
+str(dados)
+unique(dados$plot)
+####################
+# testing git pack
+####################
+library(devtools)
+install_github(repo = 'adalardo/Rppsp')
+library(RMySQL)
+library(Rppsp)
+#follow instructions to connect, using:
+datacenso <- connMysql()
+
