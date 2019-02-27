@@ -1,8 +1,8 @@
 git status
-git add DESCRIPTION NAMESPACE R/adjDAP.R R/fusteUnico.R README.md
+git add *
 git add R/connMysql.R R/floraBrasilname.R R/spcode.R R/spname.R R/wdglobal.rda R/wdplot.R man/connMysql.Rd
 git add data
-git commit -m "include several functions jun 2016"
+git commit -m "odk function"
 git remote -v
 git push origin master
 
