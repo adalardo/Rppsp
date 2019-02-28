@@ -1,11 +1,11 @@
 git status
 git add .
-git reset
-git add .
+#git reset
+#git add .
 git status
 #git add R/connMysql.R R/floraBrasilname.R R/spcode.R R/spname.R R/wdglobal.rda R/wdplot.R man/connMysql.Rd
 #git add data
-git commit -m "create ifnum0 function inside prestaConta"
+git commit -m "documentation adjustment"
 # ! [rejected]        master -> master (fetch first)
 git branch
 ## deve estar em master

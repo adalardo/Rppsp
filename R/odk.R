@@ -652,8 +652,10 @@ prestaConta <- function(dataDir, dataName="prestaConta", dirExp = getwd(), valPa
     fotos <- pcontas[,grep("foto", names(pcontas))]
     fotos[is.na(fotos)] <- ""
     pcontas$comprova <- apply(fotos, 1, paste, collapse="")
-## juntando observacoes
-    pcontas$obsEv <- apply(pcontas[,grep("obs", names(pcontas))], 1, paste, collapse="")
+    ## juntando observacoes
+    obs <- pcontas[,grep("obs", names(pcontas))]
+    obs[is.na(obs)]<- ""
+    pcontas$obsEv <- apply(obs, 1, paste, collapse="")
 #nchar(pcontas$obsEv)
 ## juntando despesas equipe
     pcontas$EqDesp <- apply(pcontas[,grep("eq_desp", names(pcontas))], 1, paste, collapse="")
