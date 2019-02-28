@@ -1,0 +1,19 @@
+## criando o pacote
+package.skeleton() 
+package.skeleton("../Rppsp", ls(),force=TRUE)
+## criando documentacao
+roxygen2::roxygenise() 
+devtools::install("../Rppsp")
+?prestaConta
+
+
+library(devtools)
+install_github(repo = 'adalardo/Rppsp')
+Example
+
+library(Rppsp)
+library(RMySQL)
+#follow instructions to connect, using:
+datacenso <- connMysql()
+str(datacenso)
+unique(datacenso$plot)
