@@ -2,8 +2,7 @@
 % Please edit documentation in R/connMysql.R
 \name{connMysql}
 \alias{connMysql}
-\title{Connection to PPSP MySQL database
-interactive function}
+\title{Connection to PPSP MySQL database}
 \usage{
 connMysql(dbname = "ppsp")
 }
@@ -18,6 +17,9 @@ connMysql(dbname = "ppsp")
 'connMysql' returns a dataframe with data.
 }
 \description{
+Interactive function to connect and query data from remote  duckewiki database
+}
+\details{
 SSH protocol to stablish connection and query database structured. This function should work on any duckewiki database.
 }
 \examples{
@@ -27,15 +29,14 @@ connMysql(database = "ppsp",  census = NULL)
 }
 
 }
-\author{
-Alexandre Adalardo de Oliveira \email{ecovirtualpackage@gmail.com}
-}
 \seealso{
 \url{{http://labtrop.ib.com.br}; {http://github/adalardo/duckewiki}}
+}
+\author{
+Alexandre Adalardo de Oliveira \email{ecovirtualpackage@gmail.com}
 }
 \keyword{access}
 \keyword{connection,}
 \keyword{database}
 \keyword{mysql,}
 \keyword{remote}
-

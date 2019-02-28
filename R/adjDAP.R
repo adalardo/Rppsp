@@ -40,7 +40,7 @@ adjDAP <- function(dados, dap= "dbh", censos= c("01","02"), sufixo= ".mm")
         datanew=NULL
         for(j in 1:ntree)
             {
-                setTkProgressBar(pb, value = j, label = paste("árvore: ", j, " de um total de ", ntree , sep="")) 
+                setTkProgressBar(pb, value = j, label = paste("arvore: ", j, " de um total de ", ntree , sep="")) 
                 dtree<-dados[j, ]
                 dtree$fuste <- 1
                 nf = maxfuste[j]

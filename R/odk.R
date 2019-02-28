@@ -21,7 +21,6 @@
 ##' @seealso 
 ##' \url{http://labtrop.ib.usp.br}
 ##' @references \url{https://opendatakit.org/} 
-##' @keywords
 ##' @examples
 ##' 
 ##' \dontrun{
@@ -75,7 +74,6 @@ if(is.null(start) | is.null(end))
 ##' @seealso 
 ##' \url{http://labtrop.ib.usp.br}
 ##' @references \url{https://opendatakit.org/} 
-##' @keywords
 ##' @examples
 ##' 
 ##' \dontrun{
@@ -230,7 +228,6 @@ invisible(treeres)
 ##' @seealso 
 ##' \url{http://labtrop.ib.usp.br}
 ##' @references \url{https://opendatakit.org/} 
-##' @keywords
 ##' @examples
 ##' 
 ##' \dontrun{
@@ -309,7 +306,7 @@ censoAudit <- function(dir_exp = getwd(), olddata = "peic09.csv", allsubdir = TR
 #####################################
 ### DADOS DE TAG NA (confirmar)
 #####################################
-    ## dados num_tag = NA. Normalmente, trata-se de "morta com placa", mas precisa ter o número ou posicao da arvores
+## dados num_tag = NA. Normalmente, trata-se de morta com placa, mas precisa ter o numero ou posicao da arvores
     tagNA <- is.na(tree$num_tag)
     ntagNA <- sum(tagNA)
     if(ntagNA > 0)
@@ -362,13 +359,13 @@ censoAudit <- function(dir_exp = getwd(), olddata = "peic09.csv", allsubdir = TR
             names(denc)[7:8] <- c("quad2018", "subq2018")
             samequad <- denc$quadrat == denc$quad2018 & denc$quad5x5 == denc$subq2018
             denc$erroType <- NA
-#denc$ver<- "no"
+#denc$ver<- no
 ### Mesmo subq , nao remapeada
-            denc$erroType[namap & samequad] <- "sq_nr"  ### incluir na saída
-### Outro subquad, não mapeada
+            denc$erroType[namap & samequad] <- "sq_nr"  ### incluir na saida
+### Outro subquad, nao mapeada
             denc$erroType[namap & !samequad] <- "oq_nr" ## incluir na saida
 ### Mesmo subq, remapeada
-            denc$erroType[! namap & samequad] <- "sq_yr"## incluir na saída
+            denc$erroType[! namap & samequad] <- "sq_yr"## incluir na saida
 ### Outro subquad e remapeada
             denc$erroType[!namap & !samequad] <- "oq_yr" ## incluir na saida
             error.definitions <- data.frame(error= c("sq", "oq", "yr", "nr"), definition= c("same quadrat", "other quadrat", "remaped", "notremaped"),stringsAsFactors = FALSE )
@@ -619,7 +616,6 @@ mergeData <- function(basedir = getwd(), media.merge = TRUE, save.files = TRUE)
 ##' @seealso 
 ##' \url{http://labtrop.ib.usp.br}
 ##' @references \url{https://opendatakit.org/} 
-##' @keywords
 ##' @examples
 ##' 
 ##' \dontrun{
@@ -735,9 +731,9 @@ prestaConta <- function(dataDir, dataName="prestaConta", dirExp = getwd(), valPa
     resEq$valor[resEq$cargo =="lider"] <- round(resEq$totalSubq[resEq$cargo =="lider"] * 100/16,2)
     resEq$quads <- quads
 ############################
-## Calculo Renan coordenação
+## Calculo Renan coordenacaoo
 ## Para o Mes de Fev combinado 1500 fixos + parcelas feitas
-## A partir de Março 1000 Renan, 250 Haron e Carlota
+## A partir de Marco 1000 Renan, 250 Haron e Carlota
 ###########################
 ## nRenan <- sum(parc$nsubq[parc$eq_lider != "renan" & parc$eq_auxiliar != "renan" ])/16
 ## valorCoord <-  round(nRenan*20, 2)
@@ -762,7 +758,7 @@ prestaConta <- function(dataDir, dataName="prestaConta", dirExp = getwd(), valPa
 ###################################
     gastoTotal <- (-1* debSemEq) + eqTotal
     ndia <- ceiling(gastoTotal/380)
-    ndiapes <- ceiling(ndia/2) ## aqui serao só Renan e Haron assinando. O Danilo saiu fora!
+    ndiapes <- ceiling(ndia/2) ## aqui serao so Renan e Haron assinando. O Danilo saiu fora
 ### Totais Gerais
     totalCash <- saldoIni$saldo_cash_ini + totalTipo$valor[totalTipo$tipo =="cred_cash"]
     totalBank <- saldoIni$saldo_cc_ini + totalTipo$valor[totalTipo$tipo =="cred_bank"]

@@ -9,4 +9,4 @@ Description: Package for access and manager duckewiki databases
 Imports:
     RMySQL
 License: GPL-2
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.1

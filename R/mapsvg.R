@@ -16,10 +16,7 @@
 ##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 ##' @seealso \code{\link{gridSVG}} 
 ##' \url{http://labtrop.ib.usp.br}
-##' @references 
-##' @keywords
 ##' @examples
-##' 
 ##' \dontrun{
 ##' dataplot <- data.frame(dx = runif(100, 0,20), dy = runif(100,0,20), quad = rep(paste("quad", 0:1, sep="_"), each=50), dap =rnbinom(100,10,0.5), status="A", tag = 1:100)
 ##' mapsvg(dataplot, save.svg =FALSE)
@@ -122,9 +119,7 @@ mapsvg <- function( censo = peic09, quad = "A00", size = 5, max.size=20, save.sv
 ##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 ##' @seealso \code{\link{gridSVG}} 
 ##' \url{http://labtrop.ib.usp.br}
-##' @references 
-##' @keywords
-##' @examples
+#' @examples
 ##' 
 ##' \dontrun{
 ##' dataplot <- data.frame(dx = runif(100, 0,20), dy = runif(100,0,20), quad = rep(paste("quad", 0:1, sep="_"), each=50), dap =rnbinom(100,10,0.5), status="A", tag = 1:100)
@@ -197,10 +192,7 @@ auditsvg <- function(audit, quad = "A00", save.svg = TRUE, wd = getwd(), dx = "n
 ##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 ##' @seealso \code{\link{gridSVG}} 
 ##' \url{http://labtrop.ib.usp.br}
-##' @references 
-##' @keywords
-##' @examples
-##' 
+##'
 ##' \dontrun{
 ##' dataplot <- data.frame(dx = runif(100, 0,20), dy = runif(100,0,20), quad = rep(paste("quad", 0:1, sep="_"), each=50), dap =rnbinom(100,10,0.5), status="A", tag = 1:100)
 ##' auditsvg(dataplot, save.svg =FALSE)
