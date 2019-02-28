@@ -5,12 +5,13 @@ git add .
 git status
 #git add R/connMysql.R R/floraBrasilname.R R/spcode.R R/spname.R R/wdglobal.rda R/wdplot.R man/connMysql.Rd
 #git add data
-git commit -m "odk prestaConta function"
+git commit -m "odk ajustando documentacao"
 # ! [rejected]        master -> master (fetch first)
 git branch
 ## deve estar em master
 git push origin master
-
+adalardo
+gitale133113
 #### para olhar diferencas entre branchs
 gitk --all ## olhar todas as mundancas em um gui
 git mergetool # usar o meld para merge diff

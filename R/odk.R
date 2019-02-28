@@ -628,6 +628,7 @@ mergeData <- function(basedir = getwd(), media.merge = TRUE, save.files = TRUE)
 ##'
 prestaConta <- function(dataDir, dataName="prestaConta", dirExp = getwd(), valParc = c(70,100), valFixo = data.frame(nome= c("Renan"), cargo = c("coordena"),valor = c(1500)), pagaFixo = FALSE,  saveFile=TRUE, fileRmd = system.file("rmd", "prestaConta.rmd", package = "Rppsp"))
 {
+    ifnum0 <- function(x){ifelse(length(x) == 0, 0, x)} 
     require(rmarkdown)
     require(knitr)
     pc <- read.table(file.path(dataDir, paste(dataName, "-event_fin.csv", sep="")), header=TRUE, as.is=TRUE, sep="," )
@@ -691,8 +692,8 @@ prestaConta <- function(dataDir, dataName="prestaConta", dirExp = getwd(), valPa
     names(totalTipo)[2] <- "valor"
 ## Debitos separados entre equipe e outros
     debTotal <- sum(debData$val_real)
-    debSemEq <- sum(debData[debData$tipoEv != "pago_eq" ,'val_real'])
-    pagoAdEq <- sum(debData[debData$tipoEv == "pago_eq" ,'val_real'])
+    debSemEq <- sum(ifnum0(debData[debData$tipoEv != "pago_eq" ,'val_real']))
+    pagoAdEq <- sum(ifnum0(debData[debData$tipoEv == "pago_eq" ,'val_real']))
     resDeb <- tapply(debData$val_real, debData$tipoEv, sum)
 ###############################################################
 ### contando os quadrats feitos por evento
@@ -760,13 +761,13 @@ prestaConta <- function(dataDir, dataName="prestaConta", dirExp = getwd(), valPa
     ndia <- ceiling(gastoTotal/380)
     ndiapes <- ceiling(ndia/2) ## aqui serao so Renan e Haron assinando. O Danilo saiu fora
 ### Totais Gerais
-    totalCash <- saldoIni$saldo_cash_ini + totalTipo$valor[totalTipo$tipo =="cred_cash"]
-    totalBank <- saldoIni$saldo_cc_ini + totalTipo$valor[totalTipo$tipo =="cred_bank"]
+    totalCash <- saldoIni$saldo_cash_ini + ifnum0(totalTipo$valor[totalTipo$tipo =="cred_cash"])
+    totalBank <- saldoIni$saldo_cc_ini + ifnum0(totalTipo$valor[totalTipo$tipo =="cred_bank"])
 ### Parcelas
     npar <- sum(parc$nsubq)/16
 ## Saldos Atuais
-    saldoCash <- totalCash + totalTipo$valor[totalTipo$tipo =="deb_cash"]
-    saldoConta <- totalBank + totalTipo$valor[totalTipo$tipo =="deb_bank"] + totalTipo$valor[totalTipo$tipo =="deb_card"] - sum(credData$val_real[credData$tipoEv =="cash"])
+    saldoCash <- totalCash + ifnum0(totalTipo$valor[totalTipo$tipo =="deb_cash"])
+    saldoConta <- totalBank + ifnum0(totalTipo$valor[totalTipo$tipo =="deb_bank"]) + ifnum0(totalTipo$valor[totalTipo$tipo =="deb_card"]) - sum(ifnum0(credData$val_real[credData$tipoEv =="cash"]))
     saldoTotal <- saldoCash + saldoConta
     pagarEq <-sum(fimEq$transf[fimEq$transf>0])
 
