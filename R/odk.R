@@ -241,6 +241,7 @@ invisible(treeres)
 censoAudit <- function(dir_exp = getwd(), olddata = "peic09.csv", allsubdir = TRUE)
 {
     abasal <- function(x){sum(((x)/2)^2 * pi, na.rm=TRUE)}
+
     filelist <- list.files(dir_exp, recursive = allsubdir)
     filelist <- filelist[grep("tree", filelist)]
     filetree <- file.path(dir_exp, filelist[! (grepl("baseData", filelist) | grepl("treeRes",filelist)| grepl("treeMiss",filelist) | grepl("treeDupl",filelist))])
@@ -280,9 +281,10 @@ censoAudit <- function(dir_exp = getwd(), olddata = "peic09.csv", allsubdir = TR
 ###########################
     censo09 <- read.table(olddata, header=TRUE, as.is=TRUE, sep=sc)
     dquad09 <- censo09[censo09$quad %in% unique(tree$quadrat), ] # so os quadrats com dados 2018
-    dquad09A <- dquad09[dquad09$status=="A",]
-    ntquad09 <- table(dquad09A[dquad09$status=="A","quad"])
-    #mquad09 <- table(dquad09[dquad09$status=="D","quad"])
+    dquad09A <- dquad09[dquad09$status %in% c("A","AS") ,]
+    ntquad09 <- table(dquad09A$quad)
+    q09D <- table(dquad09[dquad09$status=="D","quad"])
+    q09NE <- table(dquad09[dquad09$status=="NE","quad"])
     ab09 <- tapply(dquad09A$dbhcm, dquad09A$quad, abasal)
 #####################################
 ### Dados nao confirmados em campo
@@ -390,12 +392,23 @@ censoAudit <- function(dir_exp = getwd(), olddata = "peic09.csv", allsubdir = TR
 ################################################
 ### estatistica por quadrado de 20x20
     reptagquad <- tapply(reptag, tree$quadrat, sum)
-    ntquad <- table(tree$quadrat)
+    quadsort <- sort(unique(as.character(tree$quadrat)))
+
+
+    
+    tabtype <- table(tree$quadrat, as.factor(tree$tree_type))
+    vivas <- apply(tabtype[,-1], 1, sum)
+    if(!exists('tmiss'))
+    {
+       mquadMiss <- tapply(!(dquad09A$tag %in% tree$tree_tag), as.factor(dquad09A$quad), sum)
+    }
+
+    
     lider <- tapply(tree$equipe.lider, tree$quadrat, function(x){paste(unique(x), collapse = "_")})
     nsubq <- tapply(tree$quad5x5, tree$quadrat, function(x){length(unique(x))})
     datequad <- tapply(tree$today, tree$quadrat, function(x){paste(unique(x), collapse = ";")})
     nnewtag <- tapply((! is.na(tree$new_tag)), tree$quadrat, sum)
- ################################
+################################
 ##### MORTALITY
 ################################
     mquad <- tapply(tree$tree_type == "plaq_dead", tree$quadrat, sum) + mquadMiss
@@ -448,7 +461,7 @@ censoAudit <- function(dir_exp = getwd(), olddata = "peic09.csv", allsubdir = TR
         message(paste("atipicalgrowth.txt file saved in dir:", auddir))
     }
 ### quadrat resume
-    summaryQuad <- data.frame(quad = names(ntquad), date = datequad,  lider = lider,  nsubq = nsubq, ntree18 = as.vector(ntquad) , ntree09 = as.vector(ntquad09),newtag=as.vector(nnewtag), dead18 = as.vector(mquad), deadrate2018 = as.vector(mrquad), basalarea09= round(as.vector(ab09),1), basalarea18 =  round(as.vector(ab18),1), recr18 = as.vector(recquad))
+    summaryQuad <- data.frame(quad = quadsort, date = datequad[quadsort],  lider = lider[quadsort],  nsubq = nsubq[quadsort], nvivas = as.vector(vivas[quadsort]) , nvivas09 = as.vector(ntquad09[quadsort]), mortaPlaca = tabtype[quadsort, "plaq_dead"], placaIleg = tabtype[quadsort, "plaq_ileg"], vivaPlaca = tabtype[quadsort, "plaqueada"], semPlacaGr = tabtype[quadsort, "sem_plaq_gr"] , nMiss = mquadMiss[quadsort] ,newtag=as.vector(nnewtag[quadsort]), mortas = as.vector(mquad[quadsort]), taxaMorte = as.vector(mrquad[quadsort]), abasal =  round(as.vector(ab18[quadsort]),1), abasal09= round(as.vector(ab09[quadsort]),1), recr18 = as.vector(recquad[quadsort]))
     write.table(summaryQuad, file.path(auddir, "summaryQuadrat.txt"), sep="\t", row.names=FALSE)
     message(paste("summaryQuadrat.txt file saved in dir:", auddir))
 #########################

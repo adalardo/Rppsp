@@ -19,9 +19,19 @@ Prestação de contas do trabalho de campo do recenso PEIC:
 **Fim dos eventos: `r dateEnd`**
 
 
-## Eventos financeiros 
+## Tabela eventos financeiros 
 
 Aqui considerados debitos, creditos e parcelas trabalhadas em campo.
+
+
+```{r eval = TRUE, echo = FALSE}
+
+
+kable(eventos, row.names=FALSE)
+
+
+```
+
 
 ### Tabela Gastos
 
@@ -52,8 +62,6 @@ kable(resDeb, col.names= c( "total gasto"))
 ## Despesas com Pessoal
 
 
-
-
 ### Tabela Trabalho de Campo
 
 
@@ -75,7 +83,7 @@ Aqui a somatória para cada membro de equipe associado ao cargo.
 
 #### Valor Coordenação:
 
- A coordenação de campo (Renan) recebe  um fixo de R\$ 1500,00 (Um mil e quinhentos reais) pela coordenação geral no mês de fevereiro. A partir de março Haron e Carlota vão receber 250 cada por auxiliar o Renan na coordenação de campo. 
+Renan recebe  um fixo de R\$ 1500,00 (um mil e quinhentos reais) pela coordenação geral. A coordenação auxiliar de campo (Haron e Carlota) recebem 250 cada por auxiliar o Renan na coordenação de campo. 
 
 
 ```{r eval =TRUE, echo = FALSE}
@@ -96,7 +104,6 @@ kable(resPes)
 
 ### Valores a pagar (transferências) 
 
-No mês de fevereiro acertamos 150 reais que faltaram para a Carlota pela liderança de equipe em campo em janeiro. O valor pago está correto, são 150 a mais no mês de fevereiro referente ao que faltou me janeiro. 
 
 
 ```{r eval = TRUE, echo = FALSE}

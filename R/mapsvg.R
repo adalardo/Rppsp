@@ -26,20 +26,20 @@
 ##'
 subquad <- function(dx, dy, size.split = 5, max.size = 20)
     {
-        pos <- seq(5,max.size - size.split, by= size.split)
+        pos <- seq(size.split, max.size - size.split, by= size.split)
         codx <- cody  <-rep(0, length(dx))
         ## for(i in pos){
         ##     codx <- codx + (dx > i)
         ##     cody <- cody + (dy > i)
         ## }
-        dx.ind <- apply(sapply(pos, function(x){ifelse(dx >= x, 5,0)}), 1, sum)
-        dy.ind <- apply(sapply(pos, function(x){ifelse(dy >= x, 5,0)}), 1, sum)
+        dx.ind <- apply(sapply(pos, function(x){ifelse(dx >= x, size.split, 0)}), 1, sum)
+        dy.ind <- apply(sapply(pos, function(x){ifelse(dy >= x, size.split, 0)}), 1, sum)
         paste(dx.ind, "x",dy.ind, sep="")
     }
 ################################
 index.map<- function(dx, dy, size.split = 5, max.size = 20)
 {
-    pos <- seq(5,max.size - size.split, by= size.split)
+    pos <- seq(size.split, max.size - size.split, by= size.split)
     dx.ind <- apply(sapply(pos, function(x){ifelse(dx >= x, 1,0)}), 1, sum)
     dy.ind <- rep(NA, length(dx.ind))
     max.ind = 0
@@ -75,28 +75,29 @@ mapsvg <- function( censo = peic09, quad = "A00", size = 5, max.size=20, save.sv
         {
             dbh0 <- as.numeric(sapply(strsplit(subquad[,dap], ";"), function(x){x[1]}))
         }else{dbh0 <- subquad[,dap]}
+        is.na(dbh0) <- 5 # small size dbh for trees without dbh info 
 ##############################
 ## plot here
 ##############################
         dev.new(width = mapsize[1], height = mapsize[2])
         vptop<- viewport(y=0.9, width=0.8, height=0.2)
         grid.text(x=0.5, y=0.9, paste("Parcela ", quad,"  - subparcela", subq[j]) ,vp= vptop, gp=gpar(fontsize = 20))
-        vp <- viewport(width = 0.8, height = 0.8, xscale=c(xys[1],xys[1]+5), yscale=c(xys[2], xys[2]+5))
+        vp <- viewport(width = 0.8, height = 0.8, xscale=c(xys[1],xys[1]+size), yscale=c(xys[2], xys[2]+size))
         pushViewport(vp)
         grid.rect(gp = gpar(col = "black"))
-        grid.xaxis( 0:5, at=seq(xys[1],xys[1]+5,by=1), gp=gpar(fontsize=15))
-        grid.yaxis(0:5, at=seq(xys[2],xys[2]+5,by=1), gp=gpar(fontsize=15))
+        grid.xaxis(seq(0,size, by = size/5), at=seq(xys[1],xys[1]+size,by = size/5), gp=gpar(fontsize=15))
+        grid.yaxis(seq(0,size, by = size/5), at=seq(xys[2],xys[2]+size, by = size/5), gp=gpar(fontsize=15))
         for(i in 1:nrow(subquad))
         {
-            grid.circle(x= subquad[i, dx],y=subquad[i, dy], r= log(dbh0[i])/20, default.units="native", gp=gpar(fill=ifelse(subquad[i, status]=="A",rgb(0,1,0, 0.5),rgb(1,0,0,0.5)), col="black"), name = arv_key[i])
+            grid.circle(x= subquad[i, dx],y=subquad[i, dy], r= log(dbh0[i])/20, default.units="native", gp=gpar(fill=ifelse(subquad[i, status]=="A" | subquad[i, status]=="AS" ,rgb(0,1,0, 0.5),rgb(1,0,0,0.5)), col="black"), name = arv_key[i])
             grid.text(paste(subquad[i, tag]), x= subquad[i, dx]+log(dbh0[i])/20 ,y=subquad[i, dy]+log(dbh0[i])/15, default.units="native", gp = gpar(cex = 2))
         }
-        grid.text(c(xys[1], xys[1]+5) ,x=  c(0,1), y= c(-0.08, -0.08),  gp = gpar(cex=2.5, col="red"))
-        grid.text(c(xys[2], xys[2]+ 5) ,y=  c(0,1), x= c(-0.08, -0.08),  gp = gpar(cex=2.5, col = "red"))
+        grid.text(c(xys[1], xys[1]+ size) ,x=  c(0,1), y= c(-0.08, -0.08),  gp = gpar(cex=2.5, col="red"))
+        grid.text(c(xys[2], xys[2]+ size) ,y=  c(0,1), x= c(-0.08, -0.08),  gp = gpar(cex=2.5, col = "red"))
         #grid.circle(x= a00_0x0$dx,y=a00_0x0$dy, r= log(dbh0)/20, default.units="native", gp=gpar(fill=c(rgb(0,1,0, 0.5),rgb(1,0,0,0.5))[as.factor(a00_0x0$status=="A")], col="gray")) ## this is a much more efficienty way to run the loop above but in order to svg ids write need it is necessary a for expression
         if(save.svg)
         {
-            grid.export(file.path(wd, paste("map",quad,"quad_",subq[j],".svg",sep="")) , uniqueNames=FALSE)
+            grid.export(file.path(wd, paste("map", size, "_",quad,"quad_",subq[j],".svg",sep="")) , uniqueNames=FALSE)
         }
 #######################################
 # plot end
