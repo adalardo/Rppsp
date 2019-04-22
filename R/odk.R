@@ -1,12 +1,10 @@
 ############################################
-### Alexandre Adalardo 15 de outubro de 2018
-#############################################
+### Alexandre Adalardo
+### first version: 15 de outubro de 2018
+### actual version: 22 de abril de 2019
+############################################
 # export data from odk collect using
 # odkbriefcase java package
-##############################
-## 15 janeiro de 2016:
-## incluir o resultado de subquadrats faltantes
-## em novo arquivo de auditoria
 ##############################
 ##' Export data from okd collect to a csv files 
 ##'
@@ -396,8 +394,11 @@ censoAudit <- function(dir_exp = getwd(), olddata = "peic09.csv", allsubdir = TR
 
 
     
-    tabtype <- table(tree$quadrat, as.factor(tree$tree_type))
-    vivas <- apply(tabtype[,-1], 1, sum)
+    tabtype <- table(tree$quadrat, factor(tree$tree_type, levels= c("plaq_dead", "plaq_ileg", "plaqueada", "sem_info", "sem_plaq_gr")))
+    if(nrow(tabtype) >1)
+    {
+        vivas <- apply(tabtype[,-1], 1, sum)
+    } else {vivas = sum(tabtype[, -1])}
     if(!exists('tmiss'))
     {
        mquadMiss <- tapply(!(dquad09A$tag %in% tree$tree_tag), as.factor(dquad09A$quad), sum)

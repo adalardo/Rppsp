@@ -5,7 +5,7 @@ git add .
 git status
 #git add R/connMysql.R R/floraBrasilname.R R/spcode.R R/spname.R R/wdglobal.rda R/wdplot.R man/connMysql.Rd
 #git add data
-git commit -m "solve problems with paste NAs"
+git commit -m "ajustes prestaConta"
 # ! [rejected]        master -> master (fetch first)
 git branch
 ## deve estar em master
