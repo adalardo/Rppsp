@@ -642,7 +642,7 @@ mergeData <- function(basedir = getwd(), media.merge = TRUE, save.files = TRUE)
 ##'
 prestaConta <- function(dataDir, dataName="prestaConta", dirExp = getwd(), valParc = c(70,100), valFixo = data.frame(nome= c("Renan"), cargo = c("coordena"),valor = c(1500)), pagaFixo = FALSE,  saveFile=TRUE, fileRmd = system.file("rmd", "prestaConta.rmd", package = "Rppsp"))
 {
-    ifnum0 <- function(x){ifelse(length(x) == 0, 0, x)} 
+    ifnum0 <- function(x){ifelse(length(x) == 0, 0, sum(x))} 
     require(rmarkdown)
     require(knitr)
     pc <- read.table(file.path(dataDir, paste(dataName, "-event_fin.csv", sep="")), header=TRUE, as.is=TRUE, sep="," )
@@ -699,17 +699,20 @@ prestaConta <- function(dataDir, dataName="prestaConta", dirExp = getwd(), valPa
 ## Aqui tirando o nome do evento do campo observacao
 ######################################################
    # nomeAd <-  adEq$field_pago
-    adVal <- tapply(adEq$val_ev,toupper(adEq$field_pago), sum)
-    adData <- data.frame(nome = names(adVal), adianta = as.numeric(adVal), stringsAsFactors = FALSE) 
-    adData <- adData[order(adData$nome),]
+    if(nrow(adEq)>0)
+    {
+        adVal <- tapply(adEq$val_ev,toupper(adEq$field_pago), sum)
+        adData <- data.frame(nome = names(adVal), adianta = as.numeric(adVal), stringsAsFactors = FALSE) 
+        adData <- adData[order(adData$nome),]
+    }else{adData <- NULL}
 ## Agregando debito e debito por type_ev
     tipoTrans <- paste(resEv$cred_deb, resEv$type_ev, sep="_")
     totalTipo <- aggregate(resEv$val_real, list(tipo=tipoTrans), sum)
     names(totalTipo)[2] <- "valor"
 ## Debitos separados entre equipe e outros
     debTotal <- sum(debData$val_real)
-    debSemEq <- sum(ifnum0(debData[debData$tipoEv != "pago_eq" ,'val_real']))
-    pagoAdEq <- sum(ifnum0(debData[debData$tipoEv == "pago_eq" ,'val_real']))
+    debSemEq <- ifnum0(debData[debData$tipoEv != "pago_eq" ,'val_real'])
+    pagoAdEq <- ifnum0(debData[debData$tipoEv == "pago_eq" ,'val_real'])
     resDeb <- tapply(debData$val_real, debData$tipoEv, sum)
 ###############################################################
 ### contando os quadrats feitos por evento
@@ -783,7 +786,7 @@ prestaConta <- function(dataDir, dataName="prestaConta", dirExp = getwd(), valPa
     npar <- sum(parc$nsubq)/16
 ## Saldos Atuais
     saldoCash <- totalCash + ifnum0(totalTipo$valor[totalTipo$tipo =="deb_cash"])
-    saldoConta <- totalBank + ifnum0(totalTipo$valor[totalTipo$tipo =="deb_bank"]) + ifnum0(totalTipo$valor[totalTipo$tipo =="deb_card"]) - sum(ifnum0(credData$val_real[credData$tipoEv =="cash"]))
+    saldoConta <- totalBank + ifnum0(totalTipo$valor[totalTipo$tipo =="deb_bank"]) + ifnum0(totalTipo$valor[totalTipo$tipo =="deb_card"]) - ifnum0(credData$val_real[credData$tipoEv =="cash"])
     saldoTotal <- saldoCash + saldoConta
     pagarEq <-sum(fimEq$transf[fimEq$transf>0])
 
