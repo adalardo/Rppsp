@@ -338,7 +338,7 @@ censoAudit <- function(dir_exp = getwd(), olddata = "peic09.csv", allsubdir = TR
     if(exists('tmiss'))
     {
         tenc  <- tree$num_tag %in% tmiss$miss_num
-        tagenc <- NULL
+        #tagenc <- NULL
         if(sum(tenc)>0)
         {
             tagenc <- tree[tenc, "num_tag"]
@@ -426,7 +426,7 @@ censoAudit <- function(dir_exp = getwd(), olddata = "peic09.csv", allsubdir = TR
     meandaprec <-  tapply(daps, qds, mean, na.rm=TRUE)
     daprecmais5 <-  tapply(daps, qds,function(x){sum(x>50, na.rm=TRUE)})
     tagrec5 <- tree$num_tag[tree$tree_type == "sem_info" & is.na(tree$tree_tag) & tree$dap2018> 50]
-    if(sum(daprecmais5)> 0)
+    if(sum(daprecmais5, na.rm=TRUE)> 0)
     {
         listmais5 <- tree[tree$num_tag %in% tagrec5,]
         write.table(listmais5, file.path(auddir, "newmorethan5cmdbh.txt"), sep="\t", row.names=FALSE)
