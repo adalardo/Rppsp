@@ -1,14 +1,17 @@
 git status
-git add .
+#git add .
+git add R/odk.R
+git add git.sh
 #git reset
 #git add .
 git status
 #git add R/connMysql.R R/floraBrasilname.R R/spcode.R R/spname.R R/wdglobal.rda R/wdplot.R man/connMysql.Rd
 #git add data
-git commit -m "ajustes prestaConta"
+git commit -m "problema auditoria"
 # ! [rejected]        master -> master (fetch first)
 git branch
 ## deve estar em master
+git remote -v
 git push origin master
 adalardo
 gitale133113
