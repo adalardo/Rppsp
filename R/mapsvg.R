@@ -40,22 +40,22 @@ subquad <- function(dx, dy, size.split = 5, max.size = 20)
 index.map<- function(dx, dy, size.split = 5, max.size = 20)
 {
     pos <- seq(size.split, max.size - size.split, by= size.split)
-    dx.ind <- apply(sapply(pos, function(x){ifelse(dx >= x, 1,0)}), 1, sum)
-    dy.ind <- rep(NA, length(dx.ind))
+    dy.ind <- apply(sapply(pos, function(x){ifelse(dy >= x, 1,0)}), 1, sum)
+    dx.ind <- rep(NA, length(dy.ind))
     max.ind = 0
-    for(i in sort(unique(dx.ind)))
+    for(i in sort(unique(dy.ind)))
     {
         if(i%%2 == 0)
         {
-            dy.ind[dx.ind==i] <- max.ind + rank(dy[dx.ind==i])
+            dx.ind[dy.ind==i] <- max.ind + rank(dx[dy.ind==i])
         }
         if(i%%2 != 0)
         {
-            dy.ind[dx.ind==i] <- max.ind + rank(1/(dy[dx.ind==i]))
+            dx.ind[dy.ind==i] <- max.ind + rank(1/(dx[dy.ind==i]))
         }
-     max.ind= max(dy.ind, na.rm=TRUE)   
+     max.ind= max(dx.ind, na.rm=TRUE)   
     }
-    return(dy.ind)
+    return(dx.ind)
 }
 #################################
 mapsvg <- function( censo = peic09, quad = "A00", size = 5, max.size=20, save.svg = TRUE, wd = getwd(), dx = "dx", dy = "dy",  tag = "tag", dap = "dap", status= NULL, mapsize = c(13,13))
