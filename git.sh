@@ -7,7 +7,7 @@ git add git.sh
 git status
 #git add R/connMysql.R R/floraBrasilname.R R/spcode.R R/spname.R R/wdglobal.rda R/wdplot.R man/connMysql.Rd
 #git add data
-git commit -m "subindo nova versão"
+git commit -m "auditoria II"
 # ! [rejected]        master -> master (fetch first)
 git branch
 ## deve estar em master
@@ -33,4 +33,15 @@ git ls-files --stage
 git status --porcelain
 git diff-files
 
+## Problemas no commit
+# error: failed to push some refs to 'https://github.com/adalardo/Rppsp.git'
+# hint: Updates were rejected because the remote contains work that you do
+# hint: not have locally. This is usually caused by another repository pushing
+# hint: to the same ref. You may want to first integrate the remote changes
+# hint: (e.g., 'git pull ...') before pushing again.
+# hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+git branch -v
+git remote
+git pull
+git mergetool
 
