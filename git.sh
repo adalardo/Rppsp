@@ -1,13 +1,14 @@
 git status
 #git add .
 git add R/odk.R
+git add R/mapsvg.R
 git add git.sh
 #git reset
 #git add .
 git status
 #git add R/connMysql.R R/floraBrasilname.R R/spcode.R R/spname.R R/wdglobal.rda R/wdplot.R man/connMysql.Rd
 #git add data
-git commit -m "auditoria II"
+git commit -m "mapa da sequencia de arvores de auditoria modificado"
 # ! [rejected]        master -> master (fetch first)
 git branch
 ## deve estar em master
