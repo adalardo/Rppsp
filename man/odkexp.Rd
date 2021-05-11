@@ -4,9 +4,16 @@
 \alias{odkexp}
 \title{Export data from okd collect to a csv files}
 \usage{
-odkexp(odkbriefcase = "odkbriefcase.jar", dir_st = getwd(),
-  dir_col = getwd(), dir_exp = getwd(), form_id = NULL,
-  file_name = "censoPeic", start = NULL, end = NULL)
+odkexp(
+  odkbriefcase = "odkbriefcase.jar",
+  dir_st = getwd(),
+  dir_col = getwd(),
+  dir_exp = getwd(),
+  form_id = NULL,
+  file_name = "censoPeic",
+  start = NULL,
+  end = NULL
+)
 }
 \arguments{
 \item{odkbriefcase}{ODK briefcase java jar file.}

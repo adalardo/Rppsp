@@ -4,8 +4,7 @@
 \alias{censoAudit}
 \title{Check census data with previous census}
 \usage{
-censoAudit(dir_exp = getwd(), olddata = "peic09.csv",
-  allsubdir = TRUE)
+censoAudit(dir_exp = getwd(), olddata = "peic09.csv", allsubdir = TRUE)
 }
 \arguments{
 \item{dir_exp}{Data export directory}

@@ -4,10 +4,16 @@
 \alias{prestaConta}
 \title{Create html accountability report from prestaConta okd collect form data}
 \usage{
-prestaConta(dataDir, dataName = "prestaConta", dirExp = getwd(),
-  valParc = c(70, 100), valFixo = data.frame(nome = c("Renan"), cargo =
-  c("coordena"), valor = c(1500)), pagaFixo = FALSE, saveFile = TRUE,
-  fileRmd = system.file("rmd", "prestaConta.rmd", package = "Rppsp"))
+prestaConta(
+  dataDir,
+  dataName = "prestaConta",
+  dirExp = getwd(),
+  valParc = c(70, 100),
+  valFixo = data.frame(nome = c("Renan"), cargo = c("coordena"), valor = c(1500)),
+  pagaFixo = FALSE,
+  saveFile = TRUE,
+  fileRmd = system.file("rmd", "prestaConta.rmd", package = "Rppsp")
+)
 }
 \arguments{
 \item{dataDir}{character string, directory where a odk briefcases exports csv files.}

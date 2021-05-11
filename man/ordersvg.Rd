@@ -4,9 +4,18 @@
 \alias{ordersvg}
 \title{Map of trees from permanent plot based on cartesian coordinates}
 \usage{
-ordersvg(audit, quad = "A00", save.svg = TRUE, wd = getwd(),
-  dx = "new_dx2018", dy = "new_dy2018", tag = "num_tag",
-  dap = "dap2018", error = "errorType", mapsize = c(13, 13))
+ordersvg(
+  audit,
+  quad = "A00",
+  save.svg = TRUE,
+  wd = getwd(),
+  dx = "new_dx2018",
+  dy = "new_dy2018",
+  tag = "num_tag",
+  dap = "dap2018",
+  error = "errorType",
+  mapsize = c(13, 13)
+)
 }
 \arguments{
 \item{audit}{auditory data frame from permanent plot tree censo data.}

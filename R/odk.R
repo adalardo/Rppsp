@@ -214,6 +214,155 @@ for(i in iMap)
 ### INCLUIR UMA SAIDA DE LEITURA DE DADOS EM UM DIRETORIO ESPECIFICO
 invisible(treeres)
 }
+##################################################
+########### read CSV audit Data ##################
+##################################################
+##' Read odk exported audit csv files to a single data frame
+##'
+##' @param base_name Files prefix name and directory direction without extension
+##' @param form_rep Form repeat sections names in order
+##' @param dir_exp Data export directory 
+##' @param data_type Long or short version of the data
+##' @return 'odkexp' returns csv files export from odk collect. 
+##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
+##' @seealso 
+##' \url{http://labtrop.ib.usp.br}
+##' @references \url{https://opendatakit.org/} 
+##' @examples
+##' 
+##' \dontrun{
+##' odkexp(odkbriefcase = "odkbriefcase.jar", dir_st = getwd(), dir_col = getwd(), dir_exp = getwd(), form_id = "odkform", file_name = "odkdata")
+##' }
+##' 
+##' @export
+##'
+##'
+##'
+readAudit.csvODK <- function(base_files,  form_rep = c("tree_audit", "sec_fuste"), save_file = TRUE, dir_exp = getwd(), file_name = NULL)  #base_name = "auditPeic"
+{
+    ## base dir
+    base_dir <- dirname(base_files)
+    file0 <- base_files[! (base_files %in% grep(paste(form_rep,collapse="|"), base_files, value=TRUE))]
+    ## base form file
+    ## nrep <- length(form_rep)
+    ## names.csv <- paste(base_name, c("",rep("-",nrep)),c("", form_rep), ".csv", sep="")
+    for(j in 0:length(form_rep))
+    {
+        if(j==0)
+        {
+         assign(paste("form", j, sep=""), read.table(file0, header=TRUE, as.is=TRUE, sep=",")) 
+        } else{
+        assign(paste("form", j, sep=""), read.table(grep(form_rep[j], base_files, value=TRUE), header=TRUE, as.is=TRUE, sep=","))}
+    }
+    
+    form0names <- c('today', 'start', 'end', 'equipe.equipe_nomes', 'equipe.equipe_nomes_other', 'equipe.lider', 'parcela.quadrat', 'parcela.piquete', 'parcela.obs_quad', 'KEY')
+
+
+    form1names <- c('tag_aud',  'error', 'dap2018','alt2018','dx2018','dy2018','fam2018','sp2018','arv_aud.dap_conf', 'arv_aud.alt_conf', 'arv_aud.xy_conf', 'arv_aud.id_conf', 'arv_aud.diag_aud', 'arv_aud.diag_aud_other', 'tipo_med',  'aud_dap.dap2018_mm', 'aud_dap.dap2018_cm', 'aud_dap.pap2018_cm', 'aud_dap.one_fuste',  'diag_tag.diag_tag_new', 'diag_tag.diag_tag_foto', 'diag_tag.diag_tag_obs',  'aud_alt.aud_alt0', 'aud_alt.aud_alt1', 'aud_xy.aud_x', 'aud_xy.aud_y',  'aud_id.aud_fam', 'aud_id.aud_gen', 'aud_id.aud_sp', 'aud_id.aud_coleta', 'aud_id.aud_id_picture', 'aud_id.aud_id_same', 'PARENT_KEY', 'KEY', 'SET.OF.tree_audit')
+    form01 <- merge(form0[,form0names], form1[form1names], by.x="KEY", by.y="PARENT_KEY")
+    form01names <- names(form01)
+
+    
+
+ 
+    treenames <- gsub("equipe\\.", "", form01names)
+    treenames <- gsub("parcela\\.", "", treenames)
+    treenames <- gsub("arv_aud\\.", "", treenames)
+    treenames <- gsub("diag_tag.diag_", "aud_", treenames)
+    treenames <- gsub("aud_dap\\.", "aud_", treenames)
+    treenames <- gsub("aud_alt\\.", "", treenames)
+    treenames <- gsub("aud_xy\\.", "", treenames)
+    treenames <- gsub("aud_id\\.", "", treenames)
+    tree <- form01
+ 
+
+    names(tree) <- treenames
+    names(tree)[names(tree) =='KEY.y'] <- "key_tree"
+    names(tree)[names(tree) =='KEY'] <- "key_quad"
+    
+
+    
+    tree$aud_nfuste <- 1
+    tree$aud_dap2018_sec_mm <- NA
+    form2$dap2mm <- form2$dap_mm_sec
+    form2$dap2mm[!is.na(form2$dap_cm_sec)] <- form2$dap_cm_sec[!is.na(form2$dap_cm_sec)] *10
+    oneKey <- unique(form2$PARENT_KEY)
+    if(length(oneKey)>0)
+    {
+        for(i in 1:length(oneKey))
+        {
+            k <- oneKey[i]
+            secF <- form2[form2$PARENT_KEY == k,]
+            nf <- nrow(secF) + 1          
+            mdap <- sort(as.numeric(secF$dap2mm), decreasing=TRUE)
+            dapsec <- paste(mdap, collapse = ";")
+            tree[tree$key_tree == k, c("aud_nfuste", "aud_dap2018_sec_mm")] <- c( nf, dapsec) 
+        }
+    }
+###############################
+## ####### tirando dados repetidos 
+## ###############################
+##     dupltag <- treequad$num_tag[duplicated(treequad$num_tag, incomparables=NA)]
+##     dupligual <- c( )
+##     for(i in dupltag)
+##     {
+##         postag <- which(treequad$num_tag == i)
+##         dupldata <- treequad[postag, c("dap2018","alt2018", "fam2018", "sp2018")]
+##         dupligual <- c(dupligual,postag[duplicated(dupldata)])
+##     }
+##     treequad <- treequad[!(1:nrow(treequad) %in% dupligual),]
+## #################################
+##     nres <- c("today", "equipe.lider", "tree_type", "tag_ok","tree_tag", "new_tag", "num_tag", "tag_dead" , "quadrat", "quad5x5","old_dx", "old_dy","new_dx2018", "new_dy2018", "old_alt", "alt2018","old_nfuste", "nfuste2018", "old_dap", "dap2018","dap2018_sec_mm", "old_fam", "old_sp", "fam2018", "sp2018", "coleta", "difdapOK", "difaltOK" ,"obs_tree")
+##     nres  <- nres[nres %in% names(treequad)]
+##     treeres <- treequad[, nres]
+## ###################
+# ### Incluir uma saida de objeto em lista com o treemiss e tree
+    if(save_file)
+    {
+        line <- substr(unique(tree$quadrat),0,1)
+        colu <- as.numeric(substr(unique(tree$quadrat),2,3))
+        rlc <- tapply(colu, line, range)
+        qname <- paste(paste(names(rlc), sapply(rlc, function(x){paste(x, collapse="_")}), sep=""), collapse = "x")
+        
+        dname <- file.path(dir_exp, qname)
+        if(!dir.exists(file.path(dname, "baseData")))
+        {
+            #dir.create(dname)
+            dir.create(file.path(dname, "baseData"), recursive=TRUE)
+        }
+#        file.rename(from = names.csv, to=  file.path(dname, "baseData", paste("audPeic",c("",form_rep), qname,".csv", sep="")))
+        if(dir.exists(file.path(base_dir, "media")) & file.path(base_dir, "media") != file.path(dname, "media"))
+            {
+                media.names <- list.files(file.path(base_dir, "media"))
+                if(!dir.exists(file.path(dname, "media")))
+                {
+                    dir.create(file.path(dname, "media"), recursive=TRUE)
+                }
+                if(file.path(base_dir, "media") != file.path(dname, "media"))
+                {
+                    file.rename(from = file.path(base_dir, "media", media.names), to = file.path(dname, "media", media.names))
+                    unlink(file.path(base_dir, "media"), recursive = TRUE)
+                }
+            }
+        
+##         if(sum(grepl("miss", form_rep)) != 0)
+##         {
+##             write.table(treequad, file.path(dname, paste("tree",qname,".txt", sep="")), sep="\t", row.names=FALSE)
+##             write.table(treeres, file.path(dname, paste("treeResumo",qname,".txt", sep="")), sep="\t", row.names=FALSE)
+##             write.table(treemiss, file.path(dname, paste("treeMiss",qname,".txt", sep="")), sep="\t", row.names=FALSE)
+##         }else{
+##             write.table(treequad, file.path(dname, paste("treeNoMiss",qname,".txt", sep="")), sep="\t", row.names=FALSE)
+##             write.table(treeres, file.path(dname, paste("treeResumoNoMiss",qname,".txt", sep="")), sep="\t", row.names=FALSE)
+##          }
+        write.table(tree, file.path(dname, paste("aud_tree", qname,".txt", sep="")), sep="\t", row.names=FALSE)
+    }
+## #
+        ## INCLUIR UMA SAIDA DE LEITURA DE DADOS EM UM DIRETORIO ESPECIFICO
+invisible(tree)
+}
+###
+
+
 #############################
 ##' Check census data with previous census 
 ##'
@@ -645,7 +794,8 @@ prestaConta <- function(dataDir, dataName="prestaConta", dirExp = getwd(), valPa
     ifnum0 <- function(x){ifelse(length(x) == 0, 0, sum(x))} 
     require(rmarkdown)
     require(knitr)
-    pc <- read.table(file.path(dataDir, paste(dataName, "-event_fin.csv", sep="")), header=TRUE, as.is=TRUE, sep="," )
+    pc <- read.table(file.path(dataDir, paste(dataName, "-event_fin.csv", sep="")), header=TRUE, as.is=TRUE, sep=",")
+    pc[is.na(pc)] <- ""
     pc$nEv <- 1:nrow(pc)
     ini <- read.table(file.path(dataDir, paste(dataName, ".csv", sep="")), header=TRUE, as.is=TRUE, sep="," )
 #str(ini)
@@ -719,6 +869,11 @@ prestaConta <- function(dataDir, dataName="prestaConta", dirExp = getwd(), valPa
 #### incluindo nome de novos integrantes como lider ou auxiliar
 ################################################################    
     parc <- pcontas[pcontas$tipoEv =="field", c("nEv", "data_ev", "eq_lider", "eq_auxiliar", "quadrat", "nsubq")  ]
+    if(nrow(parc)==0)
+    {
+        parc[1,] = 0
+        
+    }    
     parc$nsubq <- as.numeric(parc$nsubq)
     #parc$eq_lider[parc$eq_lider =="new_lider"] <- parc$eq_new_name[parc$eq_lider =="new_lider"]
     #parc$eq_auxiliar[parc$eq_auxiliar =="new_aux"] <- parc$eq_new_name[parc$eq_auxiliar =="new_aux"]
