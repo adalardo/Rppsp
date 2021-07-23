@@ -95,7 +95,7 @@ read.csvODK <- function(base_name = "censoPeic",  form_rep = c("subquad", "tree"
     }
     form0names <- c('today', 'start', 'end',  'tree_gps.Latitude', 'tree_gps.Longitude', 'tree_gps.Altitude', 'tree_gps.Accuracy', 'equipe.equipe_nomes', 'equipe.equipe_nomes_other', 'equipe.lider', 'parcela.quadrat','KEY')
     form1names <- c('quad5x5', 'sel_subquad', 'tag_selected', 'PARENT_KEY', 'KEY')
-    form01 <- merge(form0[,form0names], form1[form1names], by.x="KEY", by.y="PARENT_KEY")
+    form01 <- merge(form0[,form0names], form1[form1names], by.x="KEY", by.y="PARENT_KEY", all = TRUE)
     form2names <- c('n_tree', 'tree_type',  'tag_ok', 'tag_dead', 'tree_recenso.arvmap_key', 'confplaq_map.ileg_conf', 'tree_recenso.tree_tag_map', 'tree_recenso.tree_tag', 'tree_recenso.old_dap',  'tree_recenso.old_alt', 'tree_recenso.old_dx', 'tree_recenso.old_dy',  'tree_recenso.old_fam', 'tree_recenso.old_sp', 'tree_recenso.old_nfuste', 'tree_recenso.arvmap_conf', 'newmap_codpos',   'new_data.new_tag', 'new_data.new_tag_picture', 'new_data.num_tag', 'num_tag',  'new_data.alt_max0', 'new_data.alt_max1', 'new_data.tipo_med',  'new_dap.dap2018_mm', 'new_dap.dap2018_cm', 'new_dap.pap2018_cm', 'new_dap.one_fuste',  'info_id', 'new_id.new_fam', 'new_id.new_gen', 'new_id.new_sp', 'new_id.coleta' , 'new_id.id_same', 'new_id.id_picture', 'conf_info.map2018', 'conf_info.dap2018', 'conf_info.alt2018', 'conf_info.fam2018', 'conf_info.sp2018', 'conf_info.conf_ok', 'conf_info.obs_tree', 'conf_info.tagdead_label', 'conf_diff.difdapOK', 'conf_diff.difaltOK', 'PARENT_KEY', 'KEY')
     form2names <- form2names[form2names %in% names(form2)]
     tree <- form2[, form2names]
@@ -110,7 +110,7 @@ read.csvODK <- function(base_name = "censoPeic",  form_rep = c("subquad", "tree"
     names(tree)[names(tree) =='KEY'] <- "key_tree"
     names(tree)[names(tree) =='PARENT_KEY'] <- "key_quad"
     names(tree)[names(tree) =='confplaq_map.ileg_conf'] <- "confTagMap"
-    treequad <- merge(form01[, c("today", "equipe.lider","parcela.quadrat", "quad5x5","KEY.y")], tree, by.x="KEY.y", by.y="key_quad")
+    treequad <- merge(form01[, c("today", "equipe.lider","parcela.quadrat", "quad5x5","KEY.y")], tree, by.x="KEY.y", by.y="key_quad", all = TRUE)
     names(treequad)[names(treequad) =='KEY.y'] <- "key_quad"
     names(treequad)[names(treequad) =='parcela.quadrat'] <- "quadrat"
     treequad$quad5x5 <- gsub("quad_", "", treequad$quad5x5)
@@ -170,7 +170,7 @@ for(i in iMap)
     names(treemiss)[names(treemiss) =='PARENT_KEY'] <- "key_subquad"
 ##    names(treemiss)[names(treemiss) =='miss_group.miss_type'] <- "miss_type"
 ##    names(treemiss)[names(treemiss) =='miss_group.map_miss'] <- "map_miss"
-    treemiss <- merge(treemiss, form01[, c("parcela.quadrat", "quad5x5","KEY.y")], by.x="key_subquad", by.y="KEY.y")
+    treemiss <- merge(treemiss, form01[, c("parcela.quadrat", "quad5x5","KEY.y")], by.x="key_subquad", by.y="KEY.y", all = TRUE)
     names(treemiss)[names(treemiss) =='parcela.quadrat'] <- "quadrat"
     treemiss$quad5x5 <- gsub("quad_", "", treemiss$quad5x5)
     treemiss$key_subquad <- paste("sub", sapply(strsplit( treemiss$key_subquad, "/sub"), function(x){x[[2]]}), sep="")
@@ -259,7 +259,7 @@ readAudit.csvODK <- function(base_files,  form_rep = c("tree_audit", "sec_fuste"
 
 
     form1names <- c('tag_aud',  'error', 'dap2018','alt2018','dx2018','dy2018','fam2018','sp2018','arv_aud.dap_conf', 'arv_aud.alt_conf', 'arv_aud.xy_conf', 'arv_aud.id_conf', 'arv_aud.diag_aud', 'arv_aud.diag_aud_other', 'tipo_med',  'aud_dap.dap2018_mm', 'aud_dap.dap2018_cm', 'aud_dap.pap2018_cm', 'aud_dap.one_fuste',  'diag_tag.diag_tag_new', 'diag_tag.diag_tag_foto', 'diag_tag.diag_tag_obs',  'aud_alt.aud_alt0', 'aud_alt.aud_alt1', 'aud_xy.aud_x', 'aud_xy.aud_y',  'aud_id.aud_fam', 'aud_id.aud_gen', 'aud_id.aud_sp', 'aud_id.aud_coleta', 'aud_id.aud_id_picture', 'aud_id.aud_id_same', 'PARENT_KEY', 'KEY', 'SET.OF.tree_audit')
-    form01 <- merge(form0[,form0names], form1[form1names], by.x="KEY", by.y="PARENT_KEY")
+    form01 <- merge(form0[,form0names], form1[form1names], by.x="KEY", by.y="PARENT_KEY", all = TRUE)
     form01names <- names(form01)
 
     
