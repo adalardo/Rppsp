@@ -2,9 +2,7 @@
 % Please edit documentation in R/odbioData.R
 \name{odb_organize_dataset}
 \alias{odb_organize_dataset}
-\title{Organize data object from exported opendatabio datasets.   
-OpenDataBio datasets where exported as zip files containing several files, with basic information about individuos (Organisms.csv), identification (Taxons.csv) and mapping (Locations.csv). If there is any measurements about the individual there is a measurements file (MeasurementOrFacts.csv)  containing those measurements.
-OpenDataBio datasets are exported as zip file containing several tabular data compressed files, with basic information about individuos (Organisms.csv), identification (Taxons.csv) and mapping (Locations.csv). If there is any measurements associated with the individual there is a file (MeasurementOrFacts.csv)  containing those measurements. This function organize those mesaruments in an format that is used by CTFS/FoestGEO network.}
+\title{Organize ODBio datasets}
 \usage{
 odb_organize_dataset(path = getwd())
 }
@@ -15,9 +13,9 @@ odb_organize_dataset(path = getwd())
 'odbData' returns a data frame organized as CTFS\\/ForestGEO format.and a
 }
 \description{
-Organize data object from exported opendatabio datasets.   
-OpenDataBio datasets where exported as zip files containing several files, with basic information about individuos (Organisms.csv), identification (Taxons.csv) and mapping (Locations.csv). If there is any measurements about the individual there is a measurements file (MeasurementOrFacts.csv)  containing those measurements.
-OpenDataBio datasets are exported as zip file containing several tabular data compressed files, with basic information about individuos (Organisms.csv), identification (Taxons.csv) and mapping (Locations.csv). If there is any measurements associated with the individual there is a file (MeasurementOrFacts.csv)  containing those measurements. This function organize those mesaruments in an format that is used by CTFS/FoestGEO network.
+Organize data object from exported opendatabio datasets.
+
+OpenDataBio datasets are exported as zip file containing several tabular data compressed files, with basic information about individuos (Organisms.csv), identification (Taxons.csv) and mapping (Locations.csv). If there is any measurements associated with the individual there is a file (MeasurementsOrFacts.csv)  containing those measurements. This function organize those mesaruments in an format that is used by CTFS/FoestGEO network.
 }
 \examples{
 \dontrun{

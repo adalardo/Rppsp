@@ -3,9 +3,9 @@
 #############################################
 # OpenDataBio Permanent Plot Data
 #############################################
-##' Organize data object from exported opendatabio datasets.   
-##' OpenDataBio datasets where exported as zip files containing several files, with basic information about individuos (Organisms.csv), identification (Taxons.csv) and mapping (Locations.csv). If there is any measurements about the individual there is a measurements file (MeasurementOrFacts.csv)  containing those measurements.
-##' OpenDataBio datasets are exported as zip file containing several tabular data compressed files, with basic information about individuos (Organisms.csv), identification (Taxons.csv) and mapping (Locations.csv). If there is any measurements associated with the individual there is a file (MeasurementOrFacts.csv)  containing those measurements. This function organize those mesaruments in an format that is used by CTFS/FoestGEO network.
+##' @title Organize ODBio datasets
+##' @description Organize data object from exported opendatabio datasets.   
+##' @description  OpenDataBio datasets are exported as zip file containing several tabular data compressed files, with basic information about individuos (Organisms.csv), identification (Taxons.csv) and mapping (Locations.csv). If there is any measurements associated with the individual there is a file (MeasurementsOrFacts.csv)  containing those measurements. This function organize those mesaruments in an format that is used by CTFS/FoestGEO network.
 ##' @param dirPath directory address with the uncompressed files exported from openDataBio datasets.
 ##' @return 'odbData' returns a data frame organized as CTFS\\/ForestGEO format.and a  
 ##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
@@ -61,7 +61,6 @@
 ##' unlink(""
 ##' }
 ##' @export
-##'
 odb_organize_dataset <- function(path = getwd())
 {
     fnamesPath <- list.files(path, all.files = TRUE)
@@ -87,8 +86,11 @@ odb_organize_dataset <- function(path = getwd())
             iMatch <- match(mesTypeData$measured_id, data$odbIndId)
             data[,i] <- NA
             data[iMatch,i] <- mesTypeData$measurementValue
-            data[iMatch, paste("date_", i, sep = "")] <- mesTypeData$measurementDeterminedDate 
+            data[iMatch, paste("date_", i, sep = "")] <- mesTypeData$measurementDeterminedDate
         }
+        data$datasetName <- unique(mesData0$datasetName)[1]
     }
     return(data)
 }
+
+
