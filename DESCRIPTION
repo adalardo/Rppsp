@@ -1,0 +1,12 @@
+Package: Rppsp
+Type: Package
+Title: R functions to manage permanent plot data (short line)
+Version: 1.0
+Date: 2016-06-16
+Author: Alexandre Adalardo de Oliveira
+Maintainer: Alexandre Adalardo <aleadalardo@gmail.com>
+Description: Package for access and manager permanent plot databases
+Imports:
+    RMySQL
+License: GPL-2
+RoxygenNote: 7.3.2

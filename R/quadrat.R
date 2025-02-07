@@ -1,0 +1,132 @@
+##############################
+##' Functions to calculate subplot index and coordinates
+##'
+##' 'splitPlot' create a index for subplots of any dimension
+##' 
+##' 'subplotXY' calculate the x and y coordinates for subplots
+##' 
+##' 'xyMin' calculate x and y coordinates for a vector of suplots
+##'
+##' 'subplotIndex' calculate x and y coordinates for a vector of suplots
+##'
+##' @name subplot
+##' @param dx x coordinate inside subplots
+##' @param dy y coordinate inside subplots 
+##' @param gx x coordinate for the all plot
+##' @param gy y coordinate for the all plot 
+##' @param sub.size size of the subplots
+##' @param max.x maximum x coordinate
+##' @param max.y maximum y coordinate  
+##' @param plot.code subplot codes
+##' @return return a new coordinates gx and gy or plot.code  with basal area and recalculated dbh for each tree. 
+##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
+##' @seealso 
+##' \url{http://labtrop.ib.usp.br}
+##' @references \url{https://opendatakit.org/} 
+##' @examples
+##' 
+##' \dontrun{
+##' splitPlot(dx = runif(10, 0,20), dy = runif(10, 0, 20), split.x = 5)
+##' xcode <-  LETTERS[1:16]
+##' ycode <-  c(paste(0, 0:9, sep = ""), 10:15)
+##' xyMin(subplot_code = paste(sample(xcode, size = 25, replace = TRUE), sample(ycode, size = 25, replace = TRUE), sep = ""))  
+##' }
+##' @rdname subplot
+splitPlot <- function(dx, dy, splitX = 5, splitY = splitX, maxX = 20, maxY = maxX)
+{
+    posX <- seq(splitX, maxX - splitX, by= splitX)
+    posY <- seq(splitY, maxY - splitY, by= splitY)
+    dX <- apply(sapply(posX, function(x){ifelse(dx >= x, splitX,0)}), 1, sum)
+    dY <- apply(sapply(posY, function(x){ifelse(dy >= x, splitY,0)}), 1, sum)
+    dXY <- paste(dX, "x",dY, sep="")
+    dXY[grep("NA", dXY)] <- NA
+    return(dXY) 
+}
+##' @rdname subplot
+subplotXY <- function(xcode = LETTERS[1:16], ycode= c(paste(0, 0:9, sep = ""), 10:15), xsub = 20, ysub = 20)
+{
+    nx <- length(xcode)
+    ny <- length(ycode) 
+    col <- rep(xcode, each = ny)
+    lin <- rep(ycode, nx)
+    subplot <- paste(col, lin, sep = "")
+    xlim <- rep(seq(0, (nx - 1) * xsub, by = xsub), each = ny )
+    ylim <- rep(seq(0, (ny - 1) * ysub, by = ysub), nx)
+    return(data.frame(subplot, xlim, ylim))
+}
+##' @rdname subplot
+xyMin <- function(subplot_code, xymin = subplotXY())
+{
+    seq.code <- match(subplot_code, xymin$subplot)
+    data.frame(subplot_code, xmin = xymin$xlim[seq.code], ymin = xymin$ylim[seq.code])
+}
+
+##' @rdname subplot
+splitPlotXY <- function(subplotxy, splitX = 5, splitY = splitX, maxX = 20, maxY = maxX)
+{
+    posX <- seq(0, maxX - splitX, by= splitX)
+    posY <- seq(0, maxY - splitY, by= splitY)
+    posXseq <- rep(posX, each = length(posY))
+    posYseq <- rep(posY, length(posY))
+    quadLabel <- paste("quad_", posXseq, "x", posYseq, sep = "")
+    quadXY <- data.frame(subquad = quadLabel, qx = posXseq, qy = posYseq  )
+    splitQuadXY<- merge(quadXY, subplotxy, all = TRUE)
+    splitQuadXY$xMin <- splitQuadXY$xlim + splitQuadXY$qx
+    splitQuadXY$yMin <- splitQuadXY$ylim + splitQuadXY$qy
+    attributes(splitQuadXY)$splitX <- splitX
+    attributes(splitQuadXY)$splitY <- splitY
+    attributes(splitQuadXY)$maxX <- maxX
+    attributes(splitQuadXY)$maxY <- maxY
+    return(splitQuadXY[,c("subplot", "subquad", "xMin", "yMin", "qx", "qy")])   
+}
+##' @rdname subplot
+splitPlotData <- function(censoData, subplotCode, splitQuadXY, buffer = 2, dbh = "dbh", gx = "gx", gy = "gy", status = "status19")
+{
+    splitX <- attributes(splitQuadXY)$splitX 
+    splitY <- attributes(splitQuadXY)$splitY
+    maxX <- attributes(splitQuadXY)$maxX 
+    maxY <- attributes(splitQuadXY)$maxY
+    subquads <- splitQuadXY[splitQuadXY$subplot == subplotCode,]
+    xmin <- subquads$xMin - buffer
+    xmax <- subquads$xMin + splitX + buffer
+    ymin <- subquads$yMin - buffer
+    ymax <- subquads$yMin + splitY + buffer
+    subquadsList <- list()
+    for(i in 1: nrow(subquads))
+    {
+        treeTF <- censo$gx >= xmin[i] & censo$gx < xmax[i] &
+                      censo$gy >= ymin[i] & censo$gy < ymax[i]
+        tags <- censo$tag[treeTF]
+        dx <- censo[treeTF, gx] - subqsubquadsListuads$xMin[i]
+        dy <- censo[treeTF, gy] - subquads$yMin[i]
+        dbh <- censo[treeTF, dbh]
+        status <- censo[treeTF, status]
+        subquadsList[[i]] <- data.frame(tags, dx, dy, dbh, status)
+    }
+    names(subquadsList) <- paste(subquads$subplot, subquads$subquad, sep = "")
+    attributes(subquadsList)$splitX <- splitX
+    attributes(subquadsList)$splitY <- splitY
+    attributes(subquadsList)$maxX <- maxX
+    attributes(subquadsList)$maxY <- maxY
+    attributes(subquadsList)$buffer <- buffer
+}
+## subplotIndex <- function(dx, dy, size.split = 5, max.size = 20)
+## {
+##     pos <- seq(size.split, max.size - size.split, by= size.split)
+##     dy.ind <- apply(sapply(pos, function(x){ifelse(dy >= x, 1,0)}), 1, sum)
+##     dx.ind <- rep(NA, length(dy.ind))
+##     max.ind = 0
+##     for(i in sort(unique(dy.ind)))
+##     {
+##         if(i%%2 == 0)
+##         {
+##             dx.ind[dy.ind==i] <- max.ind + rank(dx[dy.ind==i])
+##         }
+##         if(i%%2 != 0)
+##         {
+##             dx.ind[dy.ind==i] <- max.ind + rank(1/(dx[dy.ind==i]))
+##         }
+##      max.ind= max(dx.ind, na.rm=TRUE)   
+##     }
+##     return(dx.ind)
+## }
