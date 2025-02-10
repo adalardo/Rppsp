@@ -73,20 +73,23 @@ splitPlotXY <- function(subplotxy, splitX = 5, splitY = splitX, maxX = 20, maxY 
     splitQuadXY<- merge(quadXY, subplotxy, all = TRUE)
     splitQuadXY$xMin <- splitQuadXY$xlim + splitQuadXY$qx
     splitQuadXY$yMin <- splitQuadXY$ylim + splitQuadXY$qy
-    attributes(splitQuadXY)$splitX <- splitX
-    attributes(splitQuadXY)$splitY <- splitY
-    attributes(splitQuadXY)$maxX <- maxX
-    attributes(splitQuadXY)$maxY <- maxY
-    return(splitQuadXY[,c("subplot", "subquad", "xMin", "yMin", "qx", "qy")])   
+    splitQuadXY <- splitQuadXY[,c("subplot", "subquad", "xMin", "yMin", "qx", "qy")]
+    attr(splitQuadXY, 'splitX') <- splitX
+    attr(splitQuadXY, 'splitY') <- splitY
+    attr(splitQuadXY, 'maxX') <- maxX
+    attr(splitQuadXY, 'maxY') <- maxY
+    attr(splitQuadXY, 'buffer') <- buffer
+    return(splitQuadXY)   
 }
 ##' @rdname subplot
-splitPlotData <- function(censoData, subplotCode, splitQuadXY, buffer = 2, dbh = "dbh", gx = "gx", gy = "gy", status = "status19")
+splitPlotData <- function(censoData, subplotCodes, splitQuadXY, buffer = 2, dbh = "dbh", gx = "gx", gy = "gy", status = "status19")
 {
-    splitX <- attributes(splitQuadXY)$splitX 
-    splitY <- attributes(splitQuadXY)$splitY
-    maxX <- attributes(splitQuadXY)$maxX 
-    maxY <- attributes(splitQuadXY)$maxY
-    subquads <- splitQuadXY[splitQuadXY$subplot == subplotCode,]
+    splitX <- attr(splitQuadXY, 'splitX') 
+    splitY <- attr(splitQuadXY, 'splitY') 
+    maxX <- attr(splitQuadXY, 'maxX') 
+    maxY <- attr(splitQuadXY, 'maxY')
+    buffer <- attr(splitQuadXY, 'buffer') 
+    subquads <- splitQuadXY[splitQuadXY$subplot %in% subplotCodes,]
     xmin <- subquads$xMin - buffer
     xmax <- subquads$xMin + splitX + buffer
     ymin <- subquads$yMin - buffer
@@ -94,21 +97,22 @@ splitPlotData <- function(censoData, subplotCode, splitQuadXY, buffer = 2, dbh =
     subquadsList <- list()
     for(i in 1: nrow(subquads))
     {
-        treeTF <- censo$gx >= xmin[i] & censo$gx < xmax[i] &
-                      censo$gy >= ymin[i] & censo$gy < ymax[i]
-        tags <- censo$tag[treeTF]
-        dx <- censo[treeTF, gx] - subqsubquadsListuads$xMin[i]
-        dy <- censo[treeTF, gy] - subquads$yMin[i]
-        dbh <- censo[treeTF, dbh]
-        status <- censo[treeTF, status]
-        subquadsList[[i]] <- data.frame(tags, dx, dy, dbh, status)
+        treeTF <- censoData$gx >= xmin[i] & censoData$gx < xmax[i] &
+                      censoData$gy >= ymin[i] & censoData$gy < ymax[i]
+        tags0 <- censoData$tag[treeTF]
+        dx0 <- censoData[treeTF, gx] - subquads$xMin[i]
+        dy0 <- censoData[treeTF, gy] - subquads$yMin[i]
+        dbh0 <- censoData[treeTF, dbh]
+        status0 <- censoData[treeTF, status]
+        subquadsList[[i]] <- data.frame(tag = tags0, dx = dx0, dy = dy0, dbh = dbh0, status = status0)
     }
     names(subquadsList) <- paste(subquads$subplot, subquads$subquad, sep = "")
-    attributes(subquadsList)$splitX <- splitX
-    attributes(subquadsList)$splitY <- splitY
-    attributes(subquadsList)$maxX <- maxX
-    attributes(subquadsList)$maxY <- maxY
-    attributes(subquadsList)$buffer <- buffer
+    attr(subquadsList, 'splitX') <- splitX
+    attr(subquadsList, 'splitY') <- splitY
+    attr(subquadsList, 'maxX') <- maxX
+    attr(subquadsList, 'maxY') <- maxY
+    attr(subquadsList, 'buffer') <- buffer
+    return(subquadsList)
 }
 ## subplotIndex <- function(dx, dy, size.split = 5, max.size = 20)
 ## {

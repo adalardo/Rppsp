@@ -18,93 +18,76 @@
 ##' \url{http://labtrop.ib.usp.br}
 ##' @examples
 ##' \dontrun{
-##' dataplot <- data.frame(dx = runif(100, 0,20), dy = runif(100,0,20), quad = rep(paste("quad", 0:1, sep="_"), each=50), dap =rnbinom(100,10,0.5), status="A", tag = 1:100)
-##' mapsvg(dataplot, save.svg =FALSE)
+##'  svgMap(dataplot, svgSave =FALSE)
 ##' }
 ##' 
-##' @export subquad
+##' @export svgMap
 ##'
-subquad <- function(dx, dy, size.split = 5, max.size = 20)
-    {
-        pos <- seq(size.split, max.size - size.split, by= size.split)
-        codx <- cody  <-rep(0, length(dx))
-        ## for(i in pos){
-        ##     codx <- codx + (dx > i)
-        ##     cody <- cody + (dy > i)
-        ## }
-        dx.ind <- apply(sapply(pos, function(x){ifelse(dx >= x, size.split, 0)}), 1, sum)
-        dy.ind <- apply(sapply(pos, function(x){ifelse(dy >= x, size.split, 0)}), 1, sum)
-        paste(dx.ind, "x",dy.ind, sep="")
-    }
-################################
-index.map<- function(dx, dy, size.split = 5, max.size = 20)
-{
-    pos <- seq(size.split, max.size - size.split, by= size.split)
-    dy.ind <- apply(sapply(pos, function(x){ifelse(dy >= x, 1,0)}), 1, sum)
-    dx.ind <- rep(NA, length(dy.ind))
-    max.ind = 0
-    for(i in sort(unique(dy.ind)))
-    {
-        if(i%%2 == 0)
-        {
-            dx.ind[dy.ind==i] <- max.ind + rank(dx[dy.ind==i])
-        }
-        if(i%%2 != 0)
-        {
-            dx.ind[dy.ind==i] <- max.ind + rank(1/(dx[dy.ind==i]))
-        }
-     max.ind= max(dx.ind, na.rm=TRUE)   
-    }
-    return(dx.ind)
-}
 #################################
-mapsvg <- function( censo = peic09, quad = "A00", size = 5, max.size=20, save.svg = TRUE, wd = getwd(), dx = "dx", dy = "dy",  tag = "tag", dap = "dap", status= NULL, mapsize = c(13,13))
+svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dap = "dap", status= "status", mapsize = c(13,13), diagonal = FALSE)
 {
+    if(! exists("mapData"))
+    {
+        stop( "Não existe o objeto com os dados da parcela")
+    }
     options(warn = -1)
     library("grid")
     library("gridSVG")
-    dataquad <- censo[censo$quad == quad,]
-    qind <- subquad(dataquad[, dx], dataquad[,dy], size.split = size, max.size = max.size)
-    subq <- sort(unique(qind))
-    for(j in 1: length(subq))
+    splitX <- attr(mapData, 'splitX') 
+    splitY <- attr(mapData, 'splitY') 
+    maxX <- attr(mapData, 'maxX') 
+    maxY <- attr(mapData, 'maxY')
+    buffer <- attr(mapData, 'buffer') 
+    subquadNames <- names(mapData)
+    indData <- grep(subPlotCode, subquadNames)
+    for(j in  indData)
     {
-        subquad <- dataquad[qind == subq[j],]
-        xys <-  as.numeric(strsplit(subq[j], "x")[[1]])
+        subquad <- mapData[[j]]
+        subXY <- as.numeric(strsplit(subquadNames[j], "_|x")[[1]][c(2,3)])
         arv_key <- paste("arv_", subquad[,tag], sep="")
-        if(is.character(censo$dap))
-        {
-            dbh0 <- as.numeric(sapply(strsplit(subquad[,dap], ";"), function(x){x[1]}))
-        }else{dbh0 <- subquad[,dap]}
-        is.na(dbh0) <- 5 # small size dbh for trees without dbh info 
 ##############################
 ## plot here
 ##############################
         dev.new(width = mapsize[1], height = mapsize[2])
         vptop<- viewport(y=0.9, width=0.8, height=0.2)
-        grid.text(x=0.5, y=0.9, paste("Parcela ", quad,"  - subparcela", subq[j]) ,vp= vptop, gp=gpar(fontsize = 20))
-        vp <- viewport(width = 0.8, height = 0.8, xscale=c(xys[1],xys[1]+size), yscale=c(xys[2], xys[2]+size))
+        grid.text(x=0.5, y=0.9, paste("Unidade de Trabalho", subquadNames[j] ) ,vp= vptop, gp=gpar(fontsize = 25))
+        vp <- viewport(width = 0.8, height = 0.8, xscale = c(- buffer,  splitX + buffer), yscale= c( - buffer, splitY + buffer))
         pushViewport(vp)
         grid.rect(gp = gpar(col = "black"))
-        grid.xaxis(seq(0,size, by = size/5), at=seq(xys[1],xys[1]+size,by = size/5), gp=gpar(fontsize=15))
-        grid.yaxis(seq(0,size, by = size/5), at=seq(xys[2],xys[2]+size, by = size/5), gp=gpar(fontsize=15))
+        grid.xaxis(seq(- buffer, splitX + buffer, by = splitX/5), at=seq( - buffer,  splitX + buffer, by = splitX/5), gp=gpar(fontsize=25))
+        grid.yaxis(seq(-buffer, splitY + buffer, by = splitY/5), at=seq( - buffer,  splitY + buffer, by = splitY/5), gp=gpar(fontsize=25))
+
         for(i in 1:nrow(subquad))
         {
-            grid.circle(x= subquad[i, dx],y=subquad[i, dy], r= log(dbh0[i])/20, default.units="native", gp=gpar(fill=ifelse(subquad[i, status]=="A" | subquad[i, status]=="AS" ,rgb(0,1,0, 0.5),rgb(1,0,0,0.5)), col="black"), name = arv_key[i])
-            grid.text(paste(subquad[i, tag]), x= subquad[i, dx]+log(dbh0[i])/20 ,y=subquad[i, dy]+log(dbh0[i])/15, default.units="native", gp = gpar(cex = 2))
+            grid.circle(x= subquad[i, dx],y=subquad[i, dy], r= log(dbh[i])/20, default.units="native", gp=gpar(fill=ifelse(subquad[i, status]=="A" | subquad[i, status]=="AS" ,rgb(0,1,0, 0.5),rgb(0,0,1,0.5)), col="black"), name = arv_key[i])
+            grid.text(paste(subquad[i, tag]), x= subquad[i, dx]+log(dbh[i])/20 ,y=subquad[i, dy]+log(dbh[i])/15, default.units="native", gp = gpar(cex = 1.5))
         }
-        grid.text(c(xys[1], xys[1]+ size) ,x=  c(0,1), y= c(-0.08, -0.08),  gp = gpar(cex=2.5, col="red"))
-        grid.text(c(xys[2], xys[2]+ size) ,y=  c(0,1), x= c(-0.08, -0.08),  gp = gpar(cex=2.5, col = "red"))
-        #grid.circle(x= a00_0x0$dx,y=a00_0x0$dy, r= log(dbh0)/20, default.units="native", gp=gpar(fill=c(rgb(0,1,0, 0.5),rgb(1,0,0,0.5))[as.factor(a00_0x0$status=="A")], col="gray")) ## this is a much more efficienty way to run the loop above but in order to svg ids write need it is necessary a for expression
-        if(save.svg)
+        
+        grid.segments(x0= c(0,0, 0, splitX) , y0 = c(0, 0, splitY, splitY) , x1 =c( splitX, 0, splitX, splitX),  y1= c(0, splitY,  splitY, 0), default.units="native", gp= gpar(lty = 2))
+        if(subXY[1] == subXY[1] & diagonal)
         {
-           ## grid.export(file.path(wd, paste("map", size, "_",quad,"quad_",subq[j],".svg",sep="")) , uniqueNames=FALSE)
-            grid.export(file.path(wd, paste("map", quad,"quad_",subq[j],".svg",sep="")) , uniqueNames=FALSE)
+           grid.segments(x0= 0 , y0 = 0 , x1 = splitX,  y1=  splitY, default.units="native", gp= gpar(lty = 2)) 
+        }
+        if(subXY[1] != subXY[1] & diagonal)
+        {
+           grid.segments(x0= 0 , y0 = splitY , x1 = splitX,  y1= 0, default.units="native", gp= gpar(lty = 2)) 
+        }
+        grid.text(c(subXY[1], subXY[1]+ splitX) , x=  c(0,  splitX), y= c(-0.12, -0.12), default.units="native", gp = gpar(fontsize = 20, col="red"))
+        grid.text(c(subXY[2], subXY[2] + splitY) , y =  c(0, splitY), x= c(-0.12, -0.12), default.units="native", gp = gpar(fontsize = 20, col = "red"))
+        if(svgSave)
+        {
+            if(!dir.exists(wd2save))
+            {
+                dir.create(wd2save)
+            }
+            grid.export(file.path(wd2save, paste("map", subquadNames[j],".svg",sep="")) , uniqueNames=FALSE)
         }
 #######################################
 # plot end
 #######################################        
     }
 }
+
 ##############################
 # audit  plot maps
 ##############################
