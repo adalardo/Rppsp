@@ -78,7 +78,6 @@ splitPlotXY <- function(subplotxy, splitX = 5, splitY = splitX, maxX = 20, maxY 
     attr(splitQuadXY, 'splitY') <- splitY
     attr(splitQuadXY, 'maxX') <- maxX
     attr(splitQuadXY, 'maxY') <- maxY
-    attr(splitQuadXY, 'buffer') <- buffer
     return(splitQuadXY)   
 }
 ##' @rdname subplot
@@ -88,7 +87,7 @@ splitPlotData <- function(censoData, subplotCodes, splitQuadXY, buffer = 2, dbh 
     splitY <- attr(splitQuadXY, 'splitY') 
     maxX <- attr(splitQuadXY, 'maxX') 
     maxY <- attr(splitQuadXY, 'maxY')
-    buffer <- attr(splitQuadXY, 'buffer') 
+    #buffer <- attr(splitQuadXY, 'buffer') 
     subquads <- splitQuadXY[splitQuadXY$subplot %in% subplotCodes,]
     xmin <- subquads$xMin - buffer
     xmax <- subquads$xMin + splitX + buffer

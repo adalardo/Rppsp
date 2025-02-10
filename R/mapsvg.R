@@ -24,7 +24,7 @@
 ##' @export svgMap
 ##'
 #################################
-svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dap = "dap", status= "status", mapsize = c(13,13), diagonal = FALSE)
+svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dbh = "dbh", status= "status", mapsize = c(13,13), diagonal = FALSE)
 {
     if(! exists("mapData"))
     {
@@ -59,8 +59,8 @@ svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.
 
         for(i in 1:nrow(subquad))
         {
-            grid.circle(x= subquad[i, dx],y=subquad[i, dy], r= log(dbh[i])/20, default.units="native", gp=gpar(fill=ifelse(subquad[i, status]=="A" | subquad[i, status]=="AS" ,rgb(0,1,0, 0.5),rgb(0,0,1,0.5)), col="black"), name = arv_key[i])
-            grid.text(paste(subquad[i, tag]), x= subquad[i, dx]+log(dbh[i])/20 ,y=subquad[i, dy]+log(dbh[i])/15, default.units="native", gp = gpar(cex = 1.5))
+            grid.circle(x= subquad[i, dx],y=subquad[i, dy], r= log(subquad[i, dbh])/20, default.units="native", gp=gpar(fill=ifelse(subquad[i, status]=="A" | subquad[i, status]=="AS" ,rgb(0,1,0, 0.5),rgb(0,0,1,0.5)), col="black"), name = arv_key[i])
+            grid.text(paste(subquad[i, tag]), x= subquad[i, dx]+log(subquad[i, dbh])/20 ,y=subquad[i, dy]+log(subquad[i, dbh])/15, default.units="native", gp = gpar(cex = 1.5))
         }
         
         grid.segments(x0= c(0,0, 0, splitX) , y0 = c(0, 0, splitY, splitY) , x1 =c( splitX, 0, splitX, splitX),  y1= c(0, splitY,  splitY, 0), default.units="native", gp= gpar(lty = 2))
@@ -196,7 +196,7 @@ ordersvg <- function(audit, quad = "A00", save.svg = TRUE, wd = getwd(), dx = "n
     xyna <- is.na(dataquad[,dx]) | is.na(dataquad[,dy])
     xy <- dataquad[, c(dx, dy)]
     xy[xyna, ] <- dataquad[xyna,c("old_dx", "old_dy")]
-    dbh0 <- dataquad[,dap]
+    dbh0 <- dataquad[, dap]
     dbh0[is.na(dbh0)] <- 10 
     arv_key <- paste("arv_", dataquad[,tag], sep="")
     tipo <- as.factor(dataquad[, error])
