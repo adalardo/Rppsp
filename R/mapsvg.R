@@ -59,21 +59,21 @@ svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.
 
         for(i in 1:nrow(subquad))
         {
-            grid.circle(x= subquad[i, dx],y=subquad[i, dy], r= log(subquad[i, dbh])/20, default.units="native", gp=gpar(fill=ifelse(subquad[i, status]=="A" | subquad[i, status]=="AS" ,rgb(0,1,0, 0.5),rgb(0,0,1,0.5)), col="black"), name = arv_key[i])
+            grid.circle(x= subquad[i, dx],y=subquad[i, dy], r= log(subquad[i, dbh])/20, default.units="native", gp=gpar(fill=ifelse(subquad[i, status]=="A" | subquad[i, status]=="AS" ,rgb(0,1,0, 0.5), rgb(0,0,1,0.5)), col="black"), name = arv_key[i])
             grid.text(paste(subquad[i, tag]), x= subquad[i, dx]+log(subquad[i, dbh])/20 ,y=subquad[i, dy]+log(subquad[i, dbh])/15, default.units="native", gp = gpar(cex = 1.5))
         }
         
         grid.segments(x0= c(0,0, 0, splitX) , y0 = c(0, 0, splitY, splitY) , x1 =c( splitX, 0, splitX, splitX),  y1= c(0, splitY,  splitY, 0), default.units="native", gp= gpar(lty = 2))
-        if(subXY[1] == subXY[1] & diagonal)
+        if(subXY[1] == subXY[2] & diagonal)
         {
            grid.segments(x0= 0 , y0 = 0 , x1 = splitX,  y1=  splitY, default.units="native", gp= gpar(lty = 2)) 
         }
-        if(subXY[1] != subXY[1] & diagonal)
+        if((subXY[1] != subXY[2]) & diagonal)
         {
            grid.segments(x0= 0 , y0 = splitY , x1 = splitX,  y1= 0, default.units="native", gp= gpar(lty = 2)) 
         }
-        grid.text(c(subXY[1], subXY[1]+ splitX) , x=  c(0,  splitX), y= c(-0.12, -0.12), default.units="native", gp = gpar(fontsize = 20, col="red"))
-        grid.text(c(subXY[2], subXY[2] + splitY) , y =  c(0, splitY), x= c(-0.12, -0.12), default.units="native", gp = gpar(fontsize = 20, col = "red"))
+        grid.text(c(subXY[1], subXY[1]+ splitX) , x=  c(0,  splitX), y= c(-0.2, -0.2), default.units="native", gp = gpar(fontsize = 20, col="red"))
+        grid.text(c(subXY[2], subXY[2] + splitY) , y =  c(0, splitY), x= c(-0.2, -0.2), default.units="native", gp = gpar(fontsize = 20, col = "red"))
         if(svgSave)
         {
             if(!dir.exists(wd2save))
@@ -82,12 +82,68 @@ svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.
             }
             grid.export(file.path(wd2save, paste("map", subquadNames[j],".svg",sep="")) , uniqueNames=FALSE)
         }
-#######################################
+##########
 # plot end
-#######################################        
+##########      
     }
 }
+#######################################
+## svgGrid
+#######################################
 
+svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.2, svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dbhcm = "dbhcm", status= "status", subquad = "subquad", mapsize = c(13,13), diagonal = FALSE)
+{
+    if(! exists("censoData"))
+    {
+        stop( "Não existe o objeto com os dados da parcela")
+    }
+    options(warn = -1)
+    library("grid")
+    library("gridSVG")
+    subqNames <- sort(unique(grep(subPlotCode, censoData[ , subquad], value = TRUE)))
+    for(j in subqNames)
+    {
+        sqData <- censoData[censoData[,subquad] == j, ]
+        sqxy <- as.numeric(strsplit(j, split= "_|x")[[1]][c(2,3)])
+        sqData$sx <- sqData$dx - sqxy[1]
+        sqData$sy <- sqData$dy - sqxy[2]
+#############
+## plot here
+#############
+    dev.new( width = mapsize[1], height = mapsize[2]) #, fontsize = 12)
+    vptop<- viewport(y=0.9, width=0.9, height=0.2)
+    grid.text(x=0.5, y=0.9, paste(j,  "- grid de mapeamento", subqSize,  "x",subqSize,"m"), vp= vptop, gp=gpar(fontsize = 20))
+    vp <- viewport(width = 0.9, height = 0.9, xscale=c(0,10), yscale=c(0,10))
+    pushViewport(vp)
+    grid.rect(gp = gpar(col = "black"))
+    grid.xaxis(at=seq(0, subqSize, by=.5), gp = gpar(fontsize=12, tcl = NA))
+    grid.yaxis(at=seq(0, subqSize, blocPosy=.5), gp = gpar(fontsize=12, tcl = NA))
+    xseq = rep(seq(0.0, subqSize - gridSize, by = gridSize), each = subqSize/gridSize)
+    yseq = rep(seq(0.0, subqSize - gridSize, by = gridSize), subqSize/gridSize)
+    loc_key_10 = paste("x = ",sprintf("%1.1f", xseq), "; y = ", sprintf("%1.1f", yseq),"; ", sep="")
+    grid.circle(x= sqData$sx, y= sqData$sy, r= log(sqData[,dbhcm])/20, default.units="native", gp=gpar(fill= c(rgb(0,0,1,0.5), rgb(0,1,0, 0.5))[grepl("A", sqData[,status]) + 1], col="black"))
+    grid.text(paste(sqData[, tag]), x= sqData[, "sx"]+ log(sqData[, dbhcm])/8 , y=sqData[, "sy"] + log(sqData[, dbhcm])/15, default.units="native", gp = gpar(cex = 1.2))
+#####################
+##  DIAGONAL:
+#####################
+    if(sqxy[1] == sqxy[2])
+    {
+        grid.abline(gp = gpar(lwd = 1.5, col = "blue") )
+    }    
+    if(sqxy[1] != sqxy[2])
+    {
+        grid.abline(10, -1, gp = gpar(lwd = 1.5, col = "blue") )
+    }    
+##############
+## Grid
+##############
+    for(i in 1: length(loc_key_10))
+    {
+        grid.rect(x = xseq[i]+0.1,y = yseq[i]+0.1, width =.2, height=.2, gp=gpar(fill = rgb(0,1,0, .2),lwd =0.1),  default.units="native", name = loc_key_10[i])
+    }
+    grid.export(file.path(wd2save, paste("grid",subqSize,"_", j,".svg",sep="")) , uniqueNames=FALSE)
+    }    
+}
 ##############################
 # audit  plot maps
 ##############################

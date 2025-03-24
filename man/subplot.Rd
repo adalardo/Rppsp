@@ -24,7 +24,7 @@ splitPlotXY(subplotxy, splitX = 5, splitY = splitX, maxX = 20, maxY = maxX)
 
 splitPlotData(
   censoData,
-  subplotCode,
+  subplotCodes,
   splitQuadXY,
   buffer = 2,
   dbh = "dbh",

@@ -1,12 +1,16 @@
 Package: Rppsp
 Type: Package
 Title: R functions to manage permanent plot data (short line)
-Version: 1.0
-Date: 2016-06-16
-Author: Alexandre Adalardo de Oliveira
+Version: 0.0.1
+#Date: 2016-06-16
+Author: person("Alexandre", "Adalardo", email = "aleadalardo@gmail.com", role = c("aut", "cre"))
 Maintainer: Alexandre Adalardo <aleadalardo@gmail.com>
 Description: Package for access and manager permanent plot databases
+SystemRequirements: Java (>= 8)
 Imports:
-    RMySQL
+    rJava,
+    grid,
+    gridSVG
 License: GPL-2
+Encoding: UTF-8
 RoxygenNote: 7.3.2
