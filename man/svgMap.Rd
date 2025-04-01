@@ -43,7 +43,6 @@ Map of trees from permanent plot based on cartesian coordinates
 \dontrun{
  svgMap(dataplot, svgSave =FALSE)
 }
-
 }
 \seealso{
 \code{\link{gridSVG}} 

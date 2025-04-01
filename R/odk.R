@@ -1,21 +1,21 @@
-
 ############################################
 ### Alexandre Adalardo
 ### first version: 15 de outubro de 2018
-### actual version: 22 de abril de 2019
+### actual version: 25 de maio de 2025
 ############################################
 # export data from odk collect using
 # odkbriefcase java package
 ##############################
 ##' Export data from okd collect to a csv files 
 ##'
-##' @param odkbriefcase  ODK briefcase java jar file.
-##' @param dir_st  ODK storage directory address.
-##' @param dir_col ODK collect directory.
-##' @param form_id ODK form id, defined in the settings of xls and xml forms
-##' @param dir_exp Data export directory 
-##' @param file_name prefix name for csv files. 
-##' @return 'odkexp' returns csv files export from odk collect. 
+##' @param colDir ODK collect data directory.  
+##' @param stDir  ODK storage temporary directory address.
+##' @param expDir Data export directory. 
+##' @param formId ODK form id, defined in the settings of xls and xml forms.
+##' @param fileName prefix name for csv files.
+##' @param startDate start date to export data from ODK Collect.
+##' @param endtDate end date to export data from ODK Collect.
+##' @return 'odkExp' returns csv files exported from odk collect using odkbriefcase java application. One file is create for each repeat in the form. 
 ##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 ##' @seealso 
 ##' \url{http://labtrop.ib.usp.br}
@@ -23,27 +23,27 @@
 ##' @examples
 ##' 
 ##' \dontrun{
-##' odkexp(odkbriefcase = "odkbriefcase.jar", dir_st = getwd(), dir_col = getwd(), dir_exp = getwd(), form_id = "odkform", file_name = "odkdata")
+##' odkExp( colDir = getwd(), stDir = getwd(), expDir = getwd(), form_id = "odkform", file_name = "odkdata")
 ##' }
 #vb#' 
 ##' @export
 ##'
 ##'
 ##'
-odkexp <- function(odkbriefcase = "odkbriefcase.jar", dir_st = getwd(), dir_col = getwd(), dir_exp = getwd(), form_id = NULL, file_name = "censoPeic", start = NULL, end = NULL )
+expODK <- function( colDir = getwd(), stDir = getwd(), expDir = getwd(), formId = NULL, fileName = "censoPPSP", startDate = NULL, endDate = NULL )
 {
+    odkbriefcase <-  system.file("java", "ODK-Briefcase-v1.18.0.jar", package = "Rppsp")
     ## exportando o formulario do odk collect
-    odkstdir <- file.path(dir_st, "ODK Briefcase Storage")
-    if(dir.exists(odkstdir))
+    odkstdir <- file.path(stDir, "ODK Briefcase Storage")
+    if(dir.exists(stDir))
     {
-        unlink(odkstdir, recursive = TRUE)
+        unlink(stDir, recursive = TRUE)
     }
-    briefexp <- paste("java -jar", odkbriefcase , " --pull_collect --storage_directory ", dir_st, " --odk_directory", dir_col)
-    
+    briefexp <- paste("java -jar", odkbriefcase , " --pull_collect --storage_directory ", stDir, " --odk_directory", colDir)
     system(briefexp)
     ## criando os arquivos csv  de dados
     ## testing if the files already exist
-    if(length(grep(file_name, list.files(dir_exp))) >0)
+    if(fileName %in% list.files(expDir))
     {
         yn <-  readline("File name already exists in the export directory, overwrite it (y/n): ")
         if(yn=="n")
@@ -51,24 +51,25 @@ odkexp <- function(odkbriefcase = "odkbriefcase.jar", dir_st = getwd(), dir_col 
             stop("Try again with a new export file name")
         }
     }
-if(is.null(start) | is.null(end))
-{
-    briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", form_id, "--storage_directory ", dir_st, " --export_directory ", dir_exp, " --export_filename ", file_name)
-} else{
-    briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", form_id, "--storage_directory ", dir_st, " --export_directory ", dir_exp, " --export_filename ", file_name, "--export_start_date", start , "--export_end_date", end)
-}
+    if(is.null(startDate) | is.null(endDate))
+    {
+        briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", formId, "--storage_directory ", stDir, " --export_directory ", expDir, " --export_filename ", fileName)
+    } else{
+    briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", formId, "--storage_directory ", stDir, " --export_directory ", expDir, " --export_filename ", fileName, "--export_start_date", startDate , "--export_end_date", endDate)
+    }
     system(briefcsv)
-    unlink(odkstdir, recursive = TRUE)
+    unlink(stDir, recursive = TRUE)
 }
 
-##############################
-##' Read odk exported csv files to a single data frame
+#######################################################
+##' Join odk exported csv files on a single data frame object
 ##'
-##' @param base_name Files prefix name and directory direction without extension
-##' @param form_rep Form repeat sections names in order
-##' @param dir_exp Data export directory 
-##' @param data_type Long or short version of the data
-##' @return 'odkexp' returns csv files export from odk collect. 
+##' @param baseName Files prefix name and directory direction without extension
+##' @param formRep Form repeat sections names in order
+##' @param expDir Data export directory 
+##' @param dataType Long or short version of the data
+##' @param saveFile logical, if TRUE file will be saved in expDir
+##' @return 'read' returns csv files export from odk collect. 
 ##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 ##' @seealso 
 ##' \url{http://labtrop.ib.usp.br}
@@ -76,142 +77,181 @@ if(is.null(start) | is.null(end))
 ##' @examples
 ##' 
 ##' \dontrun{
-##' odkexp(odkbriefcase = "odkbriefcase.jar", dir_st = getwd(), dir_col = getwd(), dir_exp = getwd(), form_id = "odkform", file_name = "odkdata")
+##' joinODK(baseName = "censoPeic",  saveFile = TRUE, expDir = getwd(), fileName = NULL)
 ##' }
 ##' 
 ##' @export
 ##'
 ##'
 ##'
-## base_name = "/home/aao/Ale2024/AleProjetos/PPPeic/censo2025/odkPeic/dados/expCSV/censoPeic06nov2024"
-## dir_exp <- "/home/aao/Ale2024/AleProjetos/PPPeic/censo2025/odkPeic/dados/dadosEstruturados"
-## file_name <- "testeNov2024"
-#formName <- gsub(paste(nameBase, "|.csv", sep = ""), "", names.csv)
-read.csvODK <- function(base_name = "censoPeic",  save_file = TRUE, dir_exp = getwd(), file_name = NULL)
+##
+##baseName = "/home/aao/Ale2024/AleProjetos/PPPeic/censo2025/odkCenso/exportODK/odkExpData/censoPPSP2025/A02/A02"
+joinODK <- function(baseName = "censoPPSP",  saveFile = TRUE, expDir = getwd(), fileName = NULL)
 {
     ## base dir
-    base_dir <- dirname(base_name)
-    nameBase <- basename(base_name)
+    baseDir <- dirname(baseName)
+    nameBase <- basename(baseName)
     ## base form file
-    #form_rep <-  unique(grep(base_name, list.files(path = base_dir), value = TRUE))
+    #form_rep <-  unique(grep(base_name, list.files(path = baseDir), value = TRUE))
     #nrep <- length(form_rep)
-    names.csv <- sort(grep(paste(nameBase,"|*.csv", sep = ""), list.files(path = base_dir), value = TRUE), decreasing = TRUE)
-    formName <- gsub(paste(nameBase, "|.csv", sep = ""), "", names.csv)
+    csvNames <- sort(grep(paste(nameBase,"|*.csv", sep = ""), list.files(path = baseDir), value = TRUE), decreasing = TRUE) ##  nomes dos arquivos de dados exportados do odk
+    formName <- gsub(paste(nameBase, "|.csv", sep = ""), "", csvNames)
     formName[formName == ""] <- "-base"
-    namesFiles <- file.path(base_dir, names.csv)
+    namesFiles <- file.path(baseDir, csvNames)
     for(j in 1:length(namesFiles))
     {
-        assign(paste("form", j, sep=""), read.table(namesFiles[j],header=TRUE, as.is=TRUE, sep=","))
+        assign(paste("form", j, sep = ""), read.table(namesFiles[j], header = TRUE, as.is = TRUE, sep = ","))
     }
-    form1names <- c('today', 'start', 'end',  'tree_gps.Latitude', 'tree_gps.Longitude', 'tree_gps.Altitude', 'tree_gps.Accuracy', 'equipe.equipe_nomes', 'equipe.equipe_nomes_other', 'equipe.lider', 'parcela.quadrat','KEY')
-    form3names <- c('quad5x5', 'sel_subquad', 'tag_selected', 'PARENT_KEY', 'KEY')
-    form01 <- merge(form1[,form1names], form3[form3names], by.x="KEY", by.y="PARENT_KEY", all = TRUE)
-    form2names <- c('n_tree', 'tree_type',  'tag_ok', 'dead_tree.tag_dead', 'dead_tree.dead_obs', 'tree_recenso.arvmap_key', 'confplaq_map.ileg_conf', 'tree_recenso.tree_tag_map', 'tree_recenso.tree_tag', 'tree_recenso.old_dap',  'tree_recenso.old_alt', 'tree_recenso.old_dx', 'tree_recenso.old_dy',  'tree_recenso.old_fam', 'tree_recenso.old_sp', 'tree_recenso.old_nfuste', 'tree_recenso.arvmap_conf', 'newmap_codpos',   'new_data.new_tag', 'new_data.new_tag_picture',  'num_tag',  'new_data.alt_max0', 'new_data.alt_max1', 'new_data.tipo_med',  'new_dap.dap2025_mm', 'new_dap.dap2025_cm', 'new_dap.pap2025_cm', 'new_dap.one_fuste',  'info_id', 'new_id.new_fam', 'new_id.new_gen', 'new_id.new_sp', 'new_id.coleta' , 'new_id.id_same', 'new_id.id_picture', 'conf_info.map2025', 'conf_info.dap2025', 'conf_info.alt2025', 'conf_info.fam2025', 'conf_info.sp2025', 'conf_info.conf_ok', 'conf_info.obs_tree', 'conf_info.tagdead_label', 'conf_diff.difdapOK', 'conf_diff.difaltOK', 'PARENT_KEY', 'KEY')
-    form2names <- form2names[form2names %in% names(form2)]
-    tree <- form2[, form2names]
-
-    treenames <- gsub(paste(c("tree_recenso.", "dead_tree." ,"new_data.", "new_dap.", "new_id.", "conf_info.", "conf_diff."), collapse = "|"), "", form2names)
-    names(tree) <- treenames
+    
+    form1names <- c('today', 'start', 'end', 'local.plot_name','local.work_size' ,'equipe.equipe_nomes','equipe.equipe_other01','equipe.equipe_other02', 'equipe.lider', 'parcela.quadrat','KEY')
+    form3names <- c('quad5', 'quad10', 'sel_subquad', 'tag_selected','newtag_selected' , 'PARENT_KEY', 'KEY')
+    form01 <- merge(form1[,form1names], form3[form3names], by.x = "KEY", by.y = "PARENT_KEY", all = TRUE)
+    form2names00 <- c( 'ttree.tree_type', 'ttree.recruta_id', 'ttree.fuste_primario', 'ttree.fuste01_picture', 'ttree.sec_picture', 'ttag.tag_ok', 'dead_tree.tag_dead', 'dead_tree.dead_obs', 'dead_tree.dead_picture',  'tree_recenso.arvmap_conf', 'confplaq_map.ileg_conf', 'map.mapxy','tree_recenso.old_dx', 'tree_recenso.old_dy',  'tag_new.new_tag', 'tag_new.new_tag_picture', 'tag_old', 'num_tag',  ,'new_alt.alt_new', 'tree_recenso.old_alt' , 'new_alt.difalt', 'new_alt.alt_met', 'new_alt.alt_check_note', 'new_alt.alt_new_check', 'new_alt.alt_cause', 'new_alt.alt_cause_other', 'new_alt.dif_altOK',  'new_dap.dap_pom', 'new_dap.pom_type', 'new_dap.tipo_med',  'new_dap.dap_new', 'tree_recenso.old_dap' ,'new_dap.difdap', 'new_dap.diffdap_prop',  'new_dap.one_fuste', 'new_dap.nfuste_ok', 'tree_recenso.old_nfuste' , 'new_dap.check_dbh.dap_new_check', 'new_dap.check_dbh.dap_cause', 'new_dap.check_dbh.dap_cause_other', 'new_dap.check_dbh.dif_dapOK', 'new_dap.check_dbh.min_dbhOK', 'nfuste_diff', 'info_id', 'new_id.new_fam', 'tree_recenso.old_fam' ,'new_id.new_gen', 'new_id.new_sp', 'tree_recenso.old_sp' , 'new_id.det_type', 'new_id.indet_type', 'new_id.id_same', 'new_id.nickname_morfo', 'new_id.id_picture', 'new_id.id_picture02', 'new_id.id_picture03', 'new_id.id_picture04', 'new_id.id_picture05', 'conf_info.map_final', 'conf_info.alt_final', 'conf_info.dap_final', 'conf_info.fam_final', 'conf_info.sp_final', 'conf_info.treetype_label', 'conf_info.tagdead_label', 'conf_info.id_type_name',  'conf_info.tree_picture01', 'conf_info.tree_picture02', 'conf_info.tree_picture03', 'conf_info.tree_picture04', 'conf_info.tree_picture05', 'PARENT_KEY', 'KEY')
+    form2names <-  form2names00[(form2names00 %in% names(form2))]
+    tree00 <- form2[, form2names]
+    snames2 <- gsub("^.*\\.", "", form2names)
+    names(tree00) <- snames2
+    missAlive <- form6[form6$miss_found.miss_alive == "yes",]
+    missDead <- form6[form6$miss_found.miss_dead != "",]
+    notFound <- form6[form6$conf_miss.miss_conf == "miss",]
+    foundANames00 <- c('miss_num', 'miss_found.tag_ok_miss','miss_found.arvmap_conf_miss', 'miss_new_tag.new_tag_miss', 'miss_new_tag.new_tag_picture_miss', 'map_miss.mapxy_miss', 'new_alt_miss.alt_new_miss', 'new_alt_miss.difalt_miss', 'new_alt_miss.alt_met_miss', 'new_alt_miss.alt_check_note_miss', 'new_alt_miss.alt_new_check_miss', 'new_alt_miss.alt_cause_miss', 'new_alt_miss.alt_cause_other_miss', 'new_alt_miss.dif_altOK_miss', 'new_dap_miss.dap_pom_miss', 'new_dap_miss.pom_type_miss', 'new_dap_miss.tipo_med_miss', 'new_dap_miss.dap_new_miss', 'new_dap_miss.difdap_miss', 'new_dap_miss.diffdap_prop_miss', 'new_dap_miss.one_fuste_miss', 'new_dap_miss.nfuste_ok_miss', 'new_dap_miss.check_dbh_miss.dap_new_check_miss', 'new_dap_miss.check_dbh_miss.dap_cause_miss', 'new_dap_miss.check_dbh_miss.dap_cause_other_miss', 'new_dap_miss.check_dbh_miss.dif_dapOK_miss', 'new_dap_miss.check_dbh_miss.min_dbhOK_miss', 'nfuste_diff_miss', 'info_id_miss', 'new_id_miss.new_fam_miss', 'new_id_miss.new_gen_miss', 'new_id_miss.new_sp_miss', 'new_id_miss.det_type_miss', 'new_id_miss.indet_type_miss', 'new_id_miss.id_same_miss', 'new_id_miss.nickname_morfo_miss', 'new_id_miss.id_picture_miss', 'new_id_miss.id_picture02_miss', 'new_id_miss.id_picture03_miss', 'new_id_miss.id_picture04_miss', 'new_id_miss.id_picture05_miss', 'PARENT_KEY', 'KEY')
+    foundDNames00 <- c('miss_num', 'miss_found.miss_dead','PARENT_KEY', 'KEY')
+    notFoundNames00 <- c("miss_num", 'conf_miss.miss_conf', 'PARENT_KEY', 'KEY')
+    foundANames <- foundANames00[foundANames00 %in% names(missAlive)]
+    foundDNames <- foundDNames00[foundDNames00 %in% names(missDead)]
+    notFoundNames <- notFoundNames00[notFoundNames00 %in% names(notFound)] 
+    foundAlive <- missAlive[, foundANames]
+    foundDead <- missDead[, foundDNames]
+    notFound <- notFound[, notFoundNames]
+    sNamesFA <- gsub("^.*\\.|_miss", "", foundANames)
+    sNamesFD <- gsub("^.*\\.|_miss", "", foundDNames)
+    sNamesNF <- gsub("^.*\\.|_miss", "", notFoundNames)
+    names(foundAlive) <- sNamesFA
+    names(foundDead) <- sNamesFD
+    names(notFound) <- sNamesNF
+    names(foundAlive)[grep("miss_num", names(foundAlive))] <- "tag_old"
+    names(foundDead)[grep("miss_num", names(foundDead))] <- "tag_old"
+    names(notFound)[grep("miss_num", names(notFound))] <- "tag_old"
+    foundAlive$num_tag <- foundAlive$tag_old
+    newtagT <- !is.na(foundAlive$new_tag)
+    foundAlive$num_tag[newtagT] <- foundAlive$new_tag[newtagT]
+    foundDead$num_tag <- foundDead$tag_old
+    notFound$num_tag <- notFound$tag_old
+    foundAlive$dap_final <- foundAlive$dap_new
+    foundAlive$dap_final[!is.na(foundAlive$dap_new_check)] <- foundAlive$dap_new_check[!is.na(foundAlive$dap_new_check)]
+    foundAlive$alt_final <- foundAlive$alt_new
+    foundAlive$alt_final[!is.na(foundAlive$alt_new_check)] <- foundAlive$alt_new_check[!is.na(foundAlive$alt_new_check)] 
+    names(foundDead)[grep("miss_dead", names(foundDead))] <- "tag_dead"
+    names(notFound)[grep("miss_conf", names(notFound))] <- "tree_type"
+    foundAlive$tree_type <- "found_alive"
+    foundDead$tree_type <- "found_dead"
+    treeFA <- merge(tree00, foundAlive, by = intersect(names(tree00), names(foundAlive)), all = TRUE)
+    treeFAD <- merge(treeFA, foundDead, by = intersect(names(treeFA), names(foundDead)), all = TRUE)
+    tree <- merge(treeFAD, notFound, by = intersect(names(treeFAD), names(notFound)), all = TRUE)
+#############################################################
     names(tree)[names(tree) =='KEY'] <- "key_tree"
     names(tree)[names(tree) =='PARENT_KEY'] <- "key_quad"
-    names(tree)[names(tree) =='confplaq_map.ileg_conf'] <- "confTagMap"
-    treequad <- merge(form01[, c("today", "equipe.lider","parcela.quadrat", "quad5x5","KEY.y")], tree, by.x="KEY.y", by.y="key_quad", all = TRUE)
+    ## names(tree)[names(tree) =='confplaq_map.ileg_conf'] <- "confTagMap"
+    sqSize <- gsub("size", "", form01$local.work_size)
+    names01 <- c("today", "local.plot_name", "equipe.lider","parcela.quadrat",  paste("quad", unique(sqSize), sep = ""),"KEY.y")
+    treequad <- merge(form01[, names01], tree, by.x="KEY.y", by.y="key_quad", all = TRUE)
     names(treequad)[names(treequad) =='KEY.y'] <- "key_quad"
     names(treequad)[names(treequad) =='parcela.quadrat'] <- "quadrat"
-    treequad$quad5x5 <- gsub("quad_", "", treequad$quad5x5)
-    startxy <- strsplit( treequad$quad5x5, "x")
+    names(treequad)[names(treequad) == paste("quad", unique(sqSize), sep = "")] <- "subquad"
+    treequad$subquad <- gsub("quad_", "", treequad$subquad)
+    ###########################################################
+    ###### New maps: for mapping errors or new trees
+    ###########################################################
+    startxy <- strsplit( treequad$subquad, "x")
     stx <- as.numeric(sapply(startxy, function(x){x[1]}))
     sty <- as.numeric(sapply(startxy, function(x){x[2]}))
-    newMap <- treequad$arvmap_conf != "map_yes"
-    iMap <- which(newMap)
-    treequad$new_dy2025 <- treequad$new_dx2025 <- NA 
-for(i in iMap)
-    {
-        codMap <- treequad$newmap_codpos[i]
-        codMap <- gsub("quad_", "", codMap)
-        xy <- strsplit(codMap, "x")[[1]]
-        treequad$new_dx2025[i] <- as.numeric(xy[1]) + stx[i]
-        treequad$new_dy2025[i] <- as.numeric(xy[2]) + sty[i]
-    }
-    treequad$nfuste2025 <- 1
-    treequad$dap2025_sec_mm <- NA
-    form3$dap2mm <- form3$dap_mm_sec
-    form3$dap2mm[!is.na(form3$dap_cm_sec)] <- form3$dap_cm_sec[!is.na(form3$dap_cm_sec)] *10
-    oneKey <- unique(form3$PARENT_KEY)
+    iMap <- which(treequad$arvmap_conf == "map_no" | treequad$tree_type =="sem_info")
+    ndx <- sapply(strsplit(treequad$mapxy[iMap], ";"), FUN= function(x){as.numeric(gsub("x = ", "", x[1])) }) + stx[iMap]
+    ndy <- sapply(strsplit(treequad$mapxy[iMap], ";"), FUN= function(x){as.numeric(gsub("y = ", "", x[2]))}) + sty[iMap]
+    treequad$new_dy <- treequad$new_dx <- NA
+    treequad$new_dx[iMap] <- ndx
+    treequad$new_dy[iMap] <- ndy
+    ##############################################
+    ################## FUSTE MULTIPLOS ###########
+    ##############################################
+    treequad$new_nfuste <- 1
+    treequad$new_secDap <- NA
+    treequad$new_secAlt <- NA
+    names(form5) <- gsub("_miss$", "", names(form5))
+    fusteMult <- merge(form4, form5, by = intersect(names(form4), names(form5)), all = TRUE)
+    fusteMult$dap2mm <- fusteMult$dap_mm_sec
+    fusteMult$dap2mm[!is.na(fusteMult$dap_cm_sec)] <- fusteMult$dap_cm_sec[!is.na(fusteMult$dap_cm_sec)] *10
+    fusteMult$dap2mm[!is.na(fusteMult$pap_cm_sec)] <- round(form4$pap_cm_sec[!is.na(form4$pap_cm_sec)] *10/pi)
+    oneKey <- unique(fusteMult$PARENT_KEY)
     for(i in 1:length(oneKey))
     {
         k <- oneKey[i]
-        secF <- form3[form3$PARENT_KEY == k,]
+        secF <- fusteMult[fusteMult$PARENT_KEY == k,]
+    
         nf <- nrow(secF) + 1
-        dap01 <- treequad$dap2025[treequad$key_tree == k]
+        ## colocando os daps e alt em ordem 
+        dap01 <- treequad$dap_final[treequad$key_tree == k]
+        alt01 <- treequad$alt_final[treequad$key_tree == k]
         mdap <- sort(as.numeric(c(dap01,secF$dap2mm)), decreasing=TRUE)
+        malt <- sort(as.numeric(c(alt01,secF$sec_alt_new)), decreasing=TRUE)
         dapsec <- paste(mdap[-1], collapse = ";")
-        treequad[treequad$key_tree == k, c("dap2025","nfuste2025", "dap2025_sec_mm")] <- c(as.numeric(mdap[1]), nf, dapsec) 
+        altsec <- paste(malt[-1], collapse = ";")
+        if(dap01 != mdap[1])
+        {
+            treequad[treequad$key_tree == k, c("dap_final")] <- mdap[1]
+        }
+        if(alt01 != malt[1])
+        {
+            treequad[treequad$key_tree == k, c("alt_final")] <- malt[1]
+        }
+        treequad[treequad$key_tree == k, c("new_nfuste")] <- nf
+        treequad[treequad$key_tree == k,  "new_secDap"] <-  dapsec
+        treequad[treequad$key_tree == k,  "new_secAlt"] <-  altsec
     }
 ###############################
-####### tirando dados repetidos 
+#### tirando dados duplicados
 ###############################
     dupltag <- treequad$num_tag[duplicated(treequad$num_tag, incomparables=NA)]
     dupligual <- c( )
     for(i in dupltag)
     {
         postag <- which(treequad$num_tag == i)
-        dupldata <- treequad[postag, c("dap2025","alt2025", "fam2025", "sp2025")]
-        dupligual <- c(dupligual,postag[duplicated(dupldata)])
+        dupldata <- treequad[postag, c("dap_final","alt_final", "fam_final", "sp_final")]
+        dupligual <- c(dupligual, postag[duplicated(dupldata)])
     }
     treequad <- treequad[!(1:nrow(treequad) %in% dupligual),]
-#################################
-    nres <- c("today", "equipe.lider", "tree_type", "tag_ok","tree_tag", "new_tag", "num_tag", "tag_dead" , "quadrat", "quad5x5","old_dx", "old_dy","new_dx2025", "new_dy2025", "old_alt", "alt2025","old_nfuste", "nfuste2025", "old_dap", "dap2025","dap2025_sec_mm", "old_fam", "old_sp", "fam2025", "sp2025", "coleta", "difdapOK", "difaltOK" ,"obs_tree")
-    nres  <- nres[nres %in% names(treequad)]
+######################################
+## aqui para restringir dados de saida
+#######################################
+    nres00 <- c("today", "equipe.lider", "tree_type", "tag_ok","tag_old", "new_tag", "num_tag", "tag_dead" , "quadrat", "subquad","old_tag","old_dx", "new_dx", "old_dy", "new_dy", "old_alt", "alt_final", "new_secAlt" ,"old_nfuste", "new_nfuste", "old_dap", "dap_final","new_secDap", "old_fam", "old_sp", "new_fam", "new_sp", "dif_dapOK", "dif_altOK")
+    nres  <- nres00[nres00 %in% names(treequad)]
     treeres <- treequad[, nres]
 ###################
-###### miss trees
+###### save file
 ###################
-    if(sum(grepl("-miss", formName)) != 0)
-    {
-    namiss <- c('miss_num', 'miss_true', 'miss_ms', 'miss_dap', 'miss_dbhcm', 'miss_alt', 'miss_dx', 'miss_dy',  'miss_fam',  'miss_sp', 'miss_type', 'map_miss', 'PARENT_KEY', 'KEY')
-    treemiss <- form4[form4$miss_ms == "missTree", namiss]
-    names(treemiss)[names(treemiss) =='KEY'] <- "key_treemiss"
-    names(treemiss)[names(treemiss) =='PARENT_KEY'] <- "key_subquad"
-##    names(treemiss)[names(treemiss) =='miss_group.miss_type'] <- "miss_type"
-##    names(treemiss)[names(treemiss) =='miss_group.map_miss'] <- "map_miss"
-    treemiss <- merge(treemiss, form01[, c("parcela.quadrat", "quad5x5","KEY.y")], by.x="key_subquad", by.y="KEY.y", all = TRUE)
-    names(treemiss)[names(treemiss) =='parcela.quadrat'] <- "quadrat"
-    treemiss$quad5x5 <- gsub("quad_", "", treemiss$quad5x5)
-    treemiss$key_subquad <- paste("sub", sapply(strsplit( treemiss$key_subquad, "/sub"), function(x){x[[2]]}), sep="")
-    treemiss$key_treemiss <- paste("sub", sapply(strsplit( treemiss$key_treemiss, "/sub"), function(x){x[[2]]}), sep="")
-    }
-### Incluir uma saida de objeto em lista com o treemiss e tree
     if(save_file)
     {
-        qname <- paste(unique(treeres$quadrat), collapse="_")
-        dname <- file.path(dir_exp, qname)
+        qname <- paste(unique(treequad$quadrat), collapse = "_")
+        dname <- file.path(expDir, qname)
         if(!dir.exists(file.path(dname, "baseData")))
         {
             #dir.create(dname)
             dir.create(file.path(dname, "baseData"), recursive=TRUE)
         }
-        file.rename(from = file.path(base_dir, names.csv), to=  file.path(dname, "baseData", paste("censoPeicNoMiss",formName, qname,".csv", sep="")))
-        if(dir.exists(file.path(base_dir, "media")) & file.path(base_dir, "media") != file.path(dname, "media"))
+        file.rename(from = file.path(baseDir, csvNames), to =  file.path(dname, "baseData", paste(baseName, formName, qname,".csv", sep="")))
+        if(dir.exists(file.path(baseDir, "media")) & file.path(baseDir, "media") != file.path(dname, "media"))
             {
-                media.names <- list.files(file.path(base_dir, "media"))
+                media.names <- list.files(file.path(baseDir, "media"))
                 if(!dir.exists(file.path(dname, "media")))
                 {
                     dir.create(file.path(dname, "media"), recursive=TRUE)
                 }
-                if(file.path(base_dir, "media") != file.path(dname, "media"))
+                if(file.path(baseDir, "media") != file.path(dname, "media"))
                 {
-                    file.rename(from = file.path(base_dir, "media", media.names), to = file.path(dname, "media", media.names))
-                    unlink(file.path(base_dir, "media"), recursive = TRUE)
+                    file.rename(from = file.path(baseDir, "media", media.names), to = file.path(dname, "media", media.names))
+                    unlink(file.path(baseDir, "media"), recursive = TRUE)
                 }
             }
-        
-        if(sum(grepl("miss", formName)) != 0)
-        {
-            ## write.table(treequad, file.path(dname, paste("tree",qname,".txt", sep="")), sep="\t", row.names=FALSE)
-            ## write.table(treeres, file.path(dname, paste("treeResumo",qname,".txt", sep="")), sep="\t", row.names=FALSE)
-            write.table(treemiss, file.path(dname, paste("treeMiss",qname,".txt", sep="")), sep="\t", row.names=FALSE)
-        }
         write.table(treequad, file.path(dname, paste("tree",qname,".txt", sep="")), sep="\t", row.names=FALSE)
         write.table(treeres, file.path(dname, paste("treeResumo",qname,".txt", sep="")), sep="\t", row.names=FALSE)
     }

@@ -1,5 +1,6 @@
 ############################################
 ### Alexandre Adalardo 15 de outubro de 2018
+### versao: 01 de abril de 2025
 #############################################
 # permanent plot maps
 #####################
@@ -20,8 +21,10 @@
 ##' \dontrun{
 ##'  svgMap(dataplot, svgSave =FALSE)
 ##' }
-##' 
-##' @export svgMap
+##' @import grid
+##' @import gridSVG
+
+##' @export
 ##'
 #################################
 svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dbh = "dbh", status= "status", mapsize = c(13,13), diagonal = FALSE)
@@ -31,8 +34,8 @@ svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.
         stop( "Não existe o objeto com os dados da parcela")
     }
     options(warn = -1)
-    library("grid")
-    library("gridSVG")
+    ## library("grid")
+    ## library("gridSVG")
     splitX <- attr(mapData, 'splitX') 
     splitY <- attr(mapData, 'splitY') 
     maxX <- attr(mapData, 'maxX') 
@@ -90,6 +93,35 @@ svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.
 #######################################
 ## svgGrid
 #######################################
+##' @title Grid for mapping 
+##' @description A figure to select mapping position
+##' @param censoData data frame from permanent plot tree censo cartezian data. 
+##' @param subPlotCode Character string that indetified subplot code.
+##' @param gridSize numeric vector. Size of the grid cell for mapping. 
+##' @param svgSave logical, if TRUE the device is exported to a svg file. 
+##' @param wd2save character string indicating the directory to save the svg fi
+##' @param dx name of the variável in censoData that contains the subplot x coord
+##' @param dy name of the variável in censoData that contains the subplot y coordenate of the trees.
+##' @param status  name of the variable with the status of the tree ("A" = alive, "D" = dead).
+##' @param status the size of the subquadrat to map in each graphic.
+##' @param subquad a character string of the name of the subquad variable, representing some subunit of the subplot.
+##' @param mapsize size of the figure in inchs.
+##' @param diagonal logical, if TRUE the diagonals will be plot. 
+##' @return 'svgGrid' returns figure device and export a svg file. 
+##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
+##' @seealso \code{\link{gridSVG}} 
+##' \url{http://labtrop.ib.usp.br}
+##' @examples
+##' \dontrun{
+##'  svgGrid(dataplot, svgSave = FALSE)
+##' }
+##'
+##' @import grid
+##' @import gridSVG
+
+##' @export
+##'
+#################################
 
 svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.2, svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dbhcm = "dbhcm", status= "status", subquad = "subquad", mapsize = c(13,13), diagonal = FALSE)
 {
@@ -98,8 +130,8 @@ svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.
         stop( "Não existe o objeto com os dados da parcela")
     }
     options(warn = -1)
-    library("grid")
-    library("gridSVG")
+    ## library("grid")
+    ## library("gridSVG")
     subqNames <- sort(unique(grep(subPlotCode, censoData[ , subquad], value = TRUE)))
     for(j in subqNames)
     {
@@ -141,8 +173,16 @@ svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.
     {
         grid.rect(x = xseq[i]+0.1,y = yseq[i]+0.1, width =.2, height=.2, gp=gpar(fill = rgb(0,1,0, .2),lwd =0.1),  default.units="native", name = loc_key_10[i])
     }
-    grid.export(file.path(wd2save, paste("grid",subqSize,"_", j,".svg",sep="")) , uniqueNames=FALSE)
-    }    
+    if(svgSave)
+        {
+            if(!dir.exists(wd2save))
+            {
+                dir.create(wd2save)
+            }    
+            grid.export(file.path(wd2save, paste("grid",subqSize,"_", j,".svg",sep="")) , uniqueNames=FALSE)
+            
+        }    
+    }
 }
 ##############################
 # audit  plot maps
@@ -167,15 +207,16 @@ svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.
 ##' auditsvg(dataplot, save.svg =FALSE)
 ##' }
 ##' 
+##' @import grid
+##' @import gridSVG
 ##'
-##'
+##' @export
 ##' 
-########################################
 auditsvg <- function(audit, quad = "A00", save.svg = TRUE, wd = getwd(), dx = "new_dx2018", dy = "new_dy2018",  tag = "num_tag", dap = "dap2018", error = "errorType", mapsize = c(13,13))
 {
     options(warn = -1)
-    library("grid")
-    library("gridSVG")
+    ## library("grid")
+    ## library("gridSVG")
     dataquad <- audit[audit$quadrat == quad,]
     xyna <- is.na(dataquad[,dx]) | is.na(dataquad[,dy])
     xy <- dataquad[, c(dx, dy)]
@@ -239,15 +280,15 @@ auditsvg <- function(audit, quad = "A00", save.svg = TRUE, wd = getwd(), dx = "n
 ##' auditsvg(dataplot, save.svg =FALSE)
 ##' }
 ##' 
+##' @import grid
+##' @import gridSVG
 ##'
-##'
-##' 
-########################################
+##' @export
 ordersvg <- function(audit, quad = "A00", save.svg = TRUE, wd = getwd(), dx = "new_dx2018", dy = "new_dy2018",  tag = "num_tag", dap = "dap2018", error = "errorType", mapsize = c(13,13))
 {
     options(warn = -1)
-    library("grid")
-    library("gridSVG")
+    ## library("grid")
+    ## library("gridSVG")
     dataquad <- audit[audit$quadrat == quad,]
     xyna <- is.na(dataquad[,dx]) | is.na(dataquad[,dy])
     xy <- dataquad[, c(dx, dy)]

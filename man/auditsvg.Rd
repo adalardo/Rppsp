@@ -43,9 +43,6 @@ dataplot <- data.frame(dx = runif(100, 0,20), dy = runif(100,0,20), quad = rep(p
 auditsvg(dataplot, save.svg =FALSE)
 }
 
-
-
-
 }
 \seealso{
 \code{\link{gridSVG}} 
