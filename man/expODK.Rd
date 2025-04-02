@@ -9,7 +9,7 @@ expODK(
   stDir = getwd(),
   expDir = getwd(),
   formId = NULL,
-  fileName = "censoPPSP",
+  fileName = basename(colDir),
   startDate = NULL,
   endDate = NULL
 )

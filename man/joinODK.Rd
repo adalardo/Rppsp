@@ -4,19 +4,14 @@
 \alias{joinODK}
 \title{Join odk exported csv files on a single data frame object}
 \usage{
-joinODK(
-  baseName = "censoPPSP",
-  saveFile = TRUE,
-  expDir = getwd(),
-  fileName = NULL
-)
+joinODK(csvDir = "censoPPSP", saveFile = TRUE, expDir = getwd())
 }
 \arguments{
-\item{baseName}{Files prefix name and directory direction without extension}
-
 \item{saveFile}{logical, if TRUE file will be saved in expDir}
 
 \item{expDir}{Data export directory}
+
+\item{baseName}{Files prefix name and directory direction without extension}
 
 \item{formRep}{Form repeat sections names in order}
 
@@ -31,7 +26,7 @@ Join odk exported csv files on a single data frame object
 \examples{
 
 \dontrun{
-joinODK(baseName = "censoPeic",  saveFile = TRUE, expDir = getwd(), fileName = NULL)
+joinODK(baseName = "censoPeic",  saveFile = TRUE, expDir = getwd())
 }
 
 }

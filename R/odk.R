@@ -30,35 +30,38 @@
 ##'
 ##'
 ##'
-expODK <- function( colDir = getwd(), stDir = getwd(), expDir = getwd(), formId = NULL, fileName = "censoPPSP", startDate = NULL, endDate = NULL )
+expODK <- function(colDir = getwd(), stDir = getwd(), expDir = getwd(), formId = NULL, fileName = basename(colDir), startDate = NULL, endDate = NULL )
 {
     odkbriefcase <-  system.file("java", "ODK-Briefcase-v1.18.0.jar", package = "Rppsp")
     ## exportando o formulario do odk collect
     odkstdir <- file.path(stDir, "ODK Briefcase Storage")
-    if(dir.exists(stDir))
+    expDirName <- file.path(expDir, fileName)
+    if(dir.exists(odkstdir))
     {
-        unlink(stDir, recursive = TRUE)
+        unlink(odkstdir, recursive = TRUE)
     }
-    briefexp <- paste("java -jar", odkbriefcase , " --pull_collect --storage_directory ", stDir, " --odk_directory", colDir)
-    system(briefexp)
-    ## criando os arquivos csv  de dados
-    ## testing if the files already exist
-    if(fileName %in% list.files(expDir))
+    if(any(grepl(paste(fileName,".*\\.csv$", sep = ""), list.files(expDirName))))
     {
         yn <-  readline("File name already exists in the export directory, overwrite it (y/n): ")
         if(yn=="n")
         {
             stop("Try again with a new export file name")
         }
+        if(yn=="y")
+        {
+            unlink(expDirName, recursive = TRUE)
+        }
     }
+    briefexp <- paste("java -jar", odkbriefcase , " --pull_collect --storage_directory ", stDir, " --odk_directory", colDir)
+    system(briefexp)
     if(is.null(startDate) | is.null(endDate))
     {
-        briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", formId, "--storage_directory ", stDir, " --export_directory ", expDir, " --export_filename ", fileName)
+        briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", formId, "--storage_directory ", stDir, " --export_directory ", expDirName, " --export_filename ", fileName)
     } else{
-    briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", formId, "--storage_directory ", stDir, " --export_directory ", expDir, " --export_filename ", fileName, "--export_start_date", startDate , "--export_end_date", endDate)
+    briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", formId, "--storage_directory ", stDir, " --export_directory ", expDirName, " --export_filename ", fileName, "--export_start_date", startDate , "--export_end_date", endDate)
     }
     system(briefcsv)
-    unlink(stDir, recursive = TRUE)
+    unlink(odkstdir, recursive = TRUE)
 }
 
 #######################################################
@@ -77,7 +80,7 @@ expODK <- function( colDir = getwd(), stDir = getwd(), expDir = getwd(), formId 
 ##' @examples
 ##' 
 ##' \dontrun{
-##' joinODK(baseName = "censoPeic",  saveFile = TRUE, expDir = getwd(), fileName = NULL)
+##' joinODK(baseName = "censoPeic",  saveFile = TRUE, expDir = getwd())
 ##' }
 ##' 
 ##' @export
@@ -85,69 +88,79 @@ expODK <- function( colDir = getwd(), stDir = getwd(), expDir = getwd(), formId 
 ##'
 ##'
 ##
-##baseName = "/home/aao/Ale2024/AleProjetos/PPPeic/censo2025/odkCenso/exportODK/odkExpData/censoPPSP2025/A02/A02"
-joinODK <- function(baseName = "censoPPSP",  saveFile = TRUE, expDir = getwd(), fileName = NULL)
+## csvDir <- "/home/aao/Ale2024/AleProjetos/PPPeic/censo2025/dadosPPSP/Assis/dadosODKExportados/tab04_27mar_2025"
+joinODK <- function(csvDir = "censoPPSP",  saveFile = TRUE, expDir = getwd())
 {
     ## base dir
-    baseDir <- dirname(baseName)
-    nameBase <- basename(baseName)
-    ## base form file
-    #form_rep <-  unique(grep(base_name, list.files(path = baseDir), value = TRUE))
-    #nrep <- length(form_rep)
-    csvNames <- sort(grep(paste(nameBase,"|*.csv", sep = ""), list.files(path = baseDir), value = TRUE), decreasing = TRUE) ##  nomes dos arquivos de dados exportados do odk
-    formName <- gsub(paste(nameBase, "|.csv", sep = ""), "", csvNames)
+    baseDir <- dirname(csvDir)
+    nameBase <- basename(csvDir)
+    namesFiles <- sort(grep(".*\\.csv?", list.files(csvDir), value = TRUE), decreasing = TRUE)
+#    csvNames <- sort(namesFiles, decreasing = TRUE)
+    formName <- gsub(paste(nameBase,"|.csv", sep = ""), "", namesFiles)
     formName[formName == ""] <- "-base"
-    namesFiles <- file.path(baseDir, csvNames)
     for(j in 1:length(namesFiles))
     {
-        assign(paste("form", j, sep = ""), read.table(namesFiles[j], header = TRUE, as.is = TRUE, sep = ","))
+        assign(paste("form", j, sep = ""), read.table(file.path(csvDir, namesFiles[j]), header = TRUE, as.is = TRUE, sep = ","))
     }
-    
     form1names <- c('today', 'start', 'end', 'local.plot_name','local.work_size' ,'equipe.equipe_nomes','equipe.equipe_other01','equipe.equipe_other02', 'equipe.lider', 'parcela.quadrat','KEY')
     form3names <- c('quad5', 'quad10', 'sel_subquad', 'tag_selected','newtag_selected' , 'PARENT_KEY', 'KEY')
     form01 <- merge(form1[,form1names], form3[form3names], by.x = "KEY", by.y = "PARENT_KEY", all = TRUE)
-    form2names00 <- c( 'ttree.tree_type', 'ttree.recruta_id', 'ttree.fuste_primario', 'ttree.fuste01_picture', 'ttree.sec_picture', 'ttag.tag_ok', 'dead_tree.tag_dead', 'dead_tree.dead_obs', 'dead_tree.dead_picture',  'tree_recenso.arvmap_conf', 'confplaq_map.ileg_conf', 'map.mapxy','tree_recenso.old_dx', 'tree_recenso.old_dy',  'tag_new.new_tag', 'tag_new.new_tag_picture', 'tag_old', 'num_tag',  ,'new_alt.alt_new', 'tree_recenso.old_alt' , 'new_alt.difalt', 'new_alt.alt_met', 'new_alt.alt_check_note', 'new_alt.alt_new_check', 'new_alt.alt_cause', 'new_alt.alt_cause_other', 'new_alt.dif_altOK',  'new_dap.dap_pom', 'new_dap.pom_type', 'new_dap.tipo_med',  'new_dap.dap_new', 'tree_recenso.old_dap' ,'new_dap.difdap', 'new_dap.diffdap_prop',  'new_dap.one_fuste', 'new_dap.nfuste_ok', 'tree_recenso.old_nfuste' , 'new_dap.check_dbh.dap_new_check', 'new_dap.check_dbh.dap_cause', 'new_dap.check_dbh.dap_cause_other', 'new_dap.check_dbh.dif_dapOK', 'new_dap.check_dbh.min_dbhOK', 'nfuste_diff', 'info_id', 'new_id.new_fam', 'tree_recenso.old_fam' ,'new_id.new_gen', 'new_id.new_sp', 'tree_recenso.old_sp' , 'new_id.det_type', 'new_id.indet_type', 'new_id.id_same', 'new_id.nickname_morfo', 'new_id.id_picture', 'new_id.id_picture02', 'new_id.id_picture03', 'new_id.id_picture04', 'new_id.id_picture05', 'conf_info.map_final', 'conf_info.alt_final', 'conf_info.dap_final', 'conf_info.fam_final', 'conf_info.sp_final', 'conf_info.treetype_label', 'conf_info.tagdead_label', 'conf_info.id_type_name',  'conf_info.tree_picture01', 'conf_info.tree_picture02', 'conf_info.tree_picture03', 'conf_info.tree_picture04', 'conf_info.tree_picture05', 'PARENT_KEY', 'KEY')
+    form2names00 <- c( 'ttree.tree_type', 'ttree.recruta_id', 'ttree.fuste_primario', 'ttree.fuste01_picture', 'ttree.sec_picture', 'ttag.tag_ok', 'dead_tree.tag_dead', 'dead_tree.dead_obs', 'dead_tree.dead_picture',  'tree_recenso.arvmap_conf', 'confplaq_map.ileg_conf', 'map.mapxy','tree_recenso.old_dx', 'tree_recenso.old_dy',  'tag_new.new_tag', 'tag_new.new_tag_picture', 'tag_old', 'num_tag', 'new_alt.alt_new', 'tree_recenso.old_alt' , 'new_alt.difalt', 'new_alt.alt_met', 'new_alt.alt_check_note', 'new_alt.alt_new_check', 'new_alt.alt_cause', 'new_alt.alt_cause_other', 'new_alt.dif_altOK',  'new_dap.dap_pom', 'new_dap.pom_type', 'new_dap.tipo_med',  'new_dap.dap_new', 'tree_recenso.old_dap' ,'new_dap.difdap', 'new_dap.diffdap_prop',  'new_dap.one_fuste', 'new_dap.nfuste_ok', 'tree_recenso.old_nfuste' , 'new_dap.check_dbh.dap_new_check', 'new_dap.check_dbh.dap_cause', 'new_dap.check_dbh.dap_cause_other', 'new_dap.check_dbh.dif_dapOK', 'new_dap.check_dbh.min_dbhOK', 'nfuste_diff', 'info_id', 'new_id.new_fam', 'tree_recenso.old_fam' ,'new_id.new_gen', 'new_id.new_sp', 'tree_recenso.old_sp' , 'new_id.det_type', 'new_id.indet_type', 'new_id.id_same', 'new_id.nickname_morfo', 'new_id.id_picture', 'new_id.id_picture02', 'new_id.id_picture03', 'new_id.id_picture04', 'new_id.id_picture05', 'conf_info.map_final', 'conf_info.alt_final', 'conf_info.dap_final', 'conf_info.fam_final', 'conf_info.sp_final', 'conf_info.treetype_label', 'conf_info.tagdead_label', 'conf_info.id_type_name',  'conf_info.tree_picture01', 'conf_info.tree_picture02', 'conf_info.tree_picture03', 'conf_info.tree_picture04', 'conf_info.tree_picture05', 'PARENT_KEY', 'KEY')
     form2names <-  form2names00[(form2names00 %in% names(form2))]
-    tree00 <- form2[, form2names]
+    tree <- form2[, form2names]
     snames2 <- gsub("^.*\\.", "", form2names)
-    names(tree00) <- snames2
-    missAlive <- form6[form6$miss_found.miss_alive == "yes",]
-    missDead <- form6[form6$miss_found.miss_dead != "",]
-    notFound <- form6[form6$conf_miss.miss_conf == "miss",]
-    foundANames00 <- c('miss_num', 'miss_found.tag_ok_miss','miss_found.arvmap_conf_miss', 'miss_new_tag.new_tag_miss', 'miss_new_tag.new_tag_picture_miss', 'map_miss.mapxy_miss', 'new_alt_miss.alt_new_miss', 'new_alt_miss.difalt_miss', 'new_alt_miss.alt_met_miss', 'new_alt_miss.alt_check_note_miss', 'new_alt_miss.alt_new_check_miss', 'new_alt_miss.alt_cause_miss', 'new_alt_miss.alt_cause_other_miss', 'new_alt_miss.dif_altOK_miss', 'new_dap_miss.dap_pom_miss', 'new_dap_miss.pom_type_miss', 'new_dap_miss.tipo_med_miss', 'new_dap_miss.dap_new_miss', 'new_dap_miss.difdap_miss', 'new_dap_miss.diffdap_prop_miss', 'new_dap_miss.one_fuste_miss', 'new_dap_miss.nfuste_ok_miss', 'new_dap_miss.check_dbh_miss.dap_new_check_miss', 'new_dap_miss.check_dbh_miss.dap_cause_miss', 'new_dap_miss.check_dbh_miss.dap_cause_other_miss', 'new_dap_miss.check_dbh_miss.dif_dapOK_miss', 'new_dap_miss.check_dbh_miss.min_dbhOK_miss', 'nfuste_diff_miss', 'info_id_miss', 'new_id_miss.new_fam_miss', 'new_id_miss.new_gen_miss', 'new_id_miss.new_sp_miss', 'new_id_miss.det_type_miss', 'new_id_miss.indet_type_miss', 'new_id_miss.id_same_miss', 'new_id_miss.nickname_morfo_miss', 'new_id_miss.id_picture_miss', 'new_id_miss.id_picture02_miss', 'new_id_miss.id_picture03_miss', 'new_id_miss.id_picture04_miss', 'new_id_miss.id_picture05_miss', 'PARENT_KEY', 'KEY')
-    foundDNames00 <- c('miss_num', 'miss_found.miss_dead','PARENT_KEY', 'KEY')
-    notFoundNames00 <- c("miss_num", 'conf_miss.miss_conf', 'PARENT_KEY', 'KEY')
-    foundANames <- foundANames00[foundANames00 %in% names(missAlive)]
-    foundDNames <- foundDNames00[foundDNames00 %in% names(missDead)]
-    notFoundNames <- notFoundNames00[notFoundNames00 %in% names(notFound)] 
-    foundAlive <- missAlive[, foundANames]
-    foundDead <- missDead[, foundDNames]
-    notFound <- notFound[, notFoundNames]
-    sNamesFA <- gsub("^.*\\.|_miss", "", foundANames)
-    sNamesFD <- gsub("^.*\\.|_miss", "", foundDNames)
-    sNamesNF <- gsub("^.*\\.|_miss", "", notFoundNames)
-    names(foundAlive) <- sNamesFA
-    names(foundDead) <- sNamesFD
-    names(notFound) <- sNamesNF
-    names(foundAlive)[grep("miss_num", names(foundAlive))] <- "tag_old"
-    names(foundDead)[grep("miss_num", names(foundDead))] <- "tag_old"
-    names(notFound)[grep("miss_num", names(notFound))] <- "tag_old"
-    foundAlive$num_tag <- foundAlive$tag_old
-    newtagT <- !is.na(foundAlive$new_tag)
-    foundAlive$num_tag[newtagT] <- foundAlive$new_tag[newtagT]
-    foundDead$num_tag <- foundDead$tag_old
-    notFound$num_tag <- notFound$tag_old
-    foundAlive$dap_final <- foundAlive$dap_new
-    foundAlive$dap_final[!is.na(foundAlive$dap_new_check)] <- foundAlive$dap_new_check[!is.na(foundAlive$dap_new_check)]
-    foundAlive$alt_final <- foundAlive$alt_new
-    foundAlive$alt_final[!is.na(foundAlive$alt_new_check)] <- foundAlive$alt_new_check[!is.na(foundAlive$alt_new_check)] 
-    names(foundDead)[grep("miss_dead", names(foundDead))] <- "tag_dead"
-    names(notFound)[grep("miss_conf", names(notFound))] <- "tree_type"
-    foundAlive$tree_type <- "found_alive"
-    foundDead$tree_type <- "found_dead"
-    treeFA <- merge(tree00, foundAlive, by = intersect(names(tree00), names(foundAlive)), all = TRUE)
-    treeFAD <- merge(treeFA, foundDead, by = intersect(names(treeFA), names(foundDead)), all = TRUE)
-    tree <- merge(treeFAD, notFound, by = intersect(names(treeFAD), names(notFound)), all = TRUE)
+    names(tree) <- snames2
+######## Miss trees ##################
+    missAlive <- form6[which(form6$miss_found.miss_alive == "yes"),]
+    missDead <- form6[which(form6$miss_found.miss_dead != ""),]
+    notFound <- form6[which(form6$conf_miss.miss_conf == "miss"),]
+######## Miss found alive ##################
+    if(nrow(missAlive)>0)
+    {
+        foundANames00 <- c('miss_num', 'miss_found.tag_ok_miss','miss_found.arvmap_conf_miss', 'miss_new_tag.new_tag_miss', 'miss_new_tag.new_tag_picture_miss', 'map_miss.mapxy_miss', 'new_alt_miss.alt_new_miss', 'new_alt_miss.difalt_miss', 'new_alt_miss.alt_met_miss', 'new_alt_miss.alt_check_note_miss', 'new_alt_miss.alt_new_check_miss', 'new_alt_miss.alt_cause_miss', 'new_alt_miss.alt_cause_other_miss', 'new_alt_miss.dif_altOK_miss', 'new_dap_miss.dap_pom_miss', 'new_dap_miss.pom_type_miss', 'new_dap_miss.tipo_med_miss', 'new_dap_miss.dap_new_miss', 'new_dap_miss.difdap_miss', 'new_dap_miss.diffdap_prop_miss', 'new_dap_miss.one_fuste_miss', 'new_dap_miss.nfuste_ok_miss', 'new_dap_miss.check_dbh_miss.dap_new_check_miss', 'new_dap_miss.check_dbh_miss.dap_cause_miss', 'new_dap_miss.check_dbh_miss.dap_cause_other_miss', 'new_dap_miss.check_dbh_miss.dif_dapOK_miss', 'new_dap_miss.check_dbh_miss.min_dbhOK_miss', 'nfuste_diff_miss', 'info_id_miss', 'new_id_miss.new_fam_miss', 'new_id_miss.new_gen_miss', 'new_id_miss.new_sp_miss', 'new_id_miss.det_type_miss', 'new_id_miss.indet_type_miss', 'new_id_miss.id_same_miss', 'new_id_miss.nickname_morfo_miss', 'new_id_miss.id_picture_miss', 'new_id_miss.id_picture02_miss', 'new_id_miss.id_picture03_miss', 'new_id_miss.id_picture04_miss', 'new_id_miss.id_picture05_miss', 'PARENT_KEY', 'KEY')
+        foundANames <- foundANames00[foundANames00 %in% names(missAlive)]
+        foundAlive <- missAlive[, foundANames]
+        sNamesFA <- gsub("^.*\\.|_miss", "", foundANames)
+        names(foundAlive) <- sNamesFA
+        names(foundAlive)[grep("miss_num", names(foundAlive))] <- "tag_old"
+        foundAlive$num_tag <- foundAlive$tag_old
+        newtagT <- !is.na(foundAlive$new_tag)
+        foundAlive$num_tag[newtagT] <- foundAlive$new_tag[newtagT]
+        foundAlive$dap_final <- foundAlive$dap_new
+        foundAlive$dap_final[!is.na(foundAlive$dap_new_check)] <- foundAlive$dap_new_check[!is.na(foundAlive$dap_new_check)]
+        foundAlive$alt_final <- foundAlive$alt_new
+        foundAlive$alt_final[!is.na(foundAlive$alt_new_check)] <- foundAlive$alt_new_check[!is.na(foundAlive$alt_new_check)] 
+        foundAlive$tree_type <- "found_alive"
+        tree <- merge(tree, foundAlive, by = intersect(names(tree), names(foundAlive)), all = TRUE)
+    }
+#### end Miss-Found Alive
+########################## Miss Found Dead #####################
+    if(nrow(missDead)>0)
+    {
+        foundDNames00 <- c('miss_num', 'miss_found.miss_dead','PARENT_KEY', 'KEY')
+        foundDNames <- foundDNames00[foundDNames00 %in% names(missDead)]
+        foundDead <- missDead[, foundDNames]
+        sNamesFD <- gsub("^.*\\.|_miss", "", foundDNames)
+        names(foundDead) <- sNamesFD
+        names(foundDead)[grep("miss_num", names(foundDead))] <- "tag_old"
+        foundDead$num_tag <- foundDead$tag_old
+        names(foundDead)[grep("miss_dead", names(foundDead))] <- "tag_dead"
+        foundDead$tree_type <- "found_dead"
+        tree <- merge(tree, foundDead, by = intersect(names(tree), names(foundDead)), all = TRUE)
+    }
+################################################################
+    if(nrow(notFound)>0)
+    {
+        notFoundNames00 <- c("miss_num", 'conf_miss.miss_conf', 'PARENT_KEY', 'KEY')
+        notFoundNames <- notFoundNames00[notFoundNames00 %in% names(notFound)] 
+        notFound <- notFound[, notFoundNames]
+        sNamesNF <- gsub("^.*\\.|_miss", "", notFoundNames)
+        names(notFound) <- sNamesNF
+        names(notFound)[grep("miss_num", names(notFound))] <- "tag_old"
+        notFound$num_tag <- notFound$tag_old
+        names(notFound)[grep("miss_conf", names(notFound))] <- "tree_type"
+        tree <- merge(tree, notFound, by = intersect(names(tree), names(notFound)), all = TRUE)
+    }
 #############################################################
     names(tree)[names(tree) =='KEY'] <- "key_tree"
     names(tree)[names(tree) =='PARENT_KEY'] <- "key_quad"
@@ -229,7 +242,7 @@ joinODK <- function(baseName = "censoPPSP",  saveFile = TRUE, expDir = getwd(), 
 ###################
 ###### save file
 ###################
-    if(save_file)
+    if(saveFile)
     {
         qname <- paste(unique(treequad$quadrat), collapse = "_")
         dname <- file.path(expDir, qname)
@@ -238,20 +251,24 @@ joinODK <- function(baseName = "censoPPSP",  saveFile = TRUE, expDir = getwd(), 
             #dir.create(dname)
             dir.create(file.path(dname, "baseData"), recursive=TRUE)
         }
-        file.rename(from = file.path(baseDir, csvNames), to =  file.path(dname, "baseData", paste(baseName, formName, qname,".csv", sep="")))
-        if(dir.exists(file.path(baseDir, "media")) & file.path(baseDir, "media") != file.path(dname, "media"))
+        file.rename(from = file.path(csvDir, namesFiles), to =  file.path(dname, "baseData", paste(nameBase, formName, qname,".csv", sep="")))
+        if(dir.exists(file.path(csvDir, "media")) & file.path(csvDir, "media") != file.path(dname, "media"))
             {
-                media.names <- list.files(file.path(baseDir, "media"))
+                media.names <- list.files(file.path(csvDir, "media"))
                 if(!dir.exists(file.path(dname, "media")))
                 {
                     dir.create(file.path(dname, "media"), recursive=TRUE)
                 }
-                if(file.path(baseDir, "media") != file.path(dname, "media"))
+                if(file.path(csvDir, "media") != file.path(dname, "media"))
                 {
-                    file.rename(from = file.path(baseDir, "media", media.names), to = file.path(dname, "media", media.names))
-                    unlink(file.path(baseDir, "media"), recursive = TRUE)
+                    file.rename(from = file.path(csvDir, "media", media.names), to = file.path(dname, "media", media.names))
+                    unlink(file.path(csvDir, "media"), recursive = TRUE)
                 }
             }
+        if(length(list.files(csvDir)) ==0)
+        {
+            unlink(csvDir, recursive = TRUE)
+        }
         write.table(treequad, file.path(dname, paste("tree",qname,".txt", sep="")), sep="\t", row.names=FALSE)
         write.table(treeres, file.path(dname, paste("treeResumo",qname,".txt", sep="")), sep="\t", row.names=FALSE)
     }
