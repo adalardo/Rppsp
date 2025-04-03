@@ -9,21 +9,18 @@ expODK(
   stDir = getwd(),
   expDir = getwd(),
   formId = NULL,
-  fileName = basename(colDir),
   startDate = NULL,
   endDate = NULL
 )
 }
 \arguments{
-\item{colDir}{ODK collect data directory.}
+\item{colDir}{ODK collect data directory, base name will be used for named the exported files.}
 
 \item{stDir}{ODK storage temporary directory address.}
 
 \item{expDir}{Data export directory.}
 
 \item{formId}{ODK form id, defined in the settings of xls and xml forms.}
-
-\item{fileName}{prefix name for csv files.}
 
 \item{startDate}{start date to export data from ODK Collect.}
 

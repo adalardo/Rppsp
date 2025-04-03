@@ -8,11 +8,10 @@
 ##############################
 ##' Export data from okd collect to a csv files 
 ##'
-##' @param colDir ODK collect data directory.  
+##' @param colDir ODK collect data directory, base name will be used for named the exported files.
 ##' @param stDir  ODK storage temporary directory address.
 ##' @param expDir Data export directory. 
 ##' @param formId ODK form id, defined in the settings of xls and xml forms.
-##' @param fileName prefix name for csv files.
 ##' @param startDate start date to export data from ODK Collect.
 ##' @param endtDate end date to export data from ODK Collect.
 ##' @return 'odkExp' returns csv files exported from odk collect using odkbriefcase java application. One file is create for each repeat in the form. 
@@ -30,17 +29,19 @@
 ##'
 ##'
 ##'
-expODK <- function(colDir = getwd(), stDir = getwd(), expDir = getwd(), formId = NULL, fileName = basename(colDir), startDate = NULL, endDate = NULL )
+expODK <- function(colDir = getwd(), stDir = getwd(), expDir = getwd(), formId = NULL,  startDate = NULL, endDate = NULL )
 {
     odkbriefcase <-  system.file("java", "ODK-Briefcase-v1.18.0.jar", package = "Rppsp")
-    ## exportando o formulario do odk collect
+    fileBaseName <- basename(colDir)
+   ## exportando o formulario do odk collect
     odkstdir <- file.path(stDir, "ODK Briefcase Storage")
-    expDirName <- file.path(expDir, fileName)
+    expDirName <- file.path(expDir, fileBaseName)
     if(dir.exists(odkstdir))
     {
         unlink(odkstdir, recursive = TRUE)
     }
-    if(any(grepl(paste(fileName,".*\\.csv$", sep = ""), list.files(expDirName))))
+
+    if(any(grepl(paste(fileBaseName,".*\\.csv$", sep = ""), list.files(expDirName))))
     {
         yn <-  readline("File name already exists in the export directory, overwrite it (y/n): ")
         if(yn=="n")
@@ -56,9 +57,9 @@ expODK <- function(colDir = getwd(), stDir = getwd(), expDir = getwd(), formId =
     system(briefexp)
     if(is.null(startDate) | is.null(endDate))
     {
-        briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", formId, "--storage_directory ", stDir, " --export_directory ", expDirName, " --export_filename ", fileName)
+        briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", formId, "--storage_directory ", stDir, " --export_directory ", expDirName, " --export_filename ", fileBaseName)
     } else{
-    briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", formId, "--storage_directory ", stDir, " --export_directory ", expDirName, " --export_filename ", fileName, "--export_start_date", startDate , "--export_end_date", endDate)
+    briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", formId, "--storage_directory ", stDir, " --export_directory ", expDirName, " --export_filename ", fileBaseName, "--export_start_date", startDate , "--export_end_date", endDate)
     }
     system(briefcsv)
     unlink(odkstdir, recursive = TRUE)
@@ -102,6 +103,8 @@ joinODK <- function(csvDir = "censoPPSP",  saveFile = TRUE, expDir = getwd())
     {
         assign(paste("form", j, sep = ""), read.table(file.path(csvDir, namesFiles[j]), header = TRUE, as.is = TRUE, sep = ","))
     }
+    qsize <- gsub("size","quad", form1$local.work_size)
+    form3 <- form3[form3[, qsize] != '', ]
     form1names <- c('today', 'start', 'end', 'local.plot_name','local.work_size' ,'equipe.equipe_nomes','equipe.equipe_other01','equipe.equipe_other02', 'equipe.lider', 'parcela.quadrat','KEY')
     form3names <- c('quad5', 'quad10', 'sel_subquad', 'tag_selected','newtag_selected' , 'PARENT_KEY', 'KEY')
     form01 <- merge(form1[,form1names], form3[form3names], by.x = "KEY", by.y = "PARENT_KEY", all = TRUE)
@@ -167,6 +170,7 @@ joinODK <- function(csvDir = "censoPPSP",  saveFile = TRUE, expDir = getwd())
     ## names(tree)[names(tree) =='confplaq_map.ileg_conf'] <- "confTagMap"
     sqSize <- gsub("size", "", form01$local.work_size)
     names01 <- c("today", "local.plot_name", "equipe.lider","parcela.quadrat",  paste("quad", unique(sqSize), sep = ""),"KEY.y")
+    #form01$quad10
     treequad <- merge(form01[, names01], tree, by.x="KEY.y", by.y="key_quad", all = TRUE)
     names(treequad)[names(treequad) =='KEY.y'] <- "key_quad"
     names(treequad)[names(treequad) =='parcela.quadrat'] <- "quadrat"
