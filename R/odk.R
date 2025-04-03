@@ -239,6 +239,10 @@ joinODK <- function(csvDir = "censoPPSP",  saveFile = TRUE, expDir = getwd())
     nres00 <- c("today", "equipe.lider", "tree_type", "tag_ok","tag_old", "new_tag", "num_tag", "tag_dead" , "quadrat", "subquad","old_tag","old_dx", "new_dx", "old_dy", "new_dy", "old_alt", "alt_final", "new_secAlt" ,"old_nfuste", "new_nfuste", "old_dap", "dap_final","new_secDap", "old_fam", "old_sp", "new_fam", "new_sp", "dif_dapOK", "dif_altOK")
     nres  <- nres00[nres00 %in% names(treequad)]
     treeres <- treequad[, nres]
+    t01 <- unique(treeres$today)[1]
+    tsep <- strsplit(t01, split = "\\. |, ")[[1]]
+    today <- paste(tsep[c(2,1,3)], sep = "", collapse = "")
+
 ###################
 ###### save file
 ###################
@@ -269,8 +273,8 @@ joinODK <- function(csvDir = "censoPPSP",  saveFile = TRUE, expDir = getwd())
         {
             unlink(csvDir, recursive = TRUE)
         }
-        write.table(treequad, file.path(dname, paste("tree",qname,".txt", sep="")), sep="\t", row.names=FALSE)
-        write.table(treeres, file.path(dname, paste("treeResumo",qname,".txt", sep="")), sep="\t", row.names=FALSE)
+        write.table(treequad, file.path(dname, paste("tree",qname, today, ".txt", sep="")), sep="\t", row.names=FALSE)
+        write.table(treeres, file.path(dname, paste("treeResumo",qname, today, ".txt", sep="")), sep="\t", row.names=FALSE)
     }
 ### INCLUIR UMA SAIDA DE LEITURA DE DADOS EM UM DIRETORIO ESPECIFICO
 invisible(treeres)
@@ -482,9 +486,9 @@ censoAudit <- function(dir_exp = getwd(), olddata = "peic09.csv", allsubdir = TR
         tmiss <- datatree$treeMiss
         tmiss$quadrat<- factor(tmiss$quadrat, levels = levels(tree$quadrat))
     }
-############################
+##########################
 ## PREVIOUS CENSUS DATA
-###########################
+##########################
     censo09 <- read.table(olddata, header=TRUE, as.is=TRUE, sep=sc)
     dquad09 <- censo09[censo09$quad %in% unique(tree$quadrat), ] # so os quadrats com dados 2025
     dquad09A <- dquad09[dquad09$status %in% c("A","AS") ,]
