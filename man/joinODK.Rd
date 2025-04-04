@@ -7,18 +7,14 @@
 joinODK(csvDir = "censoPPSP", saveFile = TRUE, expDir = getwd())
 }
 \arguments{
+\item{csvDir}{directory direction to ODK csv exported files}
+
 \item{saveFile}{logical, if TRUE file will be saved in expDir}
 
 \item{expDir}{Data export directory}
-
-\item{baseName}{Files prefix name and directory direction without extension}
-
-\item{formRep}{Form repeat sections names in order}
-
-\item{dataType}{Long or short version of the data}
 }
 \value{
-'read' returns csv files export from odk collect.
+'joinODK' returns txt files that merge ODK csv files exported and keep the csv files in the baseData directory.
 }
 \description{
 Join odk exported csv files on a single data frame object
@@ -26,7 +22,7 @@ Join odk exported csv files on a single data frame object
 \examples{
 
 \dontrun{
-joinODK(baseName = "censoPeic",  saveFile = TRUE, expDir = getwd())
+joinODK(csvDir = getwd(),  saveFile = TRUE, expDir = getwd())
 }
 
 }

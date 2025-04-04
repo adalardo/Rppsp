@@ -22,7 +22,7 @@
 ##' @examples
 ##' 
 ##' \dontrun{
-##' odkExp( colDir = getwd(), stDir = getwd(), expDir = getwd(), form_id = "odkform", file_name = "odkdata")
+##' odkExp(colDir = getwd(), stDir = getwd(), expDir = getwd(), form_id = "odkform")
 ##' }
 #vb#' 
 ##' @export
@@ -68,12 +68,10 @@ expODK <- function(colDir = getwd(), stDir = getwd(), expDir = getwd(), formId =
 #######################################################
 ##' Join odk exported csv files on a single data frame object
 ##'
-##' @param baseName Files prefix name and directory direction without extension
-##' @param formRep Form repeat sections names in order
+##' @param csvDir directory direction to ODK csv exported files
 ##' @param expDir Data export directory 
-##' @param dataType Long or short version of the data
 ##' @param saveFile logical, if TRUE file will be saved in expDir
-##' @return 'read' returns csv files export from odk collect. 
+##' @return 'joinODK' returns txt files that merge ODK csv files exported and keep the csv files in the baseData directory. 
 ##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 ##' @seealso 
 ##' \url{http://labtrop.ib.usp.br}
@@ -81,7 +79,7 @@ expODK <- function(colDir = getwd(), stDir = getwd(), expDir = getwd(), formId =
 ##' @examples
 ##' 
 ##' \dontrun{
-##' joinODK(baseName = "censoPeic",  saveFile = TRUE, expDir = getwd())
+##' joinODK(csvDir = getwd(),  saveFile = TRUE, expDir = getwd())
 ##' }
 ##' 
 ##' @export
@@ -103,8 +101,8 @@ joinODK <- function(csvDir = "censoPPSP",  saveFile = TRUE, expDir = getwd())
     {
         assign(paste("form", j, sep = ""), read.table(file.path(csvDir, namesFiles[j]), header = TRUE, as.is = TRUE, sep = ","))
     }
-    qsize <- gsub("size","quad", form1$local.work_size)
-    form3 <- form3[form3[, qsize] != '', ]
+    qsize <- unique(gsub("size","quad", form1$local.work_size))[1]
+    form3 <- form3[which(form3[, qsize] != ''), ]
     form1names <- c('today', 'start', 'end', 'local.plot_name','local.work_size' ,'equipe.equipe_nomes','equipe.equipe_other01','equipe.equipe_other02', 'equipe.lider', 'parcela.quadrat','KEY')
     form3names <- c('quad5', 'quad10', 'sel_subquad', 'tag_selected','newtag_selected' , 'PARENT_KEY', 'KEY')
     form01 <- merge(form1[,form1names], form3[form3names], by.x = "KEY", by.y = "PARENT_KEY", all = TRUE)
@@ -168,13 +166,13 @@ joinODK <- function(csvDir = "censoPPSP",  saveFile = TRUE, expDir = getwd())
     names(tree)[names(tree) =='KEY'] <- "key_tree"
     names(tree)[names(tree) =='PARENT_KEY'] <- "key_quad"
     ## names(tree)[names(tree) =='confplaq_map.ileg_conf'] <- "confTagMap"
-    sqSize <- gsub("size", "", form01$local.work_size)
-    names01 <- c("today", "local.plot_name", "equipe.lider","parcela.quadrat",  paste("quad", unique(sqSize), sep = ""),"KEY.y")
+    #sqSize <- gsub("size", "", form01$local.work_size)
+    names01 <- c("today", "local.plot_name", "equipe.lider","parcela.quadrat", qsize ,"KEY.y")
     #form01$quad10
     treequad <- merge(form01[, names01], tree, by.x="KEY.y", by.y="key_quad", all = TRUE)
-    names(treequad)[names(treequad) =='KEY.y'] <- "key_quad"
-    names(treequad)[names(treequad) =='parcela.quadrat'] <- "quadrat"
-    names(treequad)[names(treequad) == paste("quad", unique(sqSize), sep = "")] <- "subquad"
+    names(treequad)[which(names(treequad) =='KEY.y')] <- "key_quad"
+    names(treequad)[which(names(treequad) =='parcela.quadrat')] <- "quadrat"
+    names(treequad)[names(treequad) == qsize] <- "subquad"
     treequad$subquad <- gsub("quad_", "", treequad$subquad)
     ###########################################################
     ###### New maps: for mapping errors or new trees
@@ -246,7 +244,6 @@ joinODK <- function(csvDir = "censoPPSP",  saveFile = TRUE, expDir = getwd())
     t01 <- unique(treeres$today)[1]
     tsep <- strsplit(t01, split = "\\. |, ")[[1]]
     today <- paste(tsep[c(2,1,3)], sep = "", collapse = "")
-
 ###################
 ###### save file
 ###################

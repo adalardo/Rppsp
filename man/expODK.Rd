@@ -35,7 +35,7 @@ Export data from okd collect to a csv files
 \examples{
 
 \dontrun{
-odkExp( colDir = getwd(), stDir = getwd(), expDir = getwd(), form_id = "odkform", file_name = "odkdata")
+odkExp(colDir = getwd(), stDir = getwd(), expDir = getwd(), form_id = "odkform")
 }
 }
 \references{
