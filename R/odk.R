@@ -53,13 +53,13 @@ expODK <- function(colDir = getwd(), stDir = getwd(), expDir = getwd(), formId =
             unlink(expDirName, recursive = TRUE)
         }
     }
-    briefexp <- paste("java -jar", odkbriefcase , " --pull_collect --storage_directory ", stDir, " --odk_directory", colDir)
+    briefexp <- paste("java -jar ", "'",odkbriefcase,"'" , " --pull_collect --storage_directory ", "'",stDir,"'", " --odk_directory ", "'",colDir,"'", sep = "")
     system(briefexp)
     if(is.null(startDate) | is.null(endDate))
     {
-        briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", formId, "--storage_directory ", stDir, " --export_directory ", expDirName, " --export_filename ", fileBaseName)
+        briefcsv <- paste("java -jar ",  "'", odkbriefcase,"'", " --export --form_id ", formId, " --storage_directory ", "'",stDir,"'", " --export_directory ", "'",expDirName,"'", " --export_filename ", fileBaseName, sep = "")
     } else{
-    briefcsv <- paste("java -jar",  odkbriefcase , " --export --form_id ", formId, "--storage_directory ", stDir, " --export_directory ", expDirName, " --export_filename ", fileBaseName, "--export_start_date", startDate , "--export_end_date", endDate)
+    briefcsv <- paste("java -jar ",  "'", odkbriefcase,"'", " --export --form_id ", formId, " --storage_directory ", "'",stDir,"'", " --export_directory ", "'",expDirName,"'", " --export_filename ", fileBaseName, " --export_start_date ", startDate , " --export_end_date ", endDate, sep = "")
     }
     system(briefcsv)
     unlink(odkstdir, recursive = TRUE)
