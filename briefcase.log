@@ -1,0 +1,750 @@
+2025-04-07 08:24:06,637 [main] INFO  XFormParser - Reading XML and parsing with kXML2 finished in 11,653 ms
+2025-04-07 08:24:06,645 [main] INFO  XFormParser - Consolidating text finished in 5,573 ms
+2025-04-07 08:24:06,645 [main] INFO  XFormParser - Parsing form...
+2025-04-07 08:24:06,645 [main] INFO  XFormParser - Title: "censoPPSP2025"
+2025-04-07 08:24:06,646 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [model] and will be ignored: [xforms-version] 
+    Problem found at nodeset: /html/head/model
+    With element <model xforms-version="1.0.0"><itext><translation lang="default" default="true()">...
+
+2025-04-07 08:24:06,667 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/fuste01_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,667 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/sec_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,671 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/dead_tree/dead_picture" type="binary" max-pixels="1000"/>
+
+2025-04-07 08:24:06,678 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/tag_new/new_tag_picture" type="binary" relevant=" ../../ttag/tag_ok  = 'no' or  ../../ttree/tree_type  = 'plaq_ileg' or  ../../ttree/tree_type ='sem_info'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,689 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type  = 'few_leaves' or  ../det_type  = 'field' or  ../det_type  = 'nickname' or  ../det_type  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,689 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture02" type="binary" relevant=" ../id_picture !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,690 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture03" type="binary" relevant=" ../id_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,690 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture04" type="binary" relevant=" ../id_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,690 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture05" type="binary" relevant=" ../id_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,693 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture01" type="binary" relevant=" ../../ttree/tree_type  != 'plaq_dead' and  ../../ttree/tree_type  != 'notag_dead' and  ../../ttree/tree_type  != 'not_tree'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,693 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture02" type="binary" relevant=" ../tree_picture01 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,694 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture03" type="binary" relevant=" ../tree_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,694 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture04" type="binary" relevant=" ../tree_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,694 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture05" type="binary" relevant=" ../tree_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,698 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/miss_new_tag/new_tag_picture_miss" type="binary" relevant=" ../../miss_found/tag_ok_miss  = 'no'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,705 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture_miss" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type_miss  = 'few_leaves' or  ../det_type_miss  = 'field' or  ../det_type_miss  = 'nickname' or  ../det_type_miss  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,705 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture02_miss" type="binary" relevant=" ../id_picture_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,705 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture03_miss" type="binary" relevant=" ../id_picture02_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,705 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture04_miss" type="binary" relevant=" ../id_picture03_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,706 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture05_miss" type="binary" relevant=" ../id_picture04_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,706 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [input] and will be ignored: [accuracyThreshold] 
+    Problem found at nodeset: /html/body[@class=pages]/input
+    With element <input accuracyThreshold="4" ref="/data/tree_gps"><label>
+
+2025-04-07 08:24:06,765 [main] INFO  XFormParser - Creating FormDef from parsed XML finished in 119,301 ms
+2025-04-07 08:24:06,789 [ForkJoinPool-1-worker-1] INFO  XFormParser - Reading XML and parsing with kXML2 finished in 5,189 ms
+2025-04-07 08:24:06,792 [ForkJoinPool-1-worker-1] INFO  XFormParser - Consolidating text finished in 3,148 ms
+2025-04-07 08:24:06,792 [ForkJoinPool-1-worker-1] INFO  XFormParser - Parsing form...
+2025-04-07 08:24:06,793 [ForkJoinPool-1-worker-1] INFO  XFormParser - Title: "censoPPSP2025"
+2025-04-07 08:24:06,793 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [model] and will be ignored: [xforms-version] 
+    Problem found at nodeset: /html/head/model
+    With element <model xforms-version="1.0.0"><itext><translation lang="default" default="true()">...
+
+2025-04-07 08:24:06,799 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/fuste01_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,799 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/sec_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,802 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/dead_tree/dead_picture" type="binary" max-pixels="1000"/>
+
+2025-04-07 08:24:06,806 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/tag_new/new_tag_picture" type="binary" relevant=" ../../ttag/tag_ok  = 'no' or  ../../ttree/tree_type  = 'plaq_ileg' or  ../../ttree/tree_type ='sem_info'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,814 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type  = 'few_leaves' or  ../det_type  = 'field' or  ../det_type  = 'nickname' or  ../det_type  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,814 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture02" type="binary" relevant=" ../id_picture !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,814 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture03" type="binary" relevant=" ../id_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,814 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture04" type="binary" relevant=" ../id_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,815 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture05" type="binary" relevant=" ../id_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,818 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture01" type="binary" relevant=" ../../ttree/tree_type  != 'plaq_dead' and  ../../ttree/tree_type  != 'notag_dead' and  ../../ttree/tree_type  != 'not_tree'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,819 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture02" type="binary" relevant=" ../tree_picture01 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,819 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture03" type="binary" relevant=" ../tree_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,819 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture04" type="binary" relevant=" ../tree_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,819 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture05" type="binary" relevant=" ../tree_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,828 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/miss_new_tag/new_tag_picture_miss" type="binary" relevant=" ../../miss_found/tag_ok_miss  = 'no'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,834 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture_miss" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type_miss  = 'few_leaves' or  ../det_type_miss  = 'field' or  ../det_type_miss  = 'nickname' or  ../det_type_miss  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,835 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture02_miss" type="binary" relevant=" ../id_picture_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,835 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture03_miss" type="binary" relevant=" ../id_picture02_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,835 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture04_miss" type="binary" relevant=" ../id_picture03_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,835 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture05_miss" type="binary" relevant=" ../id_picture04_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,835 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [input] and will be ignored: [accuracyThreshold] 
+    Problem found at nodeset: /html/body[@class=pages]/input
+    With element <input accuracyThreshold="4" ref="/data/tree_gps"><label>
+
+2025-04-07 08:24:06,865 [ForkJoinPool-1-worker-1] INFO  XFormParser - Creating FormDef from parsed XML finished in 72,237 ms
+2025-04-07 08:24:06,874 [ForkJoinPool-1-worker-1] INFO  XFormParser - Reading XML and parsing with kXML2 finished in 3,232 ms
+2025-04-07 08:24:06,877 [ForkJoinPool-1-worker-1] INFO  XFormParser - Consolidating text finished in 2,150 ms
+2025-04-07 08:24:06,877 [ForkJoinPool-1-worker-1] INFO  XFormParser - Parsing form...
+2025-04-07 08:24:06,877 [ForkJoinPool-1-worker-1] INFO  XFormParser - Title: "censoPPSP2025"
+2025-04-07 08:24:06,877 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [model] and will be ignored: [xforms-version] 
+    Problem found at nodeset: /html/head/model
+    With element <model xforms-version="1.0.0"><itext><translation lang="default" default="true()">...
+
+2025-04-07 08:24:06,882 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/fuste01_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,883 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/sec_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,885 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/dead_tree/dead_picture" type="binary" max-pixels="1000"/>
+
+2025-04-07 08:24:06,888 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/tag_new/new_tag_picture" type="binary" relevant=" ../../ttag/tag_ok  = 'no' or  ../../ttree/tree_type  = 'plaq_ileg' or  ../../ttree/tree_type ='sem_info'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,895 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type  = 'few_leaves' or  ../det_type  = 'field' or  ../det_type  = 'nickname' or  ../det_type  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,895 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture02" type="binary" relevant=" ../id_picture !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,895 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture03" type="binary" relevant=" ../id_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,895 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture04" type="binary" relevant=" ../id_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,896 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture05" type="binary" relevant=" ../id_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,899 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture01" type="binary" relevant=" ../../ttree/tree_type  != 'plaq_dead' and  ../../ttree/tree_type  != 'notag_dead' and  ../../ttree/tree_type  != 'not_tree'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,899 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture02" type="binary" relevant=" ../tree_picture01 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,899 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture03" type="binary" relevant=" ../tree_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,899 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture04" type="binary" relevant=" ../tree_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,899 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture05" type="binary" relevant=" ../tree_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,903 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/miss_new_tag/new_tag_picture_miss" type="binary" relevant=" ../../miss_found/tag_ok_miss  = 'no'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,908 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture_miss" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type_miss  = 'few_leaves' or  ../det_type_miss  = 'field' or  ../det_type_miss  = 'nickname' or  ../det_type_miss  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:24:06,908 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture02_miss" type="binary" relevant=" ../id_picture_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,908 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture03_miss" type="binary" relevant=" ../id_picture02_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,908 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture04_miss" type="binary" relevant=" ../id_picture03_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,908 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture05_miss" type="binary" relevant=" ../id_picture04_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:24:06,908 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [input] and will be ignored: [accuracyThreshold] 
+    Problem found at nodeset: /html/body[@class=pages]/input
+    With element <input accuracyThreshold="4" ref="/data/tree_gps"><label>
+
+2025-04-07 08:24:06,931 [ForkJoinPool-1-worker-1] INFO  XFormParser - Creating FormDef from parsed XML finished in 54,200 ms
+2025-04-07 08:24:06,946 [ForkJoinPool-1-worker-1] INFO  o.o.briefcase.util.FileSystemUtils - Creating database directory /home/aao/Ale2024/AleProjetos/PPPeic/censo2025/dadosPPSP/Assis/dadosODKCollect_processados/tab04_27mar2025/ODK Briefcase Storage/forms/censoPPSP2025/info.hsqldb
+2025-04-07 08:28:19,180 [main] INFO  XFormParser - Reading XML and parsing with kXML2 finished in 12,245 ms
+2025-04-07 08:28:19,186 [main] INFO  XFormParser - Consolidating text finished in 4,462 ms
+2025-04-07 08:28:19,187 [main] INFO  XFormParser - Parsing form...
+2025-04-07 08:28:19,187 [main] INFO  XFormParser - Title: "censoPPSP2025"
+2025-04-07 08:28:19,188 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [model] and will be ignored: [xforms-version] 
+    Problem found at nodeset: /html/head/model
+    With element <model xforms-version="1.0.0"><itext><translation lang="default" default="true()">...
+
+2025-04-07 08:28:19,207 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/fuste01_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,208 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/sec_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,211 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/dead_tree/dead_picture" type="binary" max-pixels="1000"/>
+
+2025-04-07 08:28:19,217 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/tag_new/new_tag_picture" type="binary" relevant=" ../../ttag/tag_ok  = 'no' or  ../../ttree/tree_type  = 'plaq_ileg' or  ../../ttree/tree_type ='sem_info'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,226 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type  = 'few_leaves' or  ../det_type  = 'field' or  ../det_type  = 'nickname' or  ../det_type  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,226 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture02" type="binary" relevant=" ../id_picture !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,226 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture03" type="binary" relevant=" ../id_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,226 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture04" type="binary" relevant=" ../id_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,226 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture05" type="binary" relevant=" ../id_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,230 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture01" type="binary" relevant=" ../../ttree/tree_type  != 'plaq_dead' and  ../../ttree/tree_type  != 'notag_dead' and  ../../ttree/tree_type  != 'not_tree'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,230 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture02" type="binary" relevant=" ../tree_picture01 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,231 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture03" type="binary" relevant=" ../tree_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,231 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture04" type="binary" relevant=" ../tree_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,231 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture05" type="binary" relevant=" ../tree_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,235 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/miss_new_tag/new_tag_picture_miss" type="binary" relevant=" ../../miss_found/tag_ok_miss  = 'no'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,242 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture_miss" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type_miss  = 'few_leaves' or  ../det_type_miss  = 'field' or  ../det_type_miss  = 'nickname' or  ../det_type_miss  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,242 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture02_miss" type="binary" relevant=" ../id_picture_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,242 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture03_miss" type="binary" relevant=" ../id_picture02_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,242 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture04_miss" type="binary" relevant=" ../id_picture03_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,242 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture05_miss" type="binary" relevant=" ../id_picture04_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,242 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [input] and will be ignored: [accuracyThreshold] 
+    Problem found at nodeset: /html/body[@class=pages]/input
+    With element <input accuracyThreshold="4" ref="/data/tree_gps"><label>
+
+2025-04-07 08:28:19,303 [main] INFO  XFormParser - Creating FormDef from parsed XML finished in 115,758 ms
+2025-04-07 08:28:19,327 [ForkJoinPool-1-worker-1] INFO  XFormParser - Reading XML and parsing with kXML2 finished in 4,753 ms
+2025-04-07 08:28:19,329 [ForkJoinPool-1-worker-1] INFO  XFormParser - Consolidating text finished in 2,160 ms
+2025-04-07 08:28:19,329 [ForkJoinPool-1-worker-1] INFO  XFormParser - Parsing form...
+2025-04-07 08:28:19,329 [ForkJoinPool-1-worker-1] INFO  XFormParser - Title: "censoPPSP2025"
+2025-04-07 08:28:19,329 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [model] and will be ignored: [xforms-version] 
+    Problem found at nodeset: /html/head/model
+    With element <model xforms-version="1.0.0"><itext><translation lang="default" default="true()">...
+
+2025-04-07 08:28:19,335 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/fuste01_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,336 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/sec_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,339 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/dead_tree/dead_picture" type="binary" max-pixels="1000"/>
+
+2025-04-07 08:28:19,343 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/tag_new/new_tag_picture" type="binary" relevant=" ../../ttag/tag_ok  = 'no' or  ../../ttree/tree_type  = 'plaq_ileg' or  ../../ttree/tree_type ='sem_info'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,355 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type  = 'few_leaves' or  ../det_type  = 'field' or  ../det_type  = 'nickname' or  ../det_type  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,355 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture02" type="binary" relevant=" ../id_picture !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,355 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture03" type="binary" relevant=" ../id_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,355 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture04" type="binary" relevant=" ../id_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,355 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture05" type="binary" relevant=" ../id_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,358 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture01" type="binary" relevant=" ../../ttree/tree_type  != 'plaq_dead' and  ../../ttree/tree_type  != 'notag_dead' and  ../../ttree/tree_type  != 'not_tree'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,358 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture02" type="binary" relevant=" ../tree_picture01 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,359 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture03" type="binary" relevant=" ../tree_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,359 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture04" type="binary" relevant=" ../tree_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,359 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture05" type="binary" relevant=" ../tree_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,363 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/miss_new_tag/new_tag_picture_miss" type="binary" relevant=" ../../miss_found/tag_ok_miss  = 'no'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,369 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture_miss" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type_miss  = 'few_leaves' or  ../det_type_miss  = 'field' or  ../det_type_miss  = 'nickname' or  ../det_type_miss  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,370 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture02_miss" type="binary" relevant=" ../id_picture_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,370 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture03_miss" type="binary" relevant=" ../id_picture02_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,370 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture04_miss" type="binary" relevant=" ../id_picture03_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,370 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture05_miss" type="binary" relevant=" ../id_picture04_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,370 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [input] and will be ignored: [accuracyThreshold] 
+    Problem found at nodeset: /html/body[@class=pages]/input
+    With element <input accuracyThreshold="4" ref="/data/tree_gps"><label>
+
+2025-04-07 08:28:19,399 [ForkJoinPool-1-worker-1] INFO  XFormParser - Creating FormDef from parsed XML finished in 69,377 ms
+2025-04-07 08:28:19,408 [ForkJoinPool-1-worker-1] INFO  XFormParser - Reading XML and parsing with kXML2 finished in 3,383 ms
+2025-04-07 08:28:19,411 [ForkJoinPool-1-worker-1] INFO  XFormParser - Consolidating text finished in 2,176 ms
+2025-04-07 08:28:19,411 [ForkJoinPool-1-worker-1] INFO  XFormParser - Parsing form...
+2025-04-07 08:28:19,411 [ForkJoinPool-1-worker-1] INFO  XFormParser - Title: "censoPPSP2025"
+2025-04-07 08:28:19,411 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [model] and will be ignored: [xforms-version] 
+    Problem found at nodeset: /html/head/model
+    With element <model xforms-version="1.0.0"><itext><translation lang="default" default="true()">...
+
+2025-04-07 08:28:19,415 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/fuste01_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,416 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/sec_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,418 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/dead_tree/dead_picture" type="binary" max-pixels="1000"/>
+
+2025-04-07 08:28:19,421 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/tag_new/new_tag_picture" type="binary" relevant=" ../../ttag/tag_ok  = 'no' or  ../../ttree/tree_type  = 'plaq_ileg' or  ../../ttree/tree_type ='sem_info'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,427 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type  = 'few_leaves' or  ../det_type  = 'field' or  ../det_type  = 'nickname' or  ../det_type  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,428 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture02" type="binary" relevant=" ../id_picture !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,428 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture03" type="binary" relevant=" ../id_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,428 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture04" type="binary" relevant=" ../id_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,428 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture05" type="binary" relevant=" ../id_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,431 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture01" type="binary" relevant=" ../../ttree/tree_type  != 'plaq_dead' and  ../../ttree/tree_type  != 'notag_dead' and  ../../ttree/tree_type  != 'not_tree'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,431 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture02" type="binary" relevant=" ../tree_picture01 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,431 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture03" type="binary" relevant=" ../tree_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,431 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture04" type="binary" relevant=" ../tree_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,431 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture05" type="binary" relevant=" ../tree_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,435 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/miss_new_tag/new_tag_picture_miss" type="binary" relevant=" ../../miss_found/tag_ok_miss  = 'no'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,440 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture_miss" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type_miss  = 'few_leaves' or  ../det_type_miss  = 'field' or  ../det_type_miss  = 'nickname' or  ../det_type_miss  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:28:19,440 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture02_miss" type="binary" relevant=" ../id_picture_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,440 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture03_miss" type="binary" relevant=" ../id_picture02_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,440 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture04_miss" type="binary" relevant=" ../id_picture03_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,441 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture05_miss" type="binary" relevant=" ../id_picture04_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:28:19,441 [ForkJoinPool-1-worker-1] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [input] and will be ignored: [accuracyThreshold] 
+    Problem found at nodeset: /html/body[@class=pages]/input
+    With element <input accuracyThreshold="4" ref="/data/tree_gps"><label>
+
+2025-04-07 08:28:19,463 [ForkJoinPool-1-worker-1] INFO  XFormParser - Creating FormDef from parsed XML finished in 52,548 ms
+2025-04-07 08:28:19,471 [ForkJoinPool-1-worker-1] INFO  o.o.briefcase.util.FileSystemUtils - Creating database directory /home/aao/Ale2024/AleProjetos/PPPeic/censo2025/dadosPPSP/Assis/testExp/ODK Briefcase Storage/forms/censoPPSP2025/info.hsqldb
+2025-04-07 08:32:45,465 [main] INFO  XFormParser - Reading XML and parsing with kXML2 finished in 11,101 ms
+2025-04-07 08:32:45,471 [main] INFO  XFormParser - Consolidating text finished in 4,445 ms
+2025-04-07 08:32:45,471 [main] INFO  XFormParser - Parsing form...
+2025-04-07 08:32:45,471 [main] INFO  XFormParser - Title: "censoPPSP2025"
+2025-04-07 08:32:45,472 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [model] and will be ignored: [xforms-version] 
+    Problem found at nodeset: /html/head/model
+    With element <model xforms-version="1.0.0"><itext><translation lang="default" default="true()">...
+
+2025-04-07 08:32:45,493 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/fuste01_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:32:45,493 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/sec_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:32:45,496 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/dead_tree/dead_picture" type="binary" max-pixels="1000"/>
+
+2025-04-07 08:32:45,502 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/tag_new/new_tag_picture" type="binary" relevant=" ../../ttag/tag_ok  = 'no' or  ../../ttree/tree_type  = 'plaq_ileg' or  ../../ttree/tree_type ='sem_info'" max-pixels="1000"/>
+
+2025-04-07 08:32:45,511 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type  = 'few_leaves' or  ../det_type  = 'field' or  ../det_type  = 'nickname' or  ../det_type  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:32:45,512 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture02" type="binary" relevant=" ../id_picture !=''" max-pixels="1000"/>
+
+2025-04-07 08:32:45,512 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture03" type="binary" relevant=" ../id_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:32:45,512 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture04" type="binary" relevant=" ../id_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:32:45,512 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture05" type="binary" relevant=" ../id_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:32:45,515 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture01" type="binary" relevant=" ../../ttree/tree_type  != 'plaq_dead' and  ../../ttree/tree_type  != 'notag_dead' and  ../../ttree/tree_type  != 'not_tree'" max-pixels="1000"/>
+
+2025-04-07 08:32:45,516 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture02" type="binary" relevant=" ../tree_picture01 !=''" max-pixels="1000"/>
+
+2025-04-07 08:32:45,516 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture03" type="binary" relevant=" ../tree_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:32:45,516 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture04" type="binary" relevant=" ../tree_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:32:45,516 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture05" type="binary" relevant=" ../tree_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:32:45,520 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/miss_new_tag/new_tag_picture_miss" type="binary" relevant=" ../../miss_found/tag_ok_miss  = 'no'" max-pixels="1000"/>
+
+2025-04-07 08:32:45,527 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture_miss" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type_miss  = 'few_leaves' or  ../det_type_miss  = 'field' or  ../det_type_miss  = 'nickname' or  ../det_type_miss  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:32:45,527 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture02_miss" type="binary" relevant=" ../id_picture_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:32:45,528 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture03_miss" type="binary" relevant=" ../id_picture02_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:32:45,528 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture04_miss" type="binary" relevant=" ../id_picture03_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:32:45,528 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture05_miss" type="binary" relevant=" ../id_picture04_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:32:45,528 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [input] and will be ignored: [accuracyThreshold] 
+    Problem found at nodeset: /html/body[@class=pages]/input
+    With element <input accuracyThreshold="4" ref="/data/tree_gps"><label>
+
+2025-04-07 08:32:45,585 [main] INFO  XFormParser - Creating FormDef from parsed XML finished in 113,668 ms
+2025-04-07 08:32:45,874 [main] INFO  o.j.core.services.locale.Localizer - getLocaleData finished in 0,060 ms
+2025-04-07 08:32:46,192 [ForkJoinPool-1-worker-1] INFO  o.o.b.export.ExportProcessTracker - Exported in 00:00:00.264038186
+2025-04-07 08:38:50,473 [main] INFO  XFormParser - Reading XML and parsing with kXML2 finished in 7,823 ms
+2025-04-07 08:38:50,477 [main] INFO  XFormParser - Consolidating text finished in 3,551 ms
+2025-04-07 08:38:50,478 [main] INFO  XFormParser - Parsing form...
+2025-04-07 08:38:50,478 [main] INFO  XFormParser - Title: "censoPPSP2025"
+2025-04-07 08:38:50,479 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [model] and will be ignored: [xforms-version] 
+    Problem found at nodeset: /html/head/model
+    With element <model xforms-version="1.0.0"><itext><translation lang="default" default="true()">...
+
+2025-04-07 08:38:50,500 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/fuste01_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:38:50,501 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/ttree/sec_picture" type="binary" required="true()" relevant=" ../tree_type ='plaq_sec'" max-pixels="1000"/>
+
+2025-04-07 08:38:50,504 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/dead_tree/dead_picture" type="binary" max-pixels="1000"/>
+
+2025-04-07 08:38:50,512 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/tag_new/new_tag_picture" type="binary" relevant=" ../../ttag/tag_ok  = 'no' or  ../../ttree/tree_type  = 'plaq_ileg' or  ../../ttree/tree_type ='sem_info'" max-pixels="1000"/>
+
+2025-04-07 08:38:50,523 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type  = 'few_leaves' or  ../det_type  = 'field' or  ../det_type  = 'nickname' or  ../det_type  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:38:50,523 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture02" type="binary" relevant=" ../id_picture !=''" max-pixels="1000"/>
+
+2025-04-07 08:38:50,523 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture03" type="binary" relevant=" ../id_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:38:50,523 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture04" type="binary" relevant=" ../id_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:38:50,523 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/new_id/id_picture05" type="binary" relevant=" ../id_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:38:50,527 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture01" type="binary" relevant=" ../../ttree/tree_type  != 'plaq_dead' and  ../../ttree/tree_type  != 'notag_dead' and  ../../ttree/tree_type  != 'not_tree'" max-pixels="1000"/>
+
+2025-04-07 08:38:50,527 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture02" type="binary" relevant=" ../tree_picture01 !=''" max-pixels="1000"/>
+
+2025-04-07 08:38:50,527 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture03" type="binary" relevant=" ../tree_picture02 !=''" max-pixels="1000"/>
+
+2025-04-07 08:38:50,527 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture04" type="binary" relevant=" ../tree_picture03 !=''" max-pixels="1000"/>
+
+2025-04-07 08:38:50,527 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/tree/conf_info/tree_picture05" type="binary" relevant=" ../tree_picture04 !=''" max-pixels="1000"/>
+
+2025-04-07 08:38:50,532 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/miss_new_tag/new_tag_picture_miss" type="binary" relevant=" ../../miss_found/tag_ok_miss  = 'no'" max-pixels="1000"/>
+
+2025-04-07 08:38:50,540 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture_miss" type="binary" required="true()" requiredMsg="Tire uma foto da planta" relevant=" ../det_type_miss  = 'few_leaves' or  ../det_type_miss  = 'field' or  ../det_type_miss  = 'nickname' or  ../det_type_miss  = 'same_as'" max-pixels="1000"/>
+
+2025-04-07 08:38:50,540 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture02_miss" type="binary" relevant=" ../id_picture_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:38:50,540 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture03_miss" type="binary" relevant=" ../id_picture02_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:38:50,540 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture04_miss" type="binary" relevant=" ../id_picture03_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:38:50,540 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [bind] and will be ignored: [max-pixels] 
+    Problem found at nodeset: /html/head/model[@xforms-version=1.0.0]/bind
+    With element <bind nodeset="/data/subquad/rep_miss/new_id_miss/id_picture05_miss" type="binary" relevant=" ../id_picture04_miss !=''" max-pixels="1000"/>
+
+2025-04-07 08:38:50,540 [main] WARN  XFormParser - XForm Parse Warning: Warning: 1 Unrecognized attributes found in Element [input] and will be ignored: [accuracyThreshold] 
+    Problem found at nodeset: /html/body[@class=pages]/input
+    With element <input accuracyThreshold="4" ref="/data/tree_gps"><label>
+
+2025-04-07 08:38:50,616 [main] INFO  XFormParser - Creating FormDef from parsed XML finished in 138,577 ms
+2025-04-07 08:38:50,618 [main] INFO  o.j.core.services.locale.Localizer - getLocaleData finished in 0,054 ms
+2025-04-07 08:38:50,914 [ForkJoinPool-1-worker-1] INFO  o.o.b.export.ExportProcessTracker - Exported in 00:00:00.253459527
