@@ -721,108 +721,82 @@ for(i in quadinc)
     write.table(allaudit, file.path(auddir, "treeaudit.csv"), sep=",", row.names=FALSE)
     message(paste("treeaudit.csv file saved in dir:", auddir))
 }
-##########################################################################################
+
 ################
 #### Merge Data
 ################
 #merge tree main data files tree*.txt, treeMiss*.txt and treeResumo*.txt from a base directory recursively. In the basedir should have only subdirectories that is going to merge. This files should go to audit too.
-mergeData <- function(basedir = getwd(), media.merge = TRUE, save.files = TRUE)
+##############################
+##' Merge exported data for all subplots  
+##'
+##' @param expDir Data exported directory where the subplots data are arranged in subdirectories. 
+##' @param mergeMedia Logical, if is 'TRUE' média is grouping in 'allMedia' directory but original media was not deleted.
+##' @param zipMedia Logical if is 'TRUE' the 'allMedia' directory is compressed and deleted. In order to run needs 7-zip installed on the system (\url{https://www.7-zip.org/download.html})
+##' @param saveFile Lógical, if is 'TRUE' save files in the 'expDir'.
+##' @return 'mergeData' save two text files('treeRes*.txt' and 'treeAll*.txt') if 'saveFile' is 'TRUE' or/and the resume data in an assign object. . 
+##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
+##' @seealso 
+##' \url{http://labtrop.ib.usp.br}
+##' @references \url{https://opendatakit.org/} 
+##' @examples
+##' 
+##' \dontrun{
+##' mergeData(expDir = getwd(), mergeMedia = TRUE, zipMedia = FALSE)
+##' }
+##' 
+##' @export
+##'
+##'
+##'
+mergeData <- function(expDir = getwd(), mergeMedia = TRUE, saveFile = TRUE, zipMedia = FALSE)
 {
-## this is full names from data, related with the last odk form and odkexp function from 2025 december 12 
-    treenames <- c("key_quad", "today", "quadrat", "quad5x5", "n_tree", "tree_type", "tag_ok", "tag_dead", "arvmap_key", "confTagMap", "tree_tag_map", "tree_tag", "old_dap", "old_alt", "old_dx", "old_dy", "old_fam", "old_sp", "old_nfuste", "arvmap_conf", "newmap_codpos", "new_tag", "new_tag_picture", "num_tag", "alt_max0", "alt_max1", "tipo_med", "dap2025_mm", "dap2025_cm", "pap2025_cm", "one_fuste", "info_id", "new_fam", "new_gen", "new_sp", "coleta", "id_same", "id_picture", "map2025", "dap2025", "alt2025", "fam2025", "sp2025", "conf_ok", "obs_tree", "tagdead_label", "difdapOK", "difaltOK", "key_tree", "new_dy2025", "new_dx2025", "nfuste2025", "dap2025_sec_mm")
-    resnames <- c("today", "tree_type", "tag_ok", "tree_tag", "new_tag", "num_tag", "tag_dead", "quadrat", "quad5x5", "old_dx", "old_dy", "new_dx2025", "new_dy2025", "old_alt", "alt2025", "old_nfuste", "nfuste2025", "old_dap", "dap2025", "dap2025_sec_mm", "old_fam", "old_sp", "fam2025", "sp2025", "coleta", "difdapOK", "difaltOK", "obs_tree")
-    missnames <- c("key_subquad", "miss_num", "miss_true", "miss_ms", "miss_dap", "miss_dbhcm", "miss_alt", "miss_dx", "miss_dy", "miss_fam", "miss_sp", "miss_type", "map_miss", "key_treemiss", "quadrat", "quad5x5")    
-    dirs <- dir(basedir, recursive = FALSE)
-    allfiles <- list.files(basedir, recursive=TRUE)
-    datafiles <- allfiles[- c(grep("All", allfiles), grep("baseData", allfiles),grep("auditData", allfiles), grep("media", allfiles))]
-    missindex <- grep("treeMiss", datafiles)
+    dirs <- dir(expDir, recursive = FALSE)
+    allfiles <- list.files(expDir, recursive=TRUE)
+    datafiles <- allfiles[- c(grep("All", allfiles), grep("baseData", allfiles), grep("auditData", allfiles), grep("media", allfiles))]
+    #missindex <- grep("treeMiss", datafiles)
     resindex <- grep("Resumo", datafiles)
-    treefiles <- file.path(basedir,datafiles[-c(missindex, resindex)])
-    treefiles <- grep("/tree", treefiles, value=TRUE) 
-    missfiles <- file.path(basedir,datafiles[missindex]) 
-    resfiles <- file.path(basedir,datafiles[resindex])
+    treefiles <- file.path(expDir, datafiles[- resindex])
+    treefiles <- grep("\\/tree", treefiles, value=TRUE) 
+    #missfiles <- file.path(basedir,datafiles[missindex]) 
+    resfiles <- file.path(expDir, datafiles[resindex])
     # first files
     tree1 <- read.table(treefiles[1], header=TRUE, as.is=TRUE, sep="\t")   
     res1 <- read.table(resfiles[1], header=TRUE, as.is=TRUE, sep="\t")
-     ## checking names, if some variable is missing, creating it with NAs
-    ## this is important for old forms to be merged.
-    tree1[,treenames[!(treenames %in% names(tree1))]] <- NA
-    res1[,resnames[!(resnames %in% names(res1))]] <- NA
-    if(length(missindex)>0)
-    {
-        miss1 <- read.table(missfiles[1], header=TRUE, as.is=TRUE, sep="\t")
-        miss1[,missnames[!(missnames %in% names(miss1))]] <- NA
-    }
-
+    treeNames <- names(tree1)
+    resNames <- names(res1)
     if(length(treefiles)>1)
     {
         for(i in 2: length(treefiles))
         {
             tree0 <- read.table(treefiles[i], header=TRUE, as.is=TRUE, sep="\t")
-            tree0[,treenames[!(treenames %in% names(tree0))]] <- NA
-            tree1 <- rbind(tree1,  tree0)
+            tree1 <- merge(tree1, tree0, all =TRUE)
             res0 <- read.table(resfiles[i], header=TRUE, as.is=TRUE, sep="\t")
-            res0[,resnames[!(resnames %in% names(res0))]] <- NA
-            res1 <- rbind(res1, res0)
-            if(length(missfiles)>= i)
-            {
-                miss0 <- read.table(missfiles[i], header=TRUE, as.is=TRUE, sep="\t")
-                miss0[,missnames[!(missnames %in% names(miss0))]] <- NA
-                miss1 <- rbind(miss1, miss0)
-            }
+            res1 <- merge(res1, res0, all = TRUE)
         }
     }
 ########################################
-### Tirando tag repetido com mesmos dados
-#########################################
-    dupltag <- tree1$num_tag[duplicated(tree1$num_tag, incomparables=NA)]
-    dupligual <- c( )
-    for(i in dupltag)
+    if(saveFile)
     {
-        postag <- which(tree1$num_tag == i)
-        dupldata <- tree1[postag, c("dap2025","alt2025", "fam2025", "sp2025")]
-        dupligual <- c(dupligual,postag[duplicated(dupldata)])
-    }
-    treedupl <- tree1[(1:nrow(tree1) %in% dupligual),]
-    tree1 <- tree1[!(1:nrow(tree1) %in% dupligual),]
-    res1 <-  res1[!(1:nrow(res1) %in% dupligual),]
-    resList <- list(tree= tree1, restree = res1)
-    if(length(dupligual)>0)
-    {
-        resList$dupltag <- treedupl
-    }
-    if(save.files)
-    {
-        write.table(tree1, file = file.path(basedir, paste("treeAll", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
-        write.table(res1, file = file.path(basedir,paste("treeResAll", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
-        if(length(dupligual)>0)
-        {
-            write.table(treedupl, file = file.path(basedir,paste("treeDuplAll", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
-        }
+        write.table(tree1, file = file.path(expDir, paste("treeAll", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
+        write.table(res1, file = file.path(expDir,paste("treeResAll", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
     }    
    # exclude found missed tree and save if exists
-    if(exists("miss1"))
+    if(mergeMedia)
     {
-        missfound <-  miss1$miss_num %in% tree1$num_tag
-        miss1 <- miss1[!missfound, ]
-        if(save.files)
-        {
-            write.table(miss1, file = file.path(basedir, paste("treeMissAll", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
-        }
-        resList$treeMiss <- miss1
-    }
-    if(media.merge)
-    {
-        dirmedia<- file.path(basedir, "allMedia")  
-        mediafiles <- file.path(basedir,grep("media", allfiles, value =TRUE))
+        dirmedia<- file.path(expDir, "allMedia")  
+        mediafiles <- file.path(expDir, grep("media", allfiles, value =TRUE))
         medianames <- sapply(strsplit(mediafiles, "/"), function(x){x[length(x)]})
         dir.create(dirmedia)
         mediavf<- file.copy(from = mediafiles, dirmedia)
-        media7z <-paste("7z a", file.path(basedir, "allmedia"), file.path(dirmedia, "*"))
+        if(zipMedia)
+        {
+            cat("O processo de compressão de arquivos necessita ter o 7-zip instalado no sistema (https://www.7-zip.org/download.html)\n")
+        media7z <-paste("7z a", file.path(expDir, "allmedia"), file.path(dirmedia, "*"))
         system(media7z)
         unlink(dirmedia, recursive = TRUE)
+        }
     }
-    invisible(resList)
+    invisible(res1)
 }
 ####################
 ## Presta Conta OKD
