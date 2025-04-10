@@ -1,5 +1,5 @@
-fusteUnico <-
-function(dados, fuste = "stemtag", tag= "tag", dap= "dbh", censos= c("01","02"), sufixo= ".mm")
+##' @export
+fusteUnico <- function(dados, fuste = "stemtag", tag= "tag", dap= "dbh", censos= c("01","02"), sufixo= ".mm")
 {
     namedbh=paste(dap, censos,sufixo, sep="")
     new_namedbh= paste(dap, censos,".cm", sep="")
@@ -12,6 +12,7 @@ function(dados, fuste = "stemtag", tag= "tag", dap= "dbh", censos= c("01","02"),
     return(dados.cm)
 }
 ####### calculate dap.cm from multistem dap.mm
+##' @export
 dap2cm <- function(x)
     {
         ab <- sum(pi*(x/20)^2, na.rm=TRUE)

@@ -7,7 +7,7 @@
 \alias{xyMin}
 \alias{splitPlotXY}
 \alias{splitPlotData}
-\title{Functions to calculate subplot index and coordinates}
+\title{Functions to calculate subplot index, code and coordinates}
 \usage{
 splitPlot(dx, dy, splitX = 5, splitY = splitX, maxX = 20, maxY = maxX)
 
@@ -34,9 +34,17 @@ splitPlotData(
 )
 }
 \arguments{
-\item{dx}{x coordinate inside subplots}
+\item{dx}{x coordinate for subplot}
 
 \item{dy}{y coordinate inside subplots}
+
+\item{splitX}{x size of subquadrats}
+
+\item{splitY}{y size of subquadrats, default equal do 'splitX'}
+
+\item{maxX}{maximum potential value for 'dx'}
+
+\item{maxY}{maximum potential value for 'dy'}
 
 \item{gx}{x coordinate for the all plot}
 
@@ -51,10 +59,10 @@ splitPlotData(
 \item{plot.code}{subplot codes}
 }
 \value{
-return a new coordinates gx and gy or plot.code  with basal area and recalculated dbh for each tree.
+return a new coordinates gx and gy or plot code in the format '0x0' representing origin for subplot
 }
 \description{
-'splitPlot' create a index for subplots of any dimension
+'splitPlot' create a code for subquadrats of any dimension
 }
 \details{
 'subplotXY' calculate the x and y coordinates for subplots

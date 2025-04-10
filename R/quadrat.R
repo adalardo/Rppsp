@@ -1,7 +1,7 @@
 ##############################
-##' Functions to calculate subplot index and coordinates
+##' Functions to calculate subplot index, code and coordinates
 ##'
-##' 'splitPlot' create a index for subplots of any dimension
+##' 'splitPlot' create a code for subquadrats of any dimension
 ##' 
 ##' 'subplotXY' calculate the x and y coordinates for subplots
 ##' 
@@ -10,7 +10,7 @@
 ##' 'subplotIndex' calculate x and y coordinates for a vector of suplots
 ##'
 ##' @name subplot
-##' @param dx x coordinate inside subplots
+##' @param dx x coordinate for subplot 
 ##' @param dy y coordinate inside subplots 
 ##' @param gx x coordinate for the all plot
 ##' @param gy y coordinate for the all plot 
@@ -18,7 +18,13 @@
 ##' @param max.x maximum x coordinate
 ##' @param max.y maximum y coordinate  
 ##' @param plot.code subplot codes
-##' @return return a new coordinates gx and gy or plot.code  with basal area and recalculated dbh for each tree. 
+##' @param splitX x size of subquadrats
+##' @param splitY y size of subquadrats, default equal do 'splitX'
+##' @param maxX  maximum potential value for 'dx' 
+##' @param maxY  maximum potential value for 'dy'
+
+
+##' @return return a new coordinates gx and gy or plot code in the format '0x0' representing origin for subplot
 ##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 ##' @seealso 
 ##' \url{http://labtrop.ib.usp.br}
@@ -32,6 +38,7 @@
 ##' xyMin(subplot_code = paste(sample(xcode, size = 25, replace = TRUE), sample(ycode, size = 25, replace = TRUE), sep = ""))  
 ##' }
 ##' @rdname subplot
+##' @export
 splitPlot <- function(dx, dy, splitX = 5, splitY = splitX, maxX = 20, maxY = maxX)
 {
     posX <- seq(splitX, maxX - splitX, by= splitX)
@@ -43,6 +50,7 @@ splitPlot <- function(dx, dy, splitX = 5, splitY = splitX, maxX = 20, maxY = max
     return(dXY) 
 }
 ##' @rdname subplot
+##' @export
 subplotXY <- function(xcode = LETTERS[1:16], ycode= c(paste(0, 0:9, sep = ""), 10:15), xsub = 20, ysub = 20)
 {
     nx <- length(xcode)
@@ -55,6 +63,7 @@ subplotXY <- function(xcode = LETTERS[1:16], ycode= c(paste(0, 0:9, sep = ""), 1
     return(data.frame(subplot, xlim, ylim))
 }
 ##' @rdname subplot
+##' @export
 xyMin <- function(subplot_code, xymin = subplotXY())
 {
     seq.code <- match(subplot_code, xymin$subplot)
@@ -62,6 +71,7 @@ xyMin <- function(subplot_code, xymin = subplotXY())
 }
 
 ##' @rdname subplot
+##' @export
 splitPlotXY <- function(subplotxy, splitX = 5, splitY = splitX, maxX = 20, maxY = maxX)
 {
     posX <- seq(0, maxX - splitX, by= splitX)
@@ -81,6 +91,7 @@ splitPlotXY <- function(subplotxy, splitX = 5, splitY = splitX, maxX = 20, maxY 
     return(splitQuadXY)   
 }
 ##' @rdname subplot
+##' @export
 splitPlotData <- function(censoData, subplotCodes, splitQuadXY, buffer = 2, dbh = "dbh", gx = "gx", gy = "gy", status = "status19")
 {
     splitX <- attr(splitQuadXY, 'splitX') 

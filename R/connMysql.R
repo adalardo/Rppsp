@@ -18,7 +18,7 @@
 ##' connMysql(database = "ppsp",  census = NULL)
 ##' }
 ##' 
-##' @export connMysql
+##' @export 
 connMysql = function(dbname = "ppsp")
 {
     #library(RMySQL) should be import by the package NAMESPACE

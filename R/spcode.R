@@ -3,6 +3,7 @@
 ################################################
 ##create species code with the first 4 letters from genus and first 2 from epithet
 ## 'sp' is a vector with species name with or without "cf." "aff." - if has more than 3 letters will use first and last  to create codes. If there is duplicated codes, user are asked to enter a new code.
+##' @export
 spcode=function(sp)
 {
 genero=unlist(lapply(sp, function(x){strsplit(x," ")[[1]][1]}))
@@ -22,6 +23,7 @@ return(code)
 ##########################################################
 # check if there is duplicated codes for different species
 ##########################################################
+##' @export
 lista.spcode=function(splist)
 {
 checar=unique(splist)

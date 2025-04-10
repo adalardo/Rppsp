@@ -1,19 +1,21 @@
 ##############################################
 ##### get valid name from Flora do Brasil list
 ##############################################
-flora.name<-function(splist)
+##' @export
+##' @importFrom flora get.taxa
+floraName<-function(splist)
 {
-    require(flora)
-    gname <- get.taxa(splist)
+    gname <- flora::get.taxa(splist)
     res<-data.frame(validName = gname$scientif.name, shortName=splitname(gname$scientif.name, pattern=" ", indet=2 ))
     return(res)
 }
 ############
 ## data list
 ############
-datasplist<-function(speciesCol)
+##' @export
+spListNames<-function(speciesCol)
     {
         splist <- unique(speciesCol)
-        fname <- flora.name(splist)
+        fname <- floraName(splist)
         fname
     }

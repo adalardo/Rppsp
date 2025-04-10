@@ -1,3 +1,4 @@
+##' @export
 WSGvalues <- function(PlotData=peic, Region=c("South America"), Region2= c("tropical", "extratropical"))
 {
 #peic<-read.csv("/home/ale/Ale2013/AleProjetos/Restinga/PP_Restinga/dadosUso/peic04_09FusteLinha.txt", sep="\t", header = TRUE, as.is=TRUE)
@@ -67,7 +68,7 @@ Taxa<-summaryBy(data~fam+gen+epit, data=PlotData)[,-c(4)]  # List of all taxa st
   #if(nrow(Result)!=nrow(PlotData)) warning(paste("The input and the output tables have a different number of rows"))
   #return(Result)
 }
-
+##' @export
 wd2plotdata <- function(plotdata, wsgdata)
     {
         merge(plotdata, wd, by=c("fam", "gen", "epit"))

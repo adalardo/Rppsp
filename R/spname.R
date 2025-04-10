@@ -1,6 +1,7 @@
 ###################################
 ## split species name using pattern
 ####################################
+##' @export
 splitname <- function(splist, pattern=" ", indet=2)
 {
     res <-matrix(NA, nrow=length(splist), ncol=2)
@@ -21,6 +22,7 @@ splitname <- function(splist, pattern=" ", indet=2)
 ##############################################
 ##### get valid name from Flora do Brasil list
 ##############################################
+##' @export
 flora.name<-function(splist)
 {
     require(flora)
@@ -30,6 +32,7 @@ flora.name<-function(splist)
 ############
 ## data list
 ############
+##' @export
 datasplist<-function(speciesCol)
     {
         splist <- unique(speciesCol)

@@ -15,6 +15,7 @@
 ##' \dontrun{
 ##'dados<- data.frame(sp= rep(c("sp1", "sp2", "sp3"), 4), dbh01.mm= rep(c("110;12;130;14", "140;13;12", "14;13", "14"), 3), dbh02.mm= rep(c("150;16;17;18", "NA", "18", "18"), 3) , alt=seq(10, 50, len=12), date01="10-10-2002", date02="10-10-2005", status01= "A", status02 =sample(c(rep("A", 10), "D","D")), stringsAsFactors = FALSE, tag=paste(0, 1:12, sep="") )
 ##' adjDAP(dados, dap = "dbh", censos = c("01", "02"), sufixo = ".mm")}
+##' @export
 adjDAP <- function(dados, dap= "dbh", censos= c("01","02"), sufixo= ".mm")
     {
     library(tcltk)

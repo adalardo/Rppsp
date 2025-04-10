@@ -173,11 +173,11 @@ joinODK <- function(csvDir = "censoPPSP",  saveFile = TRUE, expDir = getwd())
     names(treequad)[which(names(treequad) =='KEY.y')] <- "key_quad"
     names(treequad)[which(names(treequad) =='parcela.quadrat')] <- "quadrat"
     names(treequad)[names(treequad) == qsize] <- "subquad"
-    treequad$subquad <- gsub("quad_", "", treequad$subquad)
+    sq <- gsub("quad_", "", treequad$subquad)
     ###########################################################
     ###### New maps: for mapping errors or new trees
     ###########################################################
-    startxy <- strsplit( treequad$subquad, "x")
+    startxy <- strsplit(sq, "x")
     stx <- as.numeric(sapply(startxy, function(x){x[1]}))
     sty <- as.numeric(sapply(startxy, function(x){x[2]}))
     iMap <- which(treequad$arvmap_conf == "map_no" | treequad$tree_type =="sem_info")
