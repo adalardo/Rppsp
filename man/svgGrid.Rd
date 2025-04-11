@@ -18,6 +18,8 @@ svgGrid(
   status = "status",
   subquad = "subquad",
   mapsize = c(13, 13),
+  vpSize = c(0.9, 0.9),
+  fontSize = 12,
   diagonal = FALSE
 )
 }

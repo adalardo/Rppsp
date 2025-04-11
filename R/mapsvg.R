@@ -27,7 +27,7 @@
 ##' @export
 ##'
 #################################
-svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dbh = "dbh", status= "status", mapsize = c(13,13), diagonal = FALSE)
+svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dbh = "dbh", status= "status", mapsize = c(13,13), vpSize = c(0.9, 0.9), fontSize = 12, diagonal = FALSE)
 {
     if(! exists("mapData"))
     {
@@ -53,12 +53,12 @@ svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.
 ##############################
         dev.new(width = mapsize[1], height = mapsize[2])
         vptop<- viewport(y=0.9, width=0.8, height=0.2)
-        grid.text(x=0.5, y=0.9, paste("Unidade de Trabalho", subquadNames[j] ) ,vp= vptop, gp=gpar(fontsize = 25))
-        vp <- viewport(width = 0.8, height = 0.8, xscale = c(- buffer,  splitX + buffer), yscale= c( - buffer, splitY + buffer))
+        grid.text(x=0.5, y=0.9, paste("Unidade de Trabalho", subquadNames[j] ) ,vp= vptop, gp=gpar(fontsize = fontSize + 10))
+        vp <- viewport(width = vpSize[1], height = vpSize[2], xscale = c(- buffer,  splitX + buffer), yscale= c( - buffer, splitY + buffer))
         pushViewport(vp)
         grid.rect(gp = gpar(col = "black"))
-        grid.xaxis(seq(- buffer, splitX + buffer, by = splitX/5), at=seq( - buffer,  splitX + buffer, by = splitX/5), gp=gpar(fontsize=25))
-        grid.yaxis(seq(-buffer, splitY + buffer, by = splitY/5), at=seq( - buffer,  splitY + buffer, by = splitY/5), gp=gpar(fontsize=25))
+        grid.xaxis(seq(- buffer, splitX + buffer, by = splitX/5), at=seq( - buffer,  splitX + buffer, by = splitX/5), gp=gpar(fontsize= fontSize + 5))
+        grid.yaxis(seq(-buffer, splitY + buffer, by = splitY/5), at=seq( - buffer,  splitY + buffer, by = splitY/5), gp=gpar(fontsize= fontSize + 5))
 
         for(i in 1:nrow(subquad))
         {
@@ -75,8 +75,8 @@ svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.
         {
            grid.segments(x0= 0 , y0 = splitY , x1 = splitX,  y1= 0, default.units="native", gp= gpar(lty = 2)) 
         }
-        grid.text(c(subXY[1], subXY[1]+ splitX) , x=  c(0,  splitX), y= c(-0.2, -0.2), default.units="native", gp = gpar(fontsize = 20, col="red"))
-        grid.text(c(subXY[2], subXY[2] + splitY) , y =  c(0, splitY), x= c(-0.2, -0.2), default.units="native", gp = gpar(fontsize = 20, col = "red"))
+        grid.text(c(subXY[1], subXY[1]+ splitX) , x=  c(0,  splitX), y= c(-0.2, -0.2), default.units="native", gp = gpar(fontsize = fontSize, col="red"))
+        grid.text(c(subXY[2], subXY[2] + splitY) , y =  c(0, splitY), x= c(-0.2, -0.2), default.units="native", gp = gpar(fontsize = fontSize, col = "red"))
         if(svgSave)
         {
             if(!dir.exists(wd2save))
@@ -123,7 +123,7 @@ svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.
 ##'
 #################################
 
-svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.2, svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dbhcm = "dbhcm", status= "status", subquad = "subquad", mapsize = c(13,13), diagonal = FALSE)
+svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.2, svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dbhcm = "dbhcm", status= "status", subquad = "subquad", mapsize = c(13,13), vpSize = c(0.9, 0.9), fontSize = 12, diagonal = FALSE)
 {
     if(! exists("censoData"))
     {
@@ -144,12 +144,12 @@ svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.
 #############
     dev.new( width = mapsize[1], height = mapsize[2]) #, fontsize = 12)
     vptop<- viewport(y=0.9, width=0.9, height=0.2)
-    grid.text(x=0.5, y=0.9, paste(j,  "- grid de mapeamento", subqSize,  "x",subqSize,"m"), vp= vptop, gp=gpar(fontsize = 20))
-    vp <- viewport(width = 0.9, height = 0.9, xscale=c(0,10), yscale=c(0,10))
+    grid.text(x=0.5, y=0.9, paste(j,  "- grid de mapeamento", subqSize,  "x",subqSize,"m"), vp= vptop, gp=gpar(fontsize = fontSize + 5))
+    vp <- viewport(width = vpSize[1], height = vpSize[2], xscale=c(0,10), yscale=c(0,10))
     pushViewport(vp)
     grid.rect(gp = gpar(col = "black"))
-    grid.xaxis(at=seq(0, subqSize, by=.5), gp = gpar(fontsize=12, tcl = NA))
-    grid.yaxis(at=seq(0, subqSize, blocPosy=.5), gp = gpar(fontsize=12, tcl = NA))
+    grid.xaxis(at=seq(0, subqSize, by=.5), gp = gpar(fontsize = fontSize, tcl = NA))
+    grid.yaxis(at=seq(0, subqSize, by=.5), gp = gpar(fontsize = fontSize, tcl = NA))
     xseq = rep(seq(0.0, subqSize - gridSize, by = gridSize), each = subqSize/gridSize)
     yseq = rep(seq(0.0, subqSize - gridSize, by = gridSize), subqSize/gridSize)
     loc_key_10 = paste("x = ",sprintf("%1.1f", xseq), "; y = ", sprintf("%1.1f", yseq),"; ", sep="")

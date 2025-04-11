@@ -4,14 +4,14 @@
 \alias{joinODK}
 \title{Join odk exported csv files on a single data frame object}
 \usage{
-joinODK(csvDir = "censoPPSP", saveFile = TRUE, expDir = getwd())
+joinODK(csvDir = getwd(), expDir = getwd(), saveFile = TRUE)
 }
 \arguments{
 \item{csvDir}{directory direction to ODK csv exported files}
 
-\item{saveFile}{logical, if TRUE file will be saved in expDir}
-
 \item{expDir}{Data export directory}
+
+\item{saveFile}{logical, if TRUE file will be saved in expDir}
 }
 \value{
 'joinODK' returns txt files that merge ODK csv files exported and keep the csv files in the baseData directory.

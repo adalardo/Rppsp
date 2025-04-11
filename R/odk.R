@@ -87,16 +87,26 @@ expODK <- function(colDir = getwd(), stDir = getwd(), expDir = getwd(), formId =
 ##'
 ##'
 ##
-## csvDir <- "/home/aao/Ale2024/AleProjetos/PPPeic/censo2025/dadosPPSP/Assis/dadosODKExportados/tab04_27mar_2025"
-joinODK <- function(csvDir = "censoPPSP",  saveFile = TRUE, expDir = getwd())
+## expDir <- "/home/aao/Ale2024/AleProjetos/PPPeic/censo2025/dadosPPSP/Assis/testExp/odkCSV"
+joinODK <- function(csvDir = getwd(), expDir = getwd(),  saveFile = TRUE)
 {
-    ## base dir
+    ## base dir 
     baseDir <- dirname(csvDir)
     nameBase <- basename(csvDir)
     namesFiles <- sort(grep(".*\\.csv?", list.files(csvDir), value = TRUE), decreasing = TRUE)
-#    csvNames <- sort(namesFiles, decreasing = TRUE)
+#   csvNames <- sort(namesFiles, decreasing = TRUE)
     formName <- gsub(paste(nameBase,"|.csv", sep = ""), "", namesFiles)
     formName[formName == ""] <- "-base"
+## ordenando os arquivos pelo nome dos formularios    
+    formOrder <- rep(NA, length(formName))
+    formOrder[1] <- grep("base", formName)
+    formOrder[2] <- grep("tree", formName) 
+    formOrder[3] <- grep("subquad", formName) 
+    formOrder[4] <- grep("sec_fuste$", formName)
+    formOrder[5] <- grep("sec_fuste_miss", formName)
+    formOrder[6] <- grep("rep_miss", formName) 
+    formName <- formName[formOrder]
+    namesFiles <- namesFiles[formOrder]
     for(j in 1:length(namesFiles))
     {
         assign(paste("form", j, sep = ""), read.table(file.path(csvDir, namesFiles[j]), header = TRUE, as.is = TRUE, sep = ","))
@@ -193,35 +203,39 @@ joinODK <- function(csvDir = "censoPPSP",  saveFile = TRUE, expDir = getwd())
     treequad$new_secDap <- NA
     treequad$new_secAlt <- NA
     names(form5) <- gsub("_miss$", "", names(form5))
-    fusteMult <- merge(form4, form5, by = intersect(names(form4), names(form5)), all = TRUE)
-    fusteMult$dap2mm <- fusteMult$dap_mm_sec
-    fusteMult$dap2mm[!is.na(fusteMult$dap_cm_sec)] <- fusteMult$dap_cm_sec[!is.na(fusteMult$dap_cm_sec)] *10
-    fusteMult$dap2mm[!is.na(fusteMult$pap_cm_sec)] <- round(form4$pap_cm_sec[!is.na(form4$pap_cm_sec)] *10/pi)
-    oneKey <- unique(fusteMult$PARENT_KEY)
-    for(i in 1:length(oneKey))
+    if(nrow(form5) > 0 | nrow(form4) > 0)
     {
-        k <- oneKey[i]
-        secF <- fusteMult[fusteMult$PARENT_KEY == k,]
-    
-        nf <- nrow(secF) + 1
-        ## colocando os daps e alt em ordem 
-        dap01 <- treequad$dap_final[treequad$key_tree == k]
-        alt01 <- treequad$alt_final[treequad$key_tree == k]
-        mdap <- sort(as.numeric(c(dap01,secF$dap2mm)), decreasing=TRUE)
-        malt <- sort(as.numeric(c(alt01,secF$sec_alt_new)), decreasing=TRUE)
-        dapsec <- paste(mdap[-1], collapse = ";")
-        altsec <- paste(malt[-1], collapse = ";")
-        if(dap01 != mdap[1])
+        fusteMult <- merge(form4, form5, by = intersect(names(form4), names(form5)), all = TRUE)
+        fusteMult$dap2mm <- fusteMult$dap_mm_sec
+        fusteMult$dap2mm[!is.na(fusteMult$dap_cm_sec)] <- fusteMult$dap_cm_sec[!is.na(fusteMult$dap_cm_sec)] *10
+        fusteMult$dap2mm[!is.na(fusteMult$pap_cm_sec)] <- round(form4$pap_cm_sec[!is.na(form4$pap_cm_sec)] *10/pi)
+        oneKey <- unique(fusteMult$PARENT_KEY)
+        for(i in 1:length(oneKey))
         {
-            treequad[treequad$key_tree == k, c("dap_final")] <- mdap[1]
-        }
-        if(alt01 != malt[1])
-        {
-            treequad[treequad$key_tree == k, c("alt_final")] <- malt[1]
-        }
-        treequad[treequad$key_tree == k, c("new_nfuste")] <- nf
-        treequad[treequad$key_tree == k,  "new_secDap"] <-  dapsec
-        treequad[treequad$key_tree == k,  "new_secAlt"] <-  altsec
+            k <- oneKey[i]
+            secF <- fusteMult[fusteMult$PARENT_KEY == k,]
+            nf <- nrow(secF) + 1
+            ## colocando os daps e alt em ordem 
+            ## dap01 <- treequad$dap_final[treequad$key_tree == k]
+            ## alt01 <- treequad$alt_final[treequad$key_tree == k]
+            ## mdap <- sort(as.numeric(c(dap01,secF$dap2mm)), decreasing=TRUE)
+            ## malt <- sort(as.numeric(c(alt01,secF$sec_alt_new)), decreasing=TRUE)
+            ## dapsec <- paste(mdap[-1], collapse = ";")
+            ## altsec <- paste(malt[-1], collapse = ";")
+            ## if(dap01 != mdap[1])
+            ## {
+            ##     treequad[treequad$key_tree == k, c("dap_final")] <- mdap[1]
+            ## }
+            ## if(alt01 != malt[1])
+            ## {
+            ##     treequad[treequad$key_tree == k, c("alt_final")] <- malt[1]
+            ## }
+            dapsec <- paste(sort(as.numeric(secF$dap2mm), decreasing=TRUE), collapse = ";")
+            altsec <- paste(sort(as.numeric(secF$sec_alt_new), decreasing=TRUE), collapse = ";")
+            treequad[treequad$key_tree == k, c("new_nfuste")] <- nf
+            treequad[treequad$key_tree == k,  "new_secDap"] <-  dapsec
+            treequad[treequad$key_tree == k,  "new_secAlt"] <-  altsec
+         }
     }
 ###############################
 #### tirando dados duplicados
@@ -242,7 +256,7 @@ joinODK <- function(csvDir = "censoPPSP",  saveFile = TRUE, expDir = getwd())
     nres  <- nres00[nres00 %in% names(treequad)]
     treeres <- treequad[, nres]
     t01 <- unique(treeres$today)[1]
-    tsep <- strsplit(t01, split = "\\. |, ")[[1]]
+    tsep <- strsplit(t01, split = "\\. |, | ")[[1]]
     today <- paste(tsep[c(2,1,3)], sep = "", collapse = "")
 ###################
 ###### save file
@@ -274,8 +288,8 @@ joinODK <- function(csvDir = "censoPPSP",  saveFile = TRUE, expDir = getwd())
         {
             unlink(csvDir, recursive = TRUE)
         }
-        write.table(treequad, file.path(dname, paste("tree",qname, today, ".txt", sep="")), sep="\t", row.names=FALSE)
-        write.table(treeres, file.path(dname, paste("treeResumo",qname, today, ".txt", sep="")), sep="\t", row.names=FALSE)
+        write.table(treequad, file.path(dname, paste("tree",qname, "_" ,today, ".txt", sep="")), sep="\t", row.names=FALSE)
+        write.table(treeres, file.path(dname, paste("treeResumo",qname,"_" ,today, ".txt", sep="")), sep="\t", row.names=FALSE)
     }
 ### INCLUIR UMA SAIDA DE LEITURA DE DADOS EM UM DIRETORIO ESPECIFICO
 invisible(treeres)
