@@ -17,7 +17,7 @@ svgGrid(
   dbhcm = "dbhcm",
   status = "status",
   subquad = "subquad",
-  mapsize = c(13, 13),
+  mapSize = c(13, 13),
   vpSize = c(0.9, 0.9),
   fontSize = 12,
   diagonal = FALSE
@@ -42,7 +42,7 @@ svgGrid(
 
 \item{subquad}{a character string of the name of the subquad variable, representing some subunit of the subplot.}
 
-\item{mapsize}{size of the figure in inchs.}
+\item{mapSize}{size of the figure in inchs.}
 
 \item{diagonal}{logical, if TRUE the diagonals will be plot.}
 }

@@ -791,8 +791,8 @@ mergeData <- function(expDir = getwd(), mergeMedia = TRUE, saveFile = TRUE, zipM
 ########################################
     if(saveFile)
     {
-        write.table(tree1, file = file.path(expDir, paste("treeAll", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
-        write.table(res1, file = file.path(expDir,paste("treeResAll", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
+        write.table(tree1, file = file.path(expDir, paste("treeAll_", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
+        write.table(res1, file = file.path(expDir,paste("treeResAll_", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
     }    
    # exclude found missed tree and save if exists
     if(mergeMedia)

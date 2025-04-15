@@ -14,29 +14,43 @@ svgMap(
   tag = "tag",
   dbh = "dbh",
   status = "status",
-  mapsize = c(13, 13),
+  mapSize = c(13, 13),
   vpSize = c(0.9, 0.9),
   fontSize = 12,
   diagonal = FALSE
 )
 }
 \arguments{
-\item{dx}{between 0 to max.size . Tree mapping X coordinate.}
+\item{mapData}{list with data for each subquadrat with a buffer zone.}
 
-\item{dy}{between 0 to max.size . Tree mapping Y coordinate.}
+\item{subPlotCode}{Character string that indetified subplot code.}
 
-\item{size.split}{the size of the subquadrat to map in each graphic.}
+\item{svgSave}{logical, if TRUE the device is exported to a svg file.}
 
-\item{censo}{data frame from permanent plot tree censo cartezian data.}
+\item{wd2save}{character string indicating the directory to save the svg fi}
 
-\item{quad}{a character string or factor representing some subunit of the permanent plot.}
+\item{dx}{name of the variável in censoData that contains the subplot x coord}
 
-\item{save.svg}{logical true to save a svg file}
+\item{dy}{name of the variável in censoData that contains the subplot y coordenate of the trees.}
 
-\item{wd}{character string indicating directory towhere the file will be saved.}
+\item{tag}{character string with the name of the variável in censoData that contains the tag code that identifies trees.}
+
+\item{dbh}{character string with the name of the variable diameter at breast high.}
+
+\item{status}{character string with the name of the variable with the status of the tree ("A" = alive, "D" = dead).}
+
+\item{mapSize}{size of the screen device window in inchs.}
+
+\item{vpSize}{proportion of plot area in 'mapSize'.}
+
+\item{fontSize}{numeric defining the font size.}
+
+\item{diagonal}{logical, if TRUE the diagonals will be ploted.}
+
+\item{subquad}{a character string of the name of the subquad variable, representing some subunit of the subplot.}
 }
 \value{
-'mapsvg' returns tree mapped svg mapped with svg pattern ids.
+'svgGrid' returns figure device and export a svg file.
 }
 \description{
 Map of trees from permanent plot based on cartesian coordinates

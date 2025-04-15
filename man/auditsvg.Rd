@@ -14,7 +14,7 @@ auditsvg(
   tag = "num_tag",
   dap = "dap2018",
   error = "errorType",
-  mapsize = c(13, 13)
+  mapSize = c(13, 13)
 )
 }
 \arguments{

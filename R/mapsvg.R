@@ -1,19 +1,26 @@
 ############################################
 ### Alexandre Adalardo 15 de outubro de 2018
-### versao: 01 de abril de 2025
+### versao: 15 de abril de 2025
 #############################################
 # permanent plot maps
 #####################
 ##' @title Graphic of trees maped 
 ##' @description Map of trees from permanent plot based on cartesian coordinates 
-##' @param dx between 0 to max.size . Tree mapping X coordinate.
-##' @param dy between 0 to max.size . Tree mapping Y coordinate.
-##' @param size.split the size of the subquadrat to map in each graphic.
-##' @param censo data frame from permanent plot tree censo cartezian data. 
-##' @param quad a character string or factor representing some subunit of the permanent plot.
-##' @param save.svg logical true to save a svg file
-##' @param wd character string indicating directory towhere the file will be saved. 
-##' @return 'mapsvg' returns tree mapped svg mapped with svg pattern ids. 
+##' @param mapData list with data for each subquadrat with a buffer zone. 
+##' @param subPlotCode Character string that indetified subplot code.
+##' @param svgSave logical, if TRUE the device is exported to a svg file. 
+##' @param wd2save character string indicating the directory to save the svg fi
+##' @param dx name of the variável in censoData that contains the subplot x coord
+##' @param dy name of the variável in censoData that contains the subplot y coordenate of the trees.
+##' @param tag character string with the name of the variável in censoData that contains the tag code that identifies trees.
+##' @param status character string with the name of the variable with the status of the tree ("A" = alive, "D" = dead).
+##' @param dbh character string with the name of the variable diameter at breast high.
+##' @param subquad a character string of the name of the subquad variable, representing some subunit of the subplot.
+##' @param mapSize size of the screen device window in inchs.
+##' @param vpSize proportion of plot area in 'mapSize'.
+##' @param fontSize numeric defining the font size.
+##' @param diagonal logical, if TRUE the diagonals will be ploted. 
+##' @return 'svgGrid' returns figure device and export a svg file. 
 ##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 ##' @seealso \code{\link{gridSVG}} 
 ##' \url{http://labtrop.ib.usp.br}
@@ -23,11 +30,10 @@
 ##' }
 ##' @import grid
 ##' @import gridSVG
-
 ##' @export
 ##'
 #################################
-svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dbh = "dbh", status= "status", mapsize = c(13,13), vpSize = c(0.9, 0.9), fontSize = 12, diagonal = FALSE)
+svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dbh = "dbh", status= "status", mapSize = c(13,13), vpSize = c(0.9, 0.9), fontSize = 12, diagonal = FALSE)
 {
     if(! exists("mapData"))
     {
@@ -51,19 +57,19 @@ svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.
 ##############################
 ## plot here
 ##############################
-        dev.new(width = mapsize[1], height = mapsize[2])
+        dev.new(width = mapSize[1], height = mapSize[2])
         vptop<- viewport(y=0.9, width=0.8, height=0.2)
-        grid.text(x=0.5, y=0.9, paste("Unidade de Trabalho", subquadNames[j] ) ,vp= vptop, gp=gpar(fontsize = fontSize + 10))
+        grid.text(x=0.5, y=0.9, paste("Unidade de Trabalho", subquadNames[j] ) ,vp= vptop, gp=gpar(fontsize = fontSize + 5))
         vp <- viewport(width = vpSize[1], height = vpSize[2], xscale = c(- buffer,  splitX + buffer), yscale= c( - buffer, splitY + buffer))
         pushViewport(vp)
         grid.rect(gp = gpar(col = "black"))
-        grid.xaxis(seq(- buffer, splitX + buffer, by = splitX/5), at=seq( - buffer,  splitX + buffer, by = splitX/5), gp=gpar(fontsize= fontSize + 5))
-        grid.yaxis(seq(-buffer, splitY + buffer, by = splitY/5), at=seq( - buffer,  splitY + buffer, by = splitY/5), gp=gpar(fontsize= fontSize + 5))
+        grid.xaxis(seq(- buffer, splitX + buffer, by = splitX/5), at=seq( - buffer,  splitX + buffer, by = splitX/5), gp=gpar(fontsize= fontSize))
+        grid.yaxis(seq(-buffer, splitY + buffer, by = splitY/5), at=seq( - buffer,  splitY + buffer, by = splitY/5), gp=gpar(fontsize= fontSize))
 
         for(i in 1:nrow(subquad))
         {
             grid.circle(x= subquad[i, dx],y=subquad[i, dy], r= log(subquad[i, dbh])/20, default.units="native", gp=gpar(fill=ifelse(subquad[i, status]=="A" | subquad[i, status]=="AS" ,rgb(0,1,0, 0.5), rgb(0,0,1,0.5)), col="black"), name = arv_key[i])
-            grid.text(paste(subquad[i, tag]), x= subquad[i, dx]+log(subquad[i, dbh])/20 ,y=subquad[i, dy]+log(subquad[i, dbh])/15, default.units="native", gp = gpar(cex = 1.5))
+            grid.text(paste(subquad[i, tag]), x= subquad[i, dx]+log(subquad[i, dbh])/20 ,y=subquad[i, dy]+log(subquad[i, dbh])/15, default.units="native", gp = gpar(fontsize = fontSize- 2))
         }
         
         grid.segments(x0= c(0,0, 0, splitX) , y0 = c(0, 0, splitY, splitY) , x1 =c( splitX, 0, splitX, splitX),  y1= c(0, splitY,  splitY, 0), default.units="native", gp= gpar(lty = 2))
@@ -105,7 +111,7 @@ svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.
 ##' @param status  name of the variable with the status of the tree ("A" = alive, "D" = dead).
 ##' @param status the size of the subquadrat to map in each graphic.
 ##' @param subquad a character string of the name of the subquad variable, representing some subunit of the subplot.
-##' @param mapsize size of the figure in inchs.
+##' @param mapSize size of the figure in inchs.
 ##' @param diagonal logical, if TRUE the diagonals will be plot. 
 ##' @return 'svgGrid' returns figure device and export a svg file. 
 ##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
@@ -118,12 +124,10 @@ svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.
 ##'
 ##' @import grid
 ##' @import gridSVG
-
 ##' @export
 ##'
 #################################
-
-svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.2, svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dbhcm = "dbhcm", status= "status", subquad = "subquad", mapsize = c(13,13), vpSize = c(0.9, 0.9), fontSize = 12, diagonal = FALSE)
+svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.2, svgSave = TRUE, wd2save = file.path(getwd(), subPlotCode), dx = "dx", dy = "dy",  tag = "tag", dbhcm = "dbhcm", status= "status", subquad = "subquad", mapSize = c(13,13), vpSize = c(0.9, 0.9), fontSize = 12, diagonal = FALSE)
 {
     if(! exists("censoData"))
     {
@@ -142,7 +146,7 @@ svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.
 #############
 ## plot here
 #############
-    dev.new( width = mapsize[1], height = mapsize[2]) #, fontsize = 12)
+    dev.new( width = mapSize[1], height = mapSize[2]) #, fontsize = 12)
     vptop<- viewport(y=0.9, width=0.9, height=0.2)
     grid.text(x=0.5, y=0.9, paste(j,  "- grid de mapeamento", subqSize,  "x",subqSize,"m"), vp= vptop, gp=gpar(fontsize = fontSize + 5))
     vp <- viewport(width = vpSize[1], height = vpSize[2], xscale=c(0,10), yscale=c(0,10))
@@ -154,7 +158,7 @@ svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.
     yseq = rep(seq(0.0, subqSize - gridSize, by = gridSize), subqSize/gridSize)
     loc_key_10 = paste("x = ",sprintf("%1.1f", xseq), "; y = ", sprintf("%1.1f", yseq),"; ", sep="")
     grid.circle(x= sqData$sx, y= sqData$sy, r= log(sqData[,dbhcm])/20, default.units="native", gp=gpar(fill= c(rgb(0,0,1,0.5), rgb(0,1,0, 0.5))[grepl("A", sqData[,status]) + 1], col="black"))
-    grid.text(paste(sqData[, tag]), x= sqData[, "sx"]+ log(sqData[, dbhcm])/8 , y=sqData[, "sy"] + log(sqData[, dbhcm])/15, default.units="native", gp = gpar(cex = 1.2))
+    grid.text(paste(sqData[, tag]), x= sqData[, "sx"]+ log(sqData[, dbhcm])/8 , y=sqData[, "sy"] + log(sqData[, dbhcm])/15, default.units="native", gp = gpar( fontsize= fontSize - 2))
 #####################
 ##  DIAGONAL:
 #####################
@@ -212,7 +216,7 @@ svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.
 ##'
 ##' @export
 ##' 
-auditsvg <- function(audit, quad = "A00", save.svg = TRUE, wd = getwd(), dx = "new_dx2018", dy = "new_dy2018",  tag = "num_tag", dap = "dap2018", error = "errorType", mapsize = c(13,13))
+auditsvg <- function(audit, quad = "A00", save.svg = TRUE, wd = getwd(), dx = "new_dx2018", dy = "new_dy2018",  tag = "num_tag", dap = "dap2018", error = "errorType", mapSize = c(13,13))
 {
     options(warn = -1)
     ## library("grid")
@@ -230,7 +234,7 @@ auditsvg <- function(audit, quad = "A00", save.svg = TRUE, wd = getwd(), dx = "n
 ###########################
 ## plot here
 ###########################
-    dev.new(width = mapsize[1], height = mapsize[2])
+    dev.new(width = mapSize[1], height = mapSize[2])
     vptop<- viewport(y=0.9, width=0.8, height=0.2)
     grid.text(x=0.5, y=0.9, paste(" Auditoria Parcela ", quad) ,vp= vptop, gp=gpar(fontsize = 20))
     vp <- viewport(width = 0.8, height = 0.8, xscale=c(0, 20), yscale=c(0, 20))
@@ -284,7 +288,7 @@ auditsvg <- function(audit, quad = "A00", save.svg = TRUE, wd = getwd(), dx = "n
 ##' @import gridSVG
 ##'
 ##' @export
-ordersvg <- function(audit, quad = "A00", save.svg = TRUE, wd = getwd(), dx = "new_dx2018", dy = "new_dy2018",  tag = "num_tag", dap = "dap2018", error = "errorType", mapsize = c(13,13))
+ordersvg <- function(audit, quad = "A00", save.svg = TRUE, wd = getwd(), dx = "new_dx2018", dy = "new_dy2018",  tag = "num_tag", dap = "dap2018", error = "errorType", mapSize = c(13,13))
 {
     options(warn = -1)
     ## library("grid")
@@ -305,7 +309,7 @@ ordersvg <- function(audit, quad = "A00", save.svg = TRUE, wd = getwd(), dx = "n
 ###########################
 ## plot here
 ###########################
-    dev.new(width = mapsize[1], height = mapsize[2])
+    dev.new(width = mapSize[1], height = mapSize[2])
     vptop<- viewport(y=0.9, width=0.8, height=0.2)
     grid.text(x=0.5, y=0.9, paste(" Auditoria Parcela ", quad) ,vp= vptop, gp=gpar(fontsize = 20))
     vp <- viewport(width = 0.8, height = 0.8, xscale=c(0, 20), yscale=c(0, 20))
@@ -344,4 +348,4 @@ ordersvg <- function(audit, quad = "A00", save.svg = TRUE, wd = getwd(), dx = "n
 ## audit$new_dy2018[is.na(audit$new_dy201)] <- audit$old_dy[is.na(audit$new_dy2018)]
 ## #indpos <- index.map(dx = audit$new_dx2018, dy= audit$new_dy2018)
 ## audit <- audit[!is.na(audit$num_tag),]
-## quad = "B11"; save.svg = TRUE; dx = "new_dx2018"; dy = "new_dy2018";  tag = "num_tag"; dap = "dap2018"; error = "errorType"; mapsize = c(13,13)
+## quad = "B11"; save.svg = TRUE; dx = "new_dx2018"; dy = "new_dy2018";  tag = "num_tag"; dap = "dap2018"; error = "errorType"; mapSize = c(13,13)
