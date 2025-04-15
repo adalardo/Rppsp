@@ -294,16 +294,18 @@ joinODK <- function(csvDir = getwd(), expDir = getwd(),  saveFile = TRUE)
 ### INCLUIR UMA SAIDA DE LEITURA DE DADOS EM UM DIRETORIO ESPECIFICO
 invisible(treeres)
 }
-##################################################
-########### read CSV audit Data ##################
-##################################################
-##' Read odk exported audit csv files to a single data frame
+################
+#### Merge Data
+################
+#merge tree main data files tree*.txt, treeMiss*.txt and treeResumo*.txt from a base directory recursively. In the basedir should have only subdirectories that is going to merge. This files should go to audit too.
+##############################
+##' Merge exported data for all subplots  
 ##'
-##' @param base_name Files prefix name and directory direction without extension
-##' @param form_rep Form repeat sections names in order
-##' @param dir_exp Data export directory 
-##' @param data_type Long or short version of the data
-##' @return 'odkexp' returns csv files export from odk collect. 
+##' @param expDir Data exported directory where the subplots data are arranged in subdirectories. 
+##' @param mergeMedia Logical, if is 'TRUE' média is grouping in 'allMedia' directory but original media was not deleted.
+##' @param zipMedia Logical if is 'TRUE' the 'allMedia' directory is compressed and deleted. In order to run needs 7-zip installed on the system (\url{https://www.7-zip.org/download.html})
+##' @param saveFile Lógical, if is 'TRUE' save files in the 'expDir'.
+##' @return 'mergeData' save two text files('treeRes*.txt' and 'treeAll*.txt') if 'saveFile' is 'TRUE' or/and the resume data in an assign object. . 
 ##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 ##' @seealso 
 ##' \url{http://labtrop.ib.usp.br}
@@ -311,136 +313,66 @@ invisible(treeres)
 ##' @examples
 ##' 
 ##' \dontrun{
-##' odkexp(odkbriefcase = "odkbriefcase.jar", dir_st = getwd(), dir_col = getwd(), dir_exp = getwd(), form_id = "odkform", file_name = "odkdata")
+##' mergeData(expDir = getwd(), mergeMedia = TRUE, zipMedia = FALSE)
 ##' }
 ##' 
 ##' @export
 ##'
 ##'
 ##'
-readAudit.csvODK <- function(base_files,  save_file = TRUE, dir_exp = getwd(), file_name = NULL)  #base_name = "auditPeic"
+mergeData <- function(expDir = getwd(), mergeMedia = TRUE, saveFile = TRUE, zipMedia = FALSE)
 {
-    ## base dir
-    base_dir <- dirname(base_files)
-    file0 <- base_files[! (base_files %in% grep(paste(form_rep,collapse="|"), base_files, value=TRUE))]
-    ## base form file
-    ## nrep <- length(form_rep)
-    ## names.csv <- paste(base_name, c("",rep("-",nrep)),c("", form_rep), ".csv", sep="")
-    for(j in 0:length(formNames))
+    dirs <- dir(expDir, recursive = FALSE)
+    allfiles <- list.files(expDir, recursive=TRUE)
+    datafiles <- allfiles[- c(grep("All", allfiles), grep("baseData", allfiles), grep("auditData", allfiles), grep("media", allfiles))]
+    #missindex <- grep("treeMiss", datafiles)
+    resindex <- grep("Resumo", datafiles)
+    treefiles <- file.path(expDir, datafiles[- resindex])
+    treefiles <- grep("\\/tree", treefiles, value=TRUE) 
+    #missfiles <- file.path(basedir,datafiles[missindex]) 
+    resfiles <- file.path(expDir, datafiles[resindex])
+    # first files
+    tree1 <- read.table(treefiles[1], header=TRUE, as.is=TRUE, sep="\t")   
+    res1 <- read.table(resfiles[1], header=TRUE, as.is=TRUE, sep="\t")
+    treeNames <- names(tree1)
+    resNames <- names(res1)
+    if(length(treefiles)>1)
     {
-        if(j==0)
+        for(i in 2: length(treefiles))
         {
-         assign(paste("form", j, sep=""), read.table(file0, header=TRUE, as.is=TRUE, sep=",")) 
-        } else{
-        assign(paste("form", j, sep=""), read.table(grep(formName[j], base_files, value=TRUE), header=TRUE, as.is=TRUE, sep=","))}
-    }
-    
-    form0names <- c('today', 'start', 'end', 'equipe.equipe_nomes', 'equipe.equipe_nomes_other', 'equipe.lider', 'parcela.quadrat', 'parcela.piquete', 'parcela.obs_quad', 'KEY')
-    form1names <- c('tag_aud',  'error', 'dap2025','alt2025','dx2025','dy2025','fam2025','sp2025','arv_aud.dap_conf', 'arv_aud.alt_conf', 'arv_aud.xy_conf', 'arv_aud.id_conf', 'arv_aud.diag_aud', 'arv_aud.diag_aud_other', 'tipo_med',  'aud_dap.dap2025_mm', 'aud_dap.dap2025_cm', 'aud_dap.pap2025_cm', 'aud_dap.one_fuste',  'diag_tag.diag_tag_new', 'diag_tag.diag_tag_foto', 'diag_tag.diag_tag_obs',  'aud_alt.aud_alt0', 'aud_alt.aud_alt1', 'aud_xy.aud_x', 'aud_xy.aud_y',  'aud_id.aud_fam', 'aud_id.aud_gen', 'aud_id.aud_sp', 'aud_id.aud_coleta', 'aud_id.aud_id_picture', 'aud_id.aud_id_same', 'PARENT_KEY', 'KEY', 'SET.OF.tree_audit')
-    form01 <- merge(form0[,form0names], form1[form1names], by.x="KEY", by.y="PARENT_KEY", all = TRUE)
-    form01names <- names(form01)
-
-    
-
- 
-    treenames <- gsub("equipe\\.", "", form01names)
-    treenames <- gsub("parcela\\.", "", treenames)
-    treenames <- gsub("arv_aud\\.", "", treenames)
-    treenames <- gsub("diag_tag.diag_", "aud_", treenames)
-    treenames <- gsub("aud_dap\\.", "aud_", treenames)
-    treenames <- gsub("aud_alt\\.", "", treenames)
-    treenames <- gsub("aud_xy\\.", "", treenames)
-    treenames <- gsub("aud_id\\.", "", treenames)
-    tree <- form01
- 
-
-    names(tree) <- treenames
-    names(tree)[names(tree) =='KEY.y'] <- "key_tree"
-    names(tree)[names(tree) =='KEY'] <- "key_quad"
-    
-
-    
-    tree$aud_nfuste <- 1
-    tree$aud_dap2025_sec_mm <- NA
-    form2$dap2mm <- form2$dap_mm_sec
-    form2$dap2mm[!is.na(form2$dap_cm_sec)] <- form2$dap_cm_sec[!is.na(form2$dap_cm_sec)] *10
-    oneKey <- unique(form2$PARENT_KEY)
-    if(length(oneKey)>0)
-    {
-        for(i in 1:length(oneKey))
-        {
-            k <- oneKey[i]
-            secF <- form2[form2$PARENT_KEY == k,]
-            nf <- nrow(secF) + 1          
-            mdap <- sort(as.numeric(secF$dap2mm), decreasing=TRUE)
-            dapsec <- paste(mdap, collapse = ";")
-            tree[tree$key_tree == k, c("aud_nfuste", "aud_dap2025_sec_mm")] <- c( nf, dapsec) 
+            tree0 <- read.table(treefiles[i], header=TRUE, as.is=TRUE, sep="\t")
+            tree1 <- merge(tree1, tree0, all =TRUE)
+            res0 <- read.table(resfiles[i], header=TRUE, as.is=TRUE, sep="\t")
+            res1 <- merge(res1, res0, all = TRUE)
         }
     }
-###############################
-## ####### tirando dados repetidos 
-## ###############################
-##     dupltag <- treequad$num_tag[duplicated(treequad$num_tag, incomparables=NA)]
-##     dupligual <- c( )
-##     for(i in dupltag)
-##     {
-##         postag <- which(treequad$num_tag == i)
-##         dupldata <- treequad[postag, c("dap2025","alt2025", "fam2025", "sp2025")]
-##         dupligual <- c(dupligual,postag[duplicated(dupldata)])
-##     }
-##     treequad <- treequad[!(1:nrow(treequad) %in% dupligual),]
-## #################################
-##     nres <- c("today", "equipe.lider", "tree_type", "tag_ok","tree_tag", "new_tag", "num_tag", "tag_dead" , "quadrat", "quad5x5","old_dx", "old_dy","new_dx2025", "new_dy2025", "old_alt", "alt2025","old_nfuste", "nfuste2025", "old_dap", "dap2025","dap2025_sec_mm", "old_fam", "old_sp", "fam2025", "sp2025", "coleta", "difdapOK", "difaltOK" ,"obs_tree")
-##     nres  <- nres[nres %in% names(treequad)]
-##     treeres <- treequad[, nres]
-## ###################
-# ### Incluir uma saida de objeto em lista com o treemiss e tree
-    if(save_file)
+########################################
+    if(saveFile)
     {
-        line <- substr(unique(tree$quadrat),0,1)
-        colu <- as.numeric(substr(unique(tree$quadrat),2,3))
-        rlc <- tapply(colu, line, range)
-        qname <- paste(paste(names(rlc), sapply(rlc, function(x){paste(x, collapse="_")}), sep=""), collapse = "x")
-        
-        dname <- file.path(dir_exp, qname)
-        if(!dir.exists(file.path(dname, "baseData")))
+        write.table(tree1, file = file.path(expDir, paste("treeAll_", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
+        write.table(res1, file = file.path(expDir,paste("treeResAll_", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
+    }    
+   # exclude found missed tree and save if exists
+    if(mergeMedia)
+    {
+        dirmedia<- file.path(expDir, "allMedia")  
+        mediafiles <- file.path(expDir, grep("media", allfiles, value =TRUE))
+        medianames <- sapply(strsplit(mediafiles, "/"), function(x){x[length(x)]})
+        dir.create(dirmedia)
+        mediavf<- file.copy(from = mediafiles, dirmedia)
+        if(zipMedia)
         {
-            #dir.create(dname)
-            dir.create(file.path(dname, "baseData"), recursive=TRUE)
+            cat("O processo de compressão de arquivos necessita ter o 7-zip instalado no sistema (https://www.7-zip.org/download.html)\n")
+        media7z <-paste("7z a", file.path(expDir, "allmedia"), file.path(dirmedia, "*"))
+        system(media7z)
+        unlink(dirmedia, recursive = TRUE)
         }
-#        file.rename(from = names.csv, to=  file.path(dname, "baseData", paste("audPeic",c("",form_rep), qname,".csv", sep="")))
-        if(dir.exists(file.path(base_dir, "media")) & file.path(base_dir, "media") != file.path(dname, "media"))
-            {
-                media.names <- list.files(file.path(base_dir, "media"))
-                if(!dir.exists(file.path(dname, "media")))
-                {
-                    dir.create(file.path(dname, "media"), recursive=TRUE)
-                }
-                if(file.path(base_dir, "media") != file.path(dname, "media"))
-                {
-                    file.rename(from = file.path(base_dir, "media", media.names), to = file.path(dname, "media", media.names))
-                    unlink(file.path(base_dir, "media"), recursive = TRUE)
-                }
-            }
-        
-##         if(sum(grepl("miss", form_rep)) != 0)
-##         {
-##             write.table(treequad, file.path(dname, paste("tree",qname,".txt", sep="")), sep="\t", row.names=FALSE)
-##             write.table(treeres, file.path(dname, paste("treeResumo",qname,".txt", sep="")), sep="\t", row.names=FALSE)
-##             write.table(treemiss, file.path(dname, paste("treeMiss",qname,".txt", sep="")), sep="\t", row.names=FALSE)
-##         }else{
-##             write.table(treequad, file.path(dname, paste("treeNoMiss",qname,".txt", sep="")), sep="\t", row.names=FALSE)
-##             write.table(treeres, file.path(dname, paste("treeResumoNoMiss",qname,".txt", sep="")), sep="\t", row.names=FALSE)
-##          }
-        write.table(tree, file.path(dname, paste("aud_tree", qname,".txt", sep="")), sep="\t", row.names=FALSE)
     }
-## #
-        ## INCLUIR UMA SAIDA DE LEITURA DE DADOS EM UM DIRETORIO ESPECIFICO
-invisible(tree)
+    invisible(res1)
 }
-###
-
-
+######################
+#### Censo Data Audit
+######################
 #############################
 ##' Check census data with previous census 
 ##'
@@ -463,14 +395,14 @@ invisible(tree)
 ##'
 ##'
 ##'
-censoAudit <- function(dir_exp = getwd(), olddata = "peic09.csv", allsubdir = TRUE)
+censoAudit <- function(expDir = getwd(), olddata = "peic09.csv", allsubdir = TRUE)
 {
     abasal <- function(x){sum(((x)/2)^2 * pi, na.rm=TRUE)}
 
-    filelist <- list.files(dir_exp, recursive = allsubdir)
+    filelist <- list.files(expDir, recursive = allsubdir)
     filelist <- filelist[grep("tree", filelist)]
-    filetree <- file.path(dir_exp, filelist[! (grepl("baseData", filelist) | grepl("treeRes",filelist)| grepl("treeMiss",filelist) | grepl("treeDupl",filelist))])
-    auddir <- file.path(dir_exp, paste("auditData", format(Sys.time(), "%d%b%Y"), sep="" ))
+    filetree <- file.path(expDir, filelist[! (grepl("baseData", filelist) | grepl("treeRes",filelist)| grepl("treeMiss",filelist) | grepl("treeDupl",filelist))])
+    auddir <- file.path(expDir, paste("auditData", format(Sys.time(), "%d%b%Y"), sep="" ))
     if(dir.exists(auddir))
     {
         yndir <- readline("Audit directory already exist. The directory was created today.\n Are you sure you want to delete it? (y/n): ")
@@ -489,7 +421,7 @@ censoAudit <- function(dir_exp = getwd(), olddata = "peic09.csv", allsubdir = TR
 ###########################
 ### ACTUAL CENSUS DATA
 ###########################
-    datatree <- mergeData(basedir = dir_exp, save.files = FALSE, media.merge= FALSE)
+    datatree <- mergeData(basedir = expDir, save.files = FALSE, media.merge= FALSE)
     tree <- datatree$tree
     tree$key_tree <- gsub(".*/sub", "sub", tree$key_tree)
     tree <- tree[,-c(grep("key_quad", names(tree)))]
@@ -736,18 +668,23 @@ for(i in quadinc)
     message(paste("treeaudit.csv file saved in dir:", auddir))
 }
 
-################
-#### Merge Data
-################
-#merge tree main data files tree*.txt, treeMiss*.txt and treeResumo*.txt from a base directory recursively. In the basedir should have only subdirectories that is going to merge. This files should go to audit too.
-##############################
-##' Merge exported data for all subplots  
+
+
+
+
+
+
+
+##################################################
+########### read CSV audit Data ##################
+##################################################
+##' Read odk exported audit csv files to a single data frame
 ##'
-##' @param expDir Data exported directory where the subplots data are arranged in subdirectories. 
-##' @param mergeMedia Logical, if is 'TRUE' média is grouping in 'allMedia' directory but original media was not deleted.
-##' @param zipMedia Logical if is 'TRUE' the 'allMedia' directory is compressed and deleted. In order to run needs 7-zip installed on the system (\url{https://www.7-zip.org/download.html})
-##' @param saveFile Lógical, if is 'TRUE' save files in the 'expDir'.
-##' @return 'mergeData' save two text files('treeRes*.txt' and 'treeAll*.txt') if 'saveFile' is 'TRUE' or/and the resume data in an assign object. . 
+##' @param base_name Files prefix name and directory direction without extension
+##' @param form_rep Form repeat sections names in order
+##' @param dir_exp Data export directory 
+##' @param data_type Long or short version of the data
+##' @return 'odkexp' returns csv files export from odk collect. 
 ##' @author Alexandre Adalardo de Oliveira \email{aleadalardo@gmail.com}
 ##' @seealso 
 ##' \url{http://labtrop.ib.usp.br}
@@ -755,63 +692,137 @@ for(i in quadinc)
 ##' @examples
 ##' 
 ##' \dontrun{
-##' mergeData(expDir = getwd(), mergeMedia = TRUE, zipMedia = FALSE)
+##' odkexp(odkbriefcase = "odkbriefcase.jar", dir_st = getwd(), dir_col = getwd(), dir_exp = getwd(), form_id = "odkform", file_name = "odkdata")
 ##' }
 ##' 
 ##' @export
 ##'
 ##'
 ##'
-mergeData <- function(expDir = getwd(), mergeMedia = TRUE, saveFile = TRUE, zipMedia = FALSE)
+readAudit.csvODK <- function(base_files,  save_file = TRUE, dir_exp = getwd(), file_name = NULL)  #base_name = "auditPeic"
 {
-    dirs <- dir(expDir, recursive = FALSE)
-    allfiles <- list.files(expDir, recursive=TRUE)
-    datafiles <- allfiles[- c(grep("All", allfiles), grep("baseData", allfiles), grep("auditData", allfiles), grep("media", allfiles))]
-    #missindex <- grep("treeMiss", datafiles)
-    resindex <- grep("Resumo", datafiles)
-    treefiles <- file.path(expDir, datafiles[- resindex])
-    treefiles <- grep("\\/tree", treefiles, value=TRUE) 
-    #missfiles <- file.path(basedir,datafiles[missindex]) 
-    resfiles <- file.path(expDir, datafiles[resindex])
-    # first files
-    tree1 <- read.table(treefiles[1], header=TRUE, as.is=TRUE, sep="\t")   
-    res1 <- read.table(resfiles[1], header=TRUE, as.is=TRUE, sep="\t")
-    treeNames <- names(tree1)
-    resNames <- names(res1)
-    if(length(treefiles)>1)
+    ## base dir
+    base_dir <- dirname(base_files)
+    file0 <- base_files[! (base_files %in% grep(paste(form_rep,collapse="|"), base_files, value=TRUE))]
+    ## base form file
+    ## nrep <- length(form_rep)
+    ## names.csv <- paste(base_name, c("",rep("-",nrep)),c("", form_rep), ".csv", sep="")
+    for(j in 0:length(formNames))
     {
-        for(i in 2: length(treefiles))
+        if(j==0)
         {
-            tree0 <- read.table(treefiles[i], header=TRUE, as.is=TRUE, sep="\t")
-            tree1 <- merge(tree1, tree0, all =TRUE)
-            res0 <- read.table(resfiles[i], header=TRUE, as.is=TRUE, sep="\t")
-            res1 <- merge(res1, res0, all = TRUE)
+         assign(paste("form", j, sep=""), read.table(file0, header=TRUE, as.is=TRUE, sep=",")) 
+        } else{
+        assign(paste("form", j, sep=""), read.table(grep(formName[j], base_files, value=TRUE), header=TRUE, as.is=TRUE, sep=","))}
+    }
+    
+    form0names <- c('today', 'start', 'end', 'equipe.equipe_nomes', 'equipe.equipe_nomes_other', 'equipe.lider', 'parcela.quadrat', 'parcela.piquete', 'parcela.obs_quad', 'KEY')
+    form1names <- c('tag_aud',  'error', 'dap2025','alt2025','dx2025','dy2025','fam2025','sp2025','arv_aud.dap_conf', 'arv_aud.alt_conf', 'arv_aud.xy_conf', 'arv_aud.id_conf', 'arv_aud.diag_aud', 'arv_aud.diag_aud_other', 'tipo_med',  'aud_dap.dap2025_mm', 'aud_dap.dap2025_cm', 'aud_dap.pap2025_cm', 'aud_dap.one_fuste',  'diag_tag.diag_tag_new', 'diag_tag.diag_tag_foto', 'diag_tag.diag_tag_obs',  'aud_alt.aud_alt0', 'aud_alt.aud_alt1', 'aud_xy.aud_x', 'aud_xy.aud_y',  'aud_id.aud_fam', 'aud_id.aud_gen', 'aud_id.aud_sp', 'aud_id.aud_coleta', 'aud_id.aud_id_picture', 'aud_id.aud_id_same', 'PARENT_KEY', 'KEY', 'SET.OF.tree_audit')
+    form01 <- merge(form0[,form0names], form1[form1names], by.x="KEY", by.y="PARENT_KEY", all = TRUE)
+    form01names <- names(form01)
+
+    
+
+ 
+    treenames <- gsub("equipe\\.", "", form01names)
+    treenames <- gsub("parcela\\.", "", treenames)
+    treenames <- gsub("arv_aud\\.", "", treenames)
+    treenames <- gsub("diag_tag.diag_", "aud_", treenames)
+    treenames <- gsub("aud_dap\\.", "aud_", treenames)
+    treenames <- gsub("aud_alt\\.", "", treenames)
+    treenames <- gsub("aud_xy\\.", "", treenames)
+    treenames <- gsub("aud_id\\.", "", treenames)
+    tree <- form01
+ 
+
+    names(tree) <- treenames
+    names(tree)[names(tree) =='KEY.y'] <- "key_tree"
+    names(tree)[names(tree) =='KEY'] <- "key_quad"
+    
+
+    
+    tree$aud_nfuste <- 1
+    tree$aud_dap2025_sec_mm <- NA
+    form2$dap2mm <- form2$dap_mm_sec
+    form2$dap2mm[!is.na(form2$dap_cm_sec)] <- form2$dap_cm_sec[!is.na(form2$dap_cm_sec)] *10
+    oneKey <- unique(form2$PARENT_KEY)
+    if(length(oneKey)>0)
+    {
+        for(i in 1:length(oneKey))
+        {
+            k <- oneKey[i]
+            secF <- form2[form2$PARENT_KEY == k,]
+            nf <- nrow(secF) + 1          
+            mdap <- sort(as.numeric(secF$dap2mm), decreasing=TRUE)
+            dapsec <- paste(mdap, collapse = ";")
+            tree[tree$key_tree == k, c("aud_nfuste", "aud_dap2025_sec_mm")] <- c( nf, dapsec) 
         }
     }
-########################################
-    if(saveFile)
+###############################
+## ####### tirando dados repetidos 
+## ###############################
+##     dupltag <- treequad$num_tag[duplicated(treequad$num_tag, incomparables=NA)]
+##     dupligual <- c( )
+##     for(i in dupltag)
+##     {
+##         postag <- which(treequad$num_tag == i)
+##         dupldata <- treequad[postag, c("dap2025","alt2025", "fam2025", "sp2025")]
+##         dupligual <- c(dupligual,postag[duplicated(dupldata)])
+##     }
+##     treequad <- treequad[!(1:nrow(treequad) %in% dupligual),]
+## #################################
+##     nres <- c("today", "equipe.lider", "tree_type", "tag_ok","tree_tag", "new_tag", "num_tag", "tag_dead" , "quadrat", "quad5x5","old_dx", "old_dy","new_dx2025", "new_dy2025", "old_alt", "alt2025","old_nfuste", "nfuste2025", "old_dap", "dap2025","dap2025_sec_mm", "old_fam", "old_sp", "fam2025", "sp2025", "coleta", "difdapOK", "difaltOK" ,"obs_tree")
+##     nres  <- nres[nres %in% names(treequad)]
+##     treeres <- treequad[, nres]
+## ###################
+# ### Incluir uma saida de objeto em lista com o treemiss e tree
+    if(save_file)
     {
-        write.table(tree1, file = file.path(expDir, paste("treeAll_", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
-        write.table(res1, file = file.path(expDir,paste("treeResAll_", format(Sys.time(), "%d%b%Y"), ".txt", sep = "")), row.names=FALSE, sep= "\t")
-    }    
-   # exclude found missed tree and save if exists
-    if(mergeMedia)
-    {
-        dirmedia<- file.path(expDir, "allMedia")  
-        mediafiles <- file.path(expDir, grep("media", allfiles, value =TRUE))
-        medianames <- sapply(strsplit(mediafiles, "/"), function(x){x[length(x)]})
-        dir.create(dirmedia)
-        mediavf<- file.copy(from = mediafiles, dirmedia)
-        if(zipMedia)
+        line <- substr(unique(tree$quadrat),0,1)
+        colu <- as.numeric(substr(unique(tree$quadrat),2,3))
+        rlc <- tapply(colu, line, range)
+        qname <- paste(paste(names(rlc), sapply(rlc, function(x){paste(x, collapse="_")}), sep=""), collapse = "x")
+        
+        dname <- file.path(dir_exp, qname)
+        if(!dir.exists(file.path(dname, "baseData")))
         {
-            cat("O processo de compressão de arquivos necessita ter o 7-zip instalado no sistema (https://www.7-zip.org/download.html)\n")
-        media7z <-paste("7z a", file.path(expDir, "allmedia"), file.path(dirmedia, "*"))
-        system(media7z)
-        unlink(dirmedia, recursive = TRUE)
+            #dir.create(dname)
+            dir.create(file.path(dname, "baseData"), recursive=TRUE)
         }
+#        file.rename(from = names.csv, to=  file.path(dname, "baseData", paste("audPeic",c("",form_rep), qname,".csv", sep="")))
+        if(dir.exists(file.path(base_dir, "media")) & file.path(base_dir, "media") != file.path(dname, "media"))
+            {
+                media.names <- list.files(file.path(base_dir, "media"))
+                if(!dir.exists(file.path(dname, "media")))
+                {
+                    dir.create(file.path(dname, "media"), recursive=TRUE)
+                }
+                if(file.path(base_dir, "media") != file.path(dname, "media"))
+                {
+                    file.rename(from = file.path(base_dir, "media", media.names), to = file.path(dname, "media", media.names))
+                    unlink(file.path(base_dir, "media"), recursive = TRUE)
+                }
+            }
+        
+##         if(sum(grepl("miss", form_rep)) != 0)
+##         {
+##             write.table(treequad, file.path(dname, paste("tree",qname,".txt", sep="")), sep="\t", row.names=FALSE)
+##             write.table(treeres, file.path(dname, paste("treeResumo",qname,".txt", sep="")), sep="\t", row.names=FALSE)
+##             write.table(treemiss, file.path(dname, paste("treeMiss",qname,".txt", sep="")), sep="\t", row.names=FALSE)
+##         }else{
+##             write.table(treequad, file.path(dname, paste("treeNoMiss",qname,".txt", sep="")), sep="\t", row.names=FALSE)
+##             write.table(treeres, file.path(dname, paste("treeResumoNoMiss",qname,".txt", sep="")), sep="\t", row.names=FALSE)
+##          }
+        write.table(tree, file.path(dname, paste("aud_tree", qname,".txt", sep="")), sep="\t", row.names=FALSE)
     }
-    invisible(res1)
+## #
+        ## INCLUIR UMA SAIDA DE LEITURA DE DADOS EM UM DIRETORIO ESPECIFICO
+invisible(tree)
 }
+###
+
+
+
 ####################
 ## Presta Conta OKD
 ####################

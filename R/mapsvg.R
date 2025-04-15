@@ -68,8 +68,8 @@ svgMap <- function(mapData, subPlotCode = "A00", svgSave = TRUE, wd2save = file.
 
         for(i in 1:nrow(subquad))
         {
-            grid.circle(x= subquad[i, dx],y=subquad[i, dy], r= log(subquad[i, dbh])/20, default.units="native", gp=gpar(fill=ifelse(subquad[i, status]=="A" | subquad[i, status]=="AS" ,rgb(0,1,0, 0.5), rgb(0,0,1,0.5)), col="black"), name = arv_key[i])
             grid.text(paste(subquad[i, tag]), x= subquad[i, dx]+log(subquad[i, dbh])/20 ,y=subquad[i, dy]+log(subquad[i, dbh])/15, default.units="native", gp = gpar(fontsize = fontSize- 2))
+            grid.circle(x= subquad[i, dx],y=subquad[i, dy], r= log(subquad[i, dbh])/20, default.units="native", gp=gpar(fill=ifelse(subquad[i, status]=="A" | subquad[i, status]=="AS" ,rgb(0,1,0, 0.5), rgb(0,0,1,0.5)), col="black"), name = arv_key[i])
         }
         
         grid.segments(x0= c(0,0, 0, splitX) , y0 = c(0, 0, splitY, splitY) , x1 =c( splitX, 0, splitX, splitX),  y1= c(0, splitY,  splitY, 0), default.units="native", gp= gpar(lty = 2))
@@ -146,19 +146,19 @@ svgGrid <- function(censoData, subPlotCode = "A00", subqSize = 10, gridSize = 0.
 #############
 ## plot here
 #############
-    dev.new( width = mapSize[1], height = mapSize[2]) #, fontsize = 12)
-    vptop<- viewport(y=0.9, width=0.9, height=0.2)
-    grid.text(x=0.5, y=0.9, paste(j,  "- grid de mapeamento", subqSize,  "x",subqSize,"m"), vp= vptop, gp=gpar(fontsize = fontSize + 5))
+        dev.new( width = mapSize[1], height = mapSize[2]) #, fontsize = 12)
+        vptop<- viewport(y=0.9, width=0.9, height=0.2)
+        grid.text(x=0.5, y=0.9, paste(j,  "- grid de mapeamento", subqSize,  "x",subqSize,"m"), vp= vptop, gp=gpar(fontsize = fontSize + 5))
     vp <- viewport(width = vpSize[1], height = vpSize[2], xscale=c(0,10), yscale=c(0,10))
-    pushViewport(vp)
-    grid.rect(gp = gpar(col = "black"))
-    grid.xaxis(at=seq(0, subqSize, by=.5), gp = gpar(fontsize = fontSize, tcl = NA))
-    grid.yaxis(at=seq(0, subqSize, by=.5), gp = gpar(fontsize = fontSize, tcl = NA))
-    xseq = rep(seq(0.0, subqSize - gridSize, by = gridSize), each = subqSize/gridSize)
-    yseq = rep(seq(0.0, subqSize - gridSize, by = gridSize), subqSize/gridSize)
+        pushViewport(vp)
+        grid.rect(gp = gpar(col = "black"))
+        grid.xaxis(at=seq(0, subqSize, by=.5), gp = gpar(fontsize = fontSize, tcl = NA))
+        grid.yaxis(at=seq(0, subqSize, by=.5), gp = gpar(fontsize = fontSize, tcl = NA))
+        xseq = rep(seq(0.0, subqSize - gridSize, by = gridSize), each = subqSize/gridSize)
+        yseq = rep(seq(0.0, subqSize - gridSize, by = gridSize), subqSize/gridSize)
     loc_key_10 = paste("x = ",sprintf("%1.1f", xseq), "; y = ", sprintf("%1.1f", yseq),"; ", sep="")
-    grid.circle(x= sqData$sx, y= sqData$sy, r= log(sqData[,dbhcm])/20, default.units="native", gp=gpar(fill= c(rgb(0,0,1,0.5), rgb(0,1,0, 0.5))[grepl("A", sqData[,status]) + 1], col="black"))
-    grid.text(paste(sqData[, tag]), x= sqData[, "sx"]+ log(sqData[, dbhcm])/8 , y=sqData[, "sy"] + log(sqData[, dbhcm])/15, default.units="native", gp = gpar( fontsize= fontSize - 2))
+        grid.circle(x= sqData$sx, y= sqData$sy, r= log(sqData[,dbhcm])/20, default.units="native", gp=gpar(fill= c(rgb(0,0,1,0.5), rgb(0,1,0, 0.5))[grepl("A", sqData[,status]) + 1], col="black"))
+        grid.text(paste(sqData[, tag]), x= sqData[, "sx"]+ log(sqData[, dbhcm])/8 , y=sqData[, "sy"] + log(sqData[, dbhcm])/15, default.units="native", gp = gpar( fontsize= fontSize - 2))
 #####################
 ##  DIAGONAL:
 #####################
