@@ -128,10 +128,10 @@ joinODK <- function(csvDir = getwd(), expDir = getwd(),  saveFile = TRUE)
 ######## Miss found alive ##################
     if(nrow(missAlive)>0)
     {
-        foundANames00 <- c('miss_num', 'miss_found.tag_ok_miss','miss_found.arvmap_conf_miss', 'miss_new_tag.new_tag_miss', 'miss_new_tag.new_tag_picture_miss', 'map_miss.mapxy_miss', 'new_alt_miss.alt_new_miss', 'new_alt_miss.difalt_miss', 'new_alt_miss.alt_met_miss', 'new_alt_miss.alt_check_note_miss', 'new_alt_miss.alt_new_check_miss', 'new_alt_miss.alt_cause_miss', 'new_alt_miss.alt_cause_other_miss', 'new_alt_miss.dif_altOK_miss', 'new_dap_miss.dap_pom_miss', 'new_dap_miss.pom_type_miss', 'new_dap_miss.tipo_med_miss', 'new_dap_miss.dap_new_miss', 'new_dap_miss.difdap_miss', 'new_dap_miss.diffdap_prop_miss', 'new_dap_miss.one_fuste_miss', 'new_dap_miss.nfuste_ok_miss', 'new_dap_miss.check_dbh_miss.dap_new_check_miss', 'new_dap_miss.check_dbh_miss.dap_cause_miss', 'new_dap_miss.check_dbh_miss.dap_cause_other_miss', 'new_dap_miss.check_dbh_miss.dif_dapOK_miss', 'new_dap_miss.check_dbh_miss.min_dbhOK_miss', 'nfuste_diff_miss', 'info_id_miss', 'new_id_miss.new_fam_miss', 'new_id_miss.new_gen_miss', 'new_id_miss.new_sp_miss', 'new_id_miss.det_type_miss', 'new_id_miss.indet_type_miss', 'new_id_miss.id_same_miss', 'new_id_miss.nickname_morfo_miss', 'new_id_miss.id_picture_miss', 'new_id_miss.id_picture02_miss', 'new_id_miss.id_picture03_miss', 'new_id_miss.id_picture04_miss', 'new_id_miss.id_picture05_miss', 'PARENT_KEY', 'KEY')
+        foundANames00 <- c('miss_num', 'miss_found.tag_ok_miss','miss_found.arvmap_conf_miss', 'miss_found-old_dx_miss', 'miss_found-old_dy_miss', 'miss_found-old_xy_miss' ,'conf_miss-old_dap_miss', 'conf_miss-old_alt_miss', 'conf_miss-old_fam_miss', 'conf_miss-old_sp_miss', 'miss_new_tag.new_tag_miss', 'miss_new_tag.new_tag_picture_miss', 'map_miss.mapxy_miss', 'new_alt_miss.alt_new_miss', 'new_alt_miss.difalt_miss', 'new_alt_miss.alt_met_miss', 'new_alt_miss.alt_check_note_miss', 'new_alt_miss.alt_new_check_miss', 'new_alt_miss.alt_cause_miss', 'new_alt_miss.alt_cause_other_miss', 'new_alt_miss.dif_altOK_miss', 'new_dap_miss.dap_pom_miss', 'new_dap_miss.pom_type_miss', 'new_dap_miss.tipo_med_miss', 'new_dap_miss.dap_new_miss', 'new_dap_miss.difdap_miss', 'new_dap_miss.diffdap_prop_miss', 'new_dap_miss.one_fuste_miss', 'new_dap_miss.nfuste_ok_miss', 'new_dap_miss.check_dbh_miss.dap_new_check_miss', 'new_dap_miss.check_dbh_miss.dap_cause_miss', 'new_dap_miss.check_dbh_miss.dap_cause_other_miss', 'new_dap_miss.check_dbh_miss.dif_dapOK_miss', 'new_dap_miss.check_dbh_miss.min_dbhOK_miss', 'nfuste_diff_miss', 'info_id_miss', 'new_id_miss.new_fam_miss', 'new_id_miss.new_gen_miss', 'new_id_miss.new_sp_miss', 'new_id_miss.det_type_miss', 'new_id_miss.indet_type_miss', 'new_id_miss.id_same_miss', 'new_id_miss.nickname_morfo_miss', 'new_id_miss.id_picture_miss', 'new_id_miss.id_picture02_miss', 'new_id_miss.id_picture03_miss', 'new_id_miss.id_picture04_miss', 'new_id_miss.id_picture05_miss', 'PARENT_KEY', 'KEY')
         foundANames <- foundANames00[foundANames00 %in% names(missAlive)]
         foundAlive <- missAlive[, foundANames]
-        sNamesFA <- gsub("^.*\\.|_miss", "", foundANames)
+        sNamesFA <- gsub("^.*\\.|conf_miss-|_miss|miss_found-", "", foundANames)
         names(foundAlive) <- sNamesFA
         names(foundAlive)[grep("miss_num", names(foundAlive))] <- "tag_old"
         foundAlive$num_tag <- foundAlive$tag_old
@@ -140,7 +140,7 @@ joinODK <- function(csvDir = getwd(), expDir = getwd(),  saveFile = TRUE)
         foundAlive$dap_final <- foundAlive$dap_new
         foundAlive$dap_final[!is.na(foundAlive$dap_new_check)] <- foundAlive$dap_new_check[!is.na(foundAlive$dap_new_check)]
         foundAlive$alt_final <- foundAlive$alt_new
-        foundAlive$alt_final[!is.na(foundAlive$alt_new_check)] <- foundAlive$alt_new_check[!is.na(foundAlive$alt_new_check)] 
+        foundAlive$alt_final[!is.na(foundAlive$alt_new_check)] <- foundAlive$alt_new_check[!is.na(foundAlive$alt_new_check)]
         foundAlive$tree_type <- "found_alive"
         tree <- merge(tree, foundAlive, by = intersect(names(tree), names(foundAlive)), all = TRUE)
     }
@@ -427,11 +427,11 @@ censoAudit <- function(expDir = getwd(), olddata = "peic09.csv", allsubdir = TRU
     tree <- tree[,-c(grep("key_quad", names(tree)))]
     tree$quadrat<- as.factor(tree$quadrat)
 ## tree miss
-    filelistMiss <- filelist[ grep("treeMiss",filelist)]
+    filelistMiss <- filelist[ grep("treeMiss", filelist)]
     if(length(filelistMiss)>0)
     {
         tmiss <- datatree$treeMiss
-        tmiss$quadrat<- factor(tmiss$quadrat, levels = levels(tree$quadrat))
+        tmiss$quadrat <- factor(tmiss$quadrat, levels = levels(tree$quadrat))
     }
 ##########################
 ## PREVIOUS CENSUS DATA
@@ -501,7 +501,7 @@ censoAudit <- function(expDir = getwd(), olddata = "peic09.csv", allsubdir = TRU
         if(sum(tenc)>0)
         {
             tagenc <- tree[tenc, "num_tag"]
-            dmenc <- tmiss[tmiss$miss_num %in% tagenc,c("miss_num", "miss_type", "quadrat", "quad5x5")]
+            dmenc <- tmiss[tmiss$miss_num %in% tagenc, c("miss_num", "miss_type", "quadrat", "quad5x5")]
             dtenc <-  tree[tree$num_tag %in% tagenc,c("num_tag", "tree_type", "quadrat", "quad5x5", "old_dx", "old_dy", "map2025","new_dx2025", "new_dy2025")]
             denc <-cbind(dmenc,dtenc[match( dmenc$miss_num, dtenc$num_tag),])
             missNF <- tmiss[! tmiss$miss_num %in% denc$miss_num, ]
