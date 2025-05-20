@@ -109,7 +109,7 @@ joinODK <- function(csvDir = getwd(), expDir = getwd(),  saveFile = TRUE)
     namesFiles <- namesFiles[formOrder]
     for(j in 1:length(namesFiles))
     {
-        assign(paste("form", j, sep = ""), read.table(file.path(csvDir, namesFiles[j]), header = TRUE, as.is = TRUE, sep = ","))
+        assign(paste("form", j, sep = ""), read.table(file.path(csvDir, namesFiles[j]), header = TRUE, as.is = TRUE, sep = ",", quote = '"'))
     }
     qsize <- unique(gsub("size","quad", form1$local.work_size))[1]
     form3 <- form3[which(form3[, qsize] != ''), ]
@@ -332,17 +332,17 @@ mergeData <- function(expDir = getwd(), mergeMedia = TRUE, saveFile = TRUE, zipM
     #missfiles <- file.path(basedir,datafiles[missindex]) 
     resfiles <- file.path(expDir, datafiles[resindex])
     # first files
-    tree1 <- read.table(treefiles[1], header=TRUE, as.is=TRUE, sep="\t")   
-    res1 <- read.table(resfiles[1], header=TRUE, as.is=TRUE, sep="\t")
+    tree1 <- read.table(treefiles[1], header=TRUE, as.is=TRUE, sep="\t", quote = '"')   
+    res1 <- read.table(resfiles[1], header=TRUE, as.is=TRUE, sep="\t", quote = '"')
     treeNames <- names(tree1)
     resNames <- names(res1)
     if(length(treefiles)>1)
     {
         for(i in 2: length(treefiles))
         {
-            tree0 <- read.table(treefiles[i], header=TRUE, as.is=TRUE, sep="\t")
+            tree0 <- read.table(treefiles[i], header=TRUE, as.is=TRUE, sep="\t", quote = '"')
             tree1 <- merge(tree1, tree0, all =TRUE)
-            res0 <- read.table(resfiles[i], header=TRUE, as.is=TRUE, sep="\t")
+            res0 <- read.table(resfiles[i], header=TRUE, as.is=TRUE, sep="\t", quote = '"')
             res1 <- merge(res1, res0, all = TRUE)
         }
     }
@@ -436,7 +436,7 @@ censoAudit <- function(expDir = getwd(), olddata = "peic09.csv", allsubdir = TRU
 ##########################
 ## PREVIOUS CENSUS DATA
 ##########################
-    censo09 <- read.table(olddata, header=TRUE, as.is=TRUE, sep=sc)
+    censo09 <- read.table(olddata, header=TRUE, as.is=TRUE, sep=sc, quote = '"')
     dquad09 <- censo09[censo09$quad %in% unique(tree$quadrat), ] # so os quadrats com dados 2025
     dquad09A <- dquad09[dquad09$status %in% c("A","AS") ,]
     ntquad09 <- table(dquad09A$quad)
@@ -711,9 +711,9 @@ readAudit.csvODK <- function(base_files,  save_file = TRUE, dir_exp = getwd(), f
     {
         if(j==0)
         {
-         assign(paste("form", j, sep=""), read.table(file0, header=TRUE, as.is=TRUE, sep=",")) 
+         assign(paste("form", j, sep=""), read.table(file0, header=TRUE, as.is=TRUE, sep=",", quote = '"')) 
         } else{
-        assign(paste("form", j, sep=""), read.table(grep(formName[j], base_files, value=TRUE), header=TRUE, as.is=TRUE, sep=","))}
+        assign(paste("form", j, sep=""), read.table(grep(formName[j], base_files, value=TRUE), header=TRUE, as.is=TRUE, sep=",", quote = '"'))}
     }
     
     form0names <- c('today', 'start', 'end', 'equipe.equipe_nomes', 'equipe.equipe_nomes_other', 'equipe.lider', 'parcela.quadrat', 'parcela.piquete', 'parcela.obs_quad', 'KEY')
@@ -857,10 +857,10 @@ prestaConta <- function(dataDir, dataName="prestaConta", dirExp = getwd(), valPa
     ifnum0 <- function(x){ifelse(length(x) == 0, 0, sum(x))} 
     require(rmarkdown)
     require(knitr)
-    pc <- read.table(file.path(dataDir, paste(dataName, "-event_fin.csv", sep="")), header=TRUE, as.is=TRUE, sep=",")
+    pc <- read.table(file.path(dataDir, paste(dataName, "-event_fin.csv", sep="")), header=TRUE, as.is=TRUE, sep=",", quote = '"')
     pc[is.na(pc)] <- ""
     pc$nEv <- 1:nrow(pc)
-    ini <- read.table(file.path(dataDir, paste(dataName, ".csv", sep="")), header=TRUE, as.is=TRUE, sep="," )
+    ini <- read.table(file.path(dataDir, paste(dataName, ".csv", sep="")), header=TRUE, as.is=TRUE, sep=",", quote = '"' )
 #str(ini)
     saldoIni <- ini[,grep("start_month.saldo", names(ini))]
     names(saldoIni) <-  sapply((strsplit(names(saldoIni), "\\.")),  function(y){y[length(y)]})
