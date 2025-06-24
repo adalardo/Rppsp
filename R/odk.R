@@ -117,7 +117,7 @@ joinODK <- function(csvDir = getwd(), expDir = getwd(),  saveFile = TRUE)
     form3names <- c('quad5', 'quad10', 'sel_subquad', 'tag_selected','newtag_selected' , 'PARENT_KEY', 'KEY')
     form01 <- merge(form1[,form1names], form3[form3names], by.x = "KEY", by.y = "PARENT_KEY", all = TRUE)
     form01 <- form01[!(form01$tag_selected == "" & form01$newtag_selected == ""),]
-    form2names00 <- c( 'ttree.tree_type', 'ttree.recruta_id', 'ttree.fuste_primario', 'ttree.fuste01_picture', 'ttree.sec_picture', 'ttag.tag_ok', 'dead_tree.tag_dead', 'dead_tree.dead_obs', 'dead_tree.dead_picture',  'tree_recenso.arvmap_conf', 'confplaq_map.ileg_conf', 'map.mapxy','tree_recenso.old_dx', 'tree_recenso.old_dy',  'tag_new.new_tag', 'tag_new.new_tag_picture', 'tag_old', 'num_tag', 'new_alt.alt_new', 'tree_recenso.old_alt' , 'new_alt.difalt', 'new_alt.alt_met', 'new_alt.alt_check_note', 'new_alt.alt_new_check', 'new_alt.alt_cause', 'new_alt.alt_cause_other', 'new_alt.dif_altOK',  'new_dap.dap_pom', 'new_dap.pom_type', 'new_dap.tipo_med',  'new_dap.dap_new', 'tree_recenso.old_dap' ,'new_dap.difdap', 'new_dap.diffdap_prop',  'new_dap.one_fuste', 'new_dap.nfuste_ok', 'tree_recenso.old_nfuste' , 'new_dap.check_dbh.dap_new_check', 'new_dap.check_dbh.dap_cause', 'new_dap.check_dbh.dap_cause_other', 'new_dap.check_dbh.dif_dapOK', 'new_dap.check_dbh.min_dbhOK', 'nfuste_diff', 'info_id', 'new_id.new_fam', 'tree_recenso.old_fam' ,'new_id.new_gen', 'new_id.new_sp', 'tree_recenso.old_sp' , 'new_id.det_type', 'new_id.indet_type', 'new_id.id_same', 'new_id.nickname_morfo', 'new_id.id_picture', 'new_id.id_picture02', 'new_id.id_picture03', 'new_id.id_picture04', 'new_id.id_picture05', 'conf_info.map_final', 'conf_info.alt_final', 'conf_info.dap_final', 'conf_info.fam_final', 'conf_info.sp_final', 'conf_info.treetype_label', 'conf_info.tagdead_label', 'conf_info.id_type_name',  'conf_info.tree_picture01', 'conf_info.tree_picture02', 'conf_info.tree_picture03', 'conf_info.tree_picture04', 'conf_info.tree_picture05', 'PARENT_KEY', 'KEY')
+    form2names00 <- c( 'ttree.tree_type', 'ttree.recruta_id',  'ttag.tag_ok', 'dead_tree.tag_dead', 'dead_tree.dead_obs', 'dead_tree.dead_picture',  'tree_recenso.arvmap_conf', 'confplaq_map.ileg_conf', 'map.mapxy','tree_recenso.old_dx', 'tree_recenso.old_dy',  'tag_new.new_tag', 'tag_new.new_tag_picture', 'tag_old', 'num_tag', 'new_alt.alt_new', 'tree_recenso.old_alt' , 'new_alt.difalt', 'new_alt.alt_met', 'new_alt.alt_check_note', 'new_alt.alt_new_check', 'new_alt.alt_cause', 'new_alt.alt_cause_other', 'new_alt.dif_altOK',  'new_dap.dap_pom', 'new_dap.pom_type', 'new_dap.tipo_med',  'new_dap.dap_new', 'tree_recenso.old_dap' ,'new_dap.difdap', 'new_dap.diffdap_prop',  'new_dap.one_fuste', 'new_dap.nfuste_ok', 'tree_recenso.old_nfuste' , 'new_dap.check_dbh.dap_new_check', 'new_dap.check_dbh.dap_cause', 'new_dap.check_dbh.dap_cause_other', 'new_dap.check_dbh.dif_dapOK', 'new_dap.check_dbh.min_dbhOK', 'nfuste_diff', 'info_id', 'new_id.new_fam', 'tree_recenso.old_fam' ,'new_id.new_gen', 'new_id.new_sp', 'tree_recenso.old_sp' , 'new_id.det_type', 'new_id.indet_type', 'new_id.id_same', 'new_id.nickname_morfo', 'new_id.id_picture', 'new_id.id_picture02', 'new_id.id_picture03', 'new_id.id_picture04', 'new_id.id_picture05', 'conf_info.map_final', 'conf_info.alt_final', 'conf_info.dap_final', 'conf_info.fam_final', 'conf_info.sp_final', 'conf_info.treetype_label', 'conf_info.tagdead_label', 'conf_info.id_type_name',  'conf_info.tree_picture01', 'conf_info.tree_picture02', 'conf_info.tree_picture03', 'conf_info.tree_picture04', 'conf_info.tree_picture05', 'PARENT_KEY', 'KEY')
     form2names <-  form2names00[(form2names00 %in% names(form2))]
     tree <- form2[, form2names]
     snames2 <- gsub("^.*\\.", "", form2names)
@@ -203,6 +203,13 @@ joinODK <- function(csvDir = getwd(), expDir = getwd(),  saveFile = TRUE)
     treequad$new_nfuste <- 1
     treequad$new_secDap <- NA
     treequad$new_secAlt <- NA
+############################    
+## added June 2025
+############################
+    treequad$sec_oldTag <- NA
+    treequad$sec_secondTagPicture <- NA
+    treequad$sec_firstTagPicture <- NA
+#############################
     names(form5) <- gsub("_miss$", "", names(form5))
     if(nrow(form5) > 0 | nrow(form4) > 0)
     {
@@ -233,9 +240,19 @@ joinODK <- function(csvDir = getwd(), expDir = getwd(),  saveFile = TRUE)
             ## }
             dapsec <- paste(sort(as.numeric(secF$dap2mm), decreasing=TRUE), collapse = ";")
             altsec <- paste(sort(as.numeric(secF$sec_alt_new), decreasing=TRUE), collapse = ";")
+            ########## June 2025 ######
+            oldtagsec <- paste(sort(as.numeric(secF$tag_plaq_sec), decreasing=TRUE), collapse = ";")
+            sectagpicture <- paste(secF$sec_picture, collapse = ";")
+            firsttagpicture <- paste(secF$fuste01_picture, collapse = ";")
+            ###########################
             treequad[treequad$key_tree == k, c("new_nfuste")] <- nf
             treequad[treequad$key_tree == k,  "new_secDap"] <-  dapsec
             treequad[treequad$key_tree == k,  "new_secAlt"] <-  altsec
+            ### added June 2025 #######
+            treequad[treequad$key_tree == k, "sec_oldTag"] <- oldtagsec
+            treequad[treequad$key_tree == k, "sec_secondTagPicture"] <- sectagpicture
+            treequad[treequad$key_tree == k, "sec_firstTagPicture"] <- firsttagpicture
+            ###########################
          }
     }
 ###############################
